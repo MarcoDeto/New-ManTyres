@@ -1,0 +1,42 @@
+.e-daterangepicker.e-popup,
+.e-bigger.e-small .e-daterangepicker.e-popup {
+	background: #fff;
+	position: absolute;
+	margin: auto;
+	top: 0 !important;
+	bottom: 90px;
+	left: 0 !important;
+	right: 0;
+	width: 493px;
+	min-height: 419px;
+	max-height: 419px !important;
+	border-radius: 30px !important;
+	box-shadow: 0 0 10px black !important;
+}
+.e-daterangepicker.e-popup .e-footer,
+.e-bigger.e-small .e-daterangepicker.e-popup .e-footer {
+	background-color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.e-daterangepicker.e-popup .e-footer,
+.e-bigger.e-small .e-daterangepicker.e-popup .e-footer {
+	align-items: center;
+	border-top: 1px solid rgba(0, 0, 0, 0.12);
+	clear: both;
+	display: flex;
+	flex-direction: row-reverse;
+	height: 48px;
+	border-bottom-right-radius: 30px;
+	border-bottom-left-radius: 30px;
+}
+
+.e-daterangepicker.e-popup .e-range-header,
+.e-bigger.e-small .e-daterangepicker.e-popup .e-range-header {
+	background: #fff;
+	padding: 16px 16px 0 16px;
+	width: auto;
+	border-top-left-radius: 30px;
+	border-top-right-radius: 30px;
+}

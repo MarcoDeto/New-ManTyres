@@ -1,0 +1,124 @@
+<div class="custom-navbar" *ngIf="hideHeader == false">
+  <h1 *ngIf="getWidth() != 375" class="logo" [routerLink]="['/home']" matTooltip="Vai alla Home"
+    matTooltipShowDelay="1000">MAN</h1>
+  <a [routerLink]="['/home']" matTooltip="Vai alla Home" matTooltipShowDelay="1000">
+    <img src="../assets/Images/logo_new.svg" height="30" class="align-top logo" alt="">
+  </a>
+  <h1 *ngIf="getWidth() != 375" class="logo" [routerLink]="['/home']" matTooltip="Vai alla Home"
+    matTooltipShowDelay="1000">TYRES</h1>
+
+  <div *ngIf="getWidth() != 375 && userService.isLoggedIn()" style="margin-right: auto !important;">
+    <div style="padding-top: 5px;" class="menu">
+      <button class="hamburger hamburger--collapse nav-link" type="button" [ngClass]="open ? 'is-active' : ''" (click)="changeSideNav()">
+        <span class="hamburger-box">
+          <span class="hamburger-inner"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+  <div *ngIf="getWidth() != 375 && userService.isLoggedOut()" style="margin-right: auto !important;">
+    <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/pricing']">
+      <span class="span-link">Pricing</span>
+    </a>
+  </div>
+  <ng-container *ngIf="userService.isLoggedIn()">
+    <div *ngIf="getWidth() != 375" style="margin-right: 20px;">
+      <a class="nav-link" mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>person</mat-icon>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </a>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item [routerLink]="['/login']">
+          <mat-icon>login</mat-icon>
+          <span>{{ "LOGIN" | translate}}</span>
+        </a>
+        <a mat-menu-item [routerLink]="['/account/profile']">
+          <mat-icon>account_circle</mat-icon>
+          <span>Profilo</span>
+        </a>
+        <a mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>{{ "LOGOUT" | translate }}</span>
+        </a>
+      </mat-menu>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="userService.isLoggedOut()">
+    <div *ngIf="getWidth() != 375">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/account/login']">
+        <p class="span-link" style="text-transform: uppercase;">{{ "LOGIN" | translate}}</p>
+      </a>
+    </div>
+    <div *ngIf="getWidth() != 375">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/account/register']">
+        <div class="signup">
+          <p class="span-link" style="text-transform: uppercase; margin: 0px 5px;">{{ "SIGNUPFREE" | translate}}</p>
+        </div>
+      </a>
+    </div>
+  </ng-container>
+  <div *ngIf="getWidth() != 375">
+    <div class="separator"></div>
+  </div>
+  <div *ngIf="getWidth() != 375" style="margin-left: 10px;">
+    <a class="nav-link" [matMenuTriggerFor]="menu">
+      <p>{{activeLang}}</p>
+    </a>
+    <mat-menu #menu="matMenu">
+      <a mat-menu-item (click)="changeLang('dk')">
+        <span>{{languageNames.dk}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('de')">
+        <span>{{languageNames.de}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('en')">
+        <span>{{languageNames.en}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('es')">
+        <span>{{languageNames.es}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('fr')">
+        <span>{{languageNames.fr}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('it')">
+        <span>{{languageNames.it}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('hu')">
+        <span>{{languageNames.hu}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('no')">
+        <span>{{languageNames.no}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('pl')">
+        <span>{{languageNames.pl}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('pt')">
+        <span>{{languageNames.pt}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('ro')">
+        <span>{{languageNames.ro}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('se')">
+        <span>{{languageNames.se}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('vn')">
+        <span>{{languageNames.vn}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('tr')">
+        <span>{{languageNames.tr}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('ru')">
+        <span>{{languageNames.ru}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('in')">
+        <span>{{languageNames.in}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('cn')">
+        <span>{{languageNames.cn}}</span>
+      </a>
+      <a mat-menu-item (click)="changeLang('jp')">
+        <span>{{languageNames.jp}}</span>
+      </a>
+    </mat-menu>
+  </div>
+</div>

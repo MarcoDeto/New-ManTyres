@@ -1,0 +1,266 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/fontawesome-pro/css/all.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #e01a76;
+}
+
+p,h1,h2,h3,h4,h5 {margin: 0;}
+
+:focus {
+  outline: -webkit-focus-ring-color auto 0 !important;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: transparent !important;
+}
+
+mat-spinner {
+  margin: 22rem auto;
+}
+
+mat-icon {
+  vertical-align: -webkit-baseline-middle;
+}
+
+.spinner {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: block;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  text-align: center;
+}
+
+.cursor-loader {
+  cursor: wait !important;
+}
+
+input, button, a {
+  border: 0;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.custom_popup {
+  width: 36em !important;
+}
+
+/* DIALOG */
+mat-dialog-container {
+  padding: 0 !important;
+}
+
+/* DIALOG INFO */
+.dialog_info_mobile_header {
+  margin: 0;
+  display: block;
+  font-size: 24px;
+  padding: 10px;
+  padding-bottom: 0;
+  text-align: end;
+  color: #77787d;
+}
+
+.dialog_info_title_box {
+  text-align: center;
+  float: left;
+  width: 100%;
+  padding: 20px;
+}
+
+.dialog_info_icon {
+  float: left;
+}
+
+.dialog_info_title_subtitle {
+  width: 60%;
+  float: left;
+  padding-left: 20px;
+  height: 56px;
+  font-size: 22px;
+  text-align: start;
+}
+
+.dialog_info_title_subtitle_mobile {
+  padding-top: 15px;
+}
+
+.dialog_info_actions {
+  float: right;
+  display: block;
+  height: 56px;
+  padding: 8px;
+  text-align: end;
+  color: #77787d;
+}
+
+.dialog_info_details_box {
+  float: right;
+  width: 100%;
+  font: 20px Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+  padding: 10px;
+  overflow: auto;
+  max-height: 67vh;
+}
+
+.dialog_info_details_box span {
+  margin-bottom: 0 !important;
+  margin-top: 10px;
+}
+
+.dialog_info_details {
+  margin: 15px 0 0 0;
+}
+
+.dialog_info_divider {
+  float: left;
+  width: 100%;
+}
+
+.dialog_info_divider_disable {
+  border: white;
+}
+
+@-webkit-keyframes rotating
+
+/* Safari and Chrome */
+  {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.rotating {
+  -webkit-animation: rotating 2s linear infinite;
+  -moz-animation: rotating 2s linear infinite;
+  -ms-animation: rotating 2s linear infinite;
+  -o-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
+}
+
+.spinner {
+  width: 150px;
+  height: 150px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  background: transparent;
+  bottom: 0;
+}
+
+.center-page {
+  display: block;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  text-align: center;
+}
+
+.pulse {
+  animation: pulsate 1s ease-out;
+  -webkit-animation: pulsate 2s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  opacity: 1.0
+}
+
+
+@keyframes pulsate {
+  0% {
+    opacity: 1.0;
+  }
+
+  49% {
+    opacity: 1.0;
+  }
+
+  50% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 0.0;
+  }
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.1rem rgb(0 123 255 / 25%);
+}
+
+/* width */
+
+::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+	position: absolute;
+	top: 0;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px black;
+	background: #1b1c1d;
+	border-radius: 10px;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+  background: #626569;
+	border-radius: 10px;
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+  background: #626569;
+	cursor: pointer;
+}

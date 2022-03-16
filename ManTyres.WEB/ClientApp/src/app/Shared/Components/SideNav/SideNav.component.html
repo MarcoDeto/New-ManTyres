@@ -1,0 +1,8 @@
+<div class="navbar">
+	<div [routerLink]="'/' + nav.label | lowercase" routerLinkActive="active"
+		  class="navbar-item" [ngClass]="{ active: activeNav?.label == nav.label }"
+		  *ngFor="let nav of icons" (click)="navBarInteraction(nav)">
+		<i [class]="nav.icon"></i>
+		<p class="label" *ngIf="getWidth() > 450">{{ "NavLabel." + nav.label | translate }}</p>
+	</div>
+</div>

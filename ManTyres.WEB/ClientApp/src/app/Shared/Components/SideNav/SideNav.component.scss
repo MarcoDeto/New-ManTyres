@@ -1,0 +1,80 @@
+.navbar {
+   display: flex;
+   max-width: 250px;
+	flex-direction: column;
+	justify-content: center;
+	overflow: auto;
+	white-space: nowrap;
+	z-index: 100;
+   color: #0b1426;
+	> .navbar-item {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		width: 100%;
+		padding: 3px 10px;
+		position: relative;
+		&:hover {
+			cursor: pointer;
+		}
+		&.active {
+			border-bottom: solid 4px white;
+			> i {
+				border-radius: 42px;
+				text-shadow: 5px 0px 20px rgb(0 0 0 / 70%);
+			}
+			> p.label {
+				text-shadow: 5px 0px 20px rgb(0 0 0 / 70%);
+			}
+		}
+		> i {
+			color: #0b1426;
+			font-size: 38px;
+			margin-bottom: 5px;
+		}
+		> p.label {
+			color: #0b1426;
+			margin: 0;
+			padding-bottom: 5px;
+			letter-spacing: 1px;
+			font-size: 16px;
+			font-family: var(--font-family);
+		}
+		.counter {
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			background: linear-gradient(270deg, #e50009 0%, #b71200 100%);
+			color: #0b1426;
+			text-align: center;
+			font-size: 14px;
+			position: absolute;
+			top: 0px;
+			right: 15px;
+			padding-top: -8px;
+		}
+	}
+}
+
+// Tablet e Ipad
+@media (min-width: 640px) and (max-width: 1280px) {
+	.navbar {
+		height: 61px;
+		padding-bottom: 0;
+		background: linear-gradient(180deg, #00ff66 15%, #00742a 100%);
+		> .navbar-item {
+			min-width: 70px;
+			padding: 0 10px;
+			&.active {
+				border-bottom: solid 2px white;
+			}
+			> i {
+				font-size: 20px;
+				margin-bottom: 5px;
+			}
+			> p.label {
+				font-size: 14px;
+			}
+		}
+	}
+}

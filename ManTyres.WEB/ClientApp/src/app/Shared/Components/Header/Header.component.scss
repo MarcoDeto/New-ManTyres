@@ -1,0 +1,176 @@
+@import "../../../../assets/hamburgers-master/dist/hamburgers.css";
+@import "../../../../assets/hamburgers-master/_sass/hamburgers/hamburgers.scss";
+
+.custom-navbar {
+   position: relative;
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: space-between;
+   padding: 0 1rem;
+   min-height: 80px;
+   background-color: #0b1426 !important;
+}
+.logo {
+   font-family: Berlin Sans FB;
+   margin: 0;
+   color: white;
+   font-size: 34px;
+   padding-left: 5px;
+   cursor: pointer;
+}
+
+footer {
+   border-top: 1px solid #00000020;
+   padding: 2rem;
+   position: relative;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   text-align: center;
+}
+
+button {
+   outline: none !important;
+}
+.footer-auth {
+   border: none;
+   margin-top: 0;
+   color: white;
+   background-color: #00322e;
+}
+
+.footer-nf-forb {
+   color: black;
+   background-color: transparent;
+}
+
+.nav-link {
+   cursor: pointer;
+   color: rgba(255, 255, 255, 0.9) !important;
+   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.span-link {
+   margin-left: 10px;
+   vertical-align: middle;
+}
+
+.nav-link:hover {
+   color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.nav-menu {
+   padding: 1.75rem 1rem 0.75rem;
+   font-size: 0.75rem;
+   color: rgba(255, 255, 255, 0.25);
+   font-weight: bold;
+   text-transform: uppercase;
+   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.sidenav-link {
+   display: block;
+   align-items: center;
+   padding-top: 0.5rem;
+   padding-bottom: 0.5rem;
+   position: relative;
+   padding-left: 1.5rem;
+   padding-right: 4rem;
+}
+
+.sidenav-link:hover {
+   background: linear-gradient(100deg, black, transparent);
+   opacity: 0.6;
+}
+
+.menu {
+   //margin-right: auto !important;
+   padding-left: 20px;
+}
+
+@media (width: 375px) {
+   .menu {
+      //margin: unset !important;
+      padding-left: 20px;
+   }
+}
+
+.sidenav-container {
+   top: 56px !important;
+}
+
+:host ::ng-deep .mat-icon {
+   text-align: center;
+}
+
+.separator {
+   width: 1px;
+   height: 28px;
+   background-color: #7c8289;
+}
+
+.signup {
+   padding: 5px;
+   background-color: #fff;
+   border-radius: 50px;
+   color: #0b1426;
+}
+
+.signup:hover {
+   padding: 5px;
+   color: #fff;
+   border-radius: 50px;
+   background-color: #0b1426;
+}
+
+::ng-deep .mat-menu-item {
+   color: white !important;
+}
+
+::ng-deep .mat-menu-panel {
+   min-width: 150px !important;
+   max-width: 280px;
+   overflow: auto;
+   -webkit-overflow-scrolling: touch;
+   max-height: calc(100vh - 48px);
+   border-radius: 4px;
+   outline: 0;
+   min-height: 64px;
+   max-height: 300px !important;
+   border: 2px solid;
+   background-color: #0b1426 !important;
+}
+
+/* width */
+
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	top: 0;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px black;
+	background: grey;
+	border-radius: 10px;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+	background: linear-gradient(90deg, #0f9c8f 0%, #36ef7e 100%);
+	border-radius: 10px;
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(90deg, #0f8f82 0%, #31d470 100%);
+	cursor: pointer;
+}

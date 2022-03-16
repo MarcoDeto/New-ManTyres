@@ -1,0 +1,26 @@
+
+<app-header [hideHeader]="hideHeader" [open]="opened" (sidenavChanged)="opened = $event"></app-header>
+
+<ng-container *ngIf="userService.isLoggedOut()">
+  <div class="center-page" *ngIf="caricamento">
+    <img class="spinner rotating" src="../assets/Images/loader.png">
+  </div>
+  <router-outlet (activate)="onRouterOutletActivate($event)"></router-outlet>
+</ng-container>
+
+<mat-sidenav-container class="sidenav-container" fullscreen *ngIf="userService.isLoggedIn()">
+
+  <mat-sidenav #sidenav mode="over" [(opened)]="opened" class="example-sidenav">
+  <!-- <mat-sidenav #sidenav mode="over" [(opened)]="opened" style=" background-color: #212529 !important;"> -->
+
+    <app-sidenav></app-sidenav>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="center-page" *ngIf="caricamento">
+      <img class="spinner rotating" src="../assets/Images/loader.png">
+    </div>
+    <router-outlet (activate)="onRouterOutletActivate($event)"></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

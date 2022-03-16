@@ -1,0 +1,220 @@
+<div *ngIf="!admin">
+  <header>
+    <h2>Informazioni personali</h2>
+    <p>Informazioni di base e informazioni di contatto (Nome, email, ecc)</p>
+  </header>
+  <form novalidate [formGroup]="creationUserForm" (ngSubmit)="AddAdmin()">
+
+    <div class="info-base row">
+      <div class="box col-12">
+        <div>
+          <h5>Informazioni di base</h5>
+        </div>
+        <div class="row" [ngClass]="getWidth() > 415 ? 'margin-foto' : ''">
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-4">FOTO</h3>
+
+            <div *ngIf="!creationUserForm.value.imgProfile" class="upload-btn-wrapper col-6">
+              <button type="button" class="input-file"></button>
+              <input type='file' class="input-file btn" (change)="onSelectFile($event)">
+            </div>
+            <span *ngIf="creationUserForm.value.imgProfile" class="col-8 col-md-6">
+              <img [src]="imagePath" height="100" (click)="imageClicked=true" matTooltip="Visualizza immagine">
+              <i class="fas fa-times-square" (click)="removeImage()" matTooltip="Rimuovi immagine" matTooltipPosition="right"></i>
+            </span>
+          </div>
+          <div class="col-12 col-md-6 row mobile-padding">
+            <h3 class="titolo col col-md-4">USERNAME*</h3>
+            <div class="col col-md-8">
+              <div class="container-admin">
+                <div class="admin">{{creationUserForm.value.username | titlecase}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col col-md-4">NOME*</h3>
+            <mat-form-field appearance="outline" class="col col-md-8">
+              <input matInput type="text" name="given-name" maxlength="50" formControlName="firstname" placeholder="Nome" value="{{creationUserForm.value.firstname | titlecase}}" required>
+              <mat-error *ngIf="creationUserForm.controls['firstname'].hasError('required')">Nome è <strong>obbligatorio</strong>.</mat-error>
+              <mat-error *ngIf="creationUserForm.controls['firstname'].hasError('maxlength')">Massimo <strong>50</strong> caratteri.</mat-error>
+              <mat-error *ngIf="creationUserForm.controls['firstname'].hasError('pattern')">Nome non può contenere numeri o caratteri speciali.</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col col-md-4">COGNOME*</h3>
+            <mat-form-field appearance="outline" class="col col-md-8">
+              <input matInput type="text" name="family-name" maxlength="50" formControlName="lastname" placeholder="Cognome" value="{{creationUserForm.value.lastname | titlecase}}" required>
+              <mat-error *ngIf="creationUserForm.controls['lastname'].hasError('required')">Cognome è <strong>obbligatorio</strong>.</mat-error>
+              <mat-error *ngIf="creationUserForm.controls['lastname'].hasError('maxlength')">Massimo <strong>50</strong> caratteri.</mat-error>
+              <mat-error *ngIf="creationUserForm.controls['lastname'].hasError('pattern')">Cognome non può contenere numeri o caratteri speciali.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col col-md-4">PASSWORD*</h3>
+            <mat-form-field appearance="outline" class="col col-md-8" [ngClass]="creationUserForm.controls['password'].hasError('pattern') ? 'margin-password' : ''">
+              <input matInput [type]="hide ? 'password' : 'text'" name="new-password" placeholder="Password" formControlName="password" required>
+              <mat-error *ngIf="creationUserForm.controls['password'].hasError('required')">Password è <strong>obbligatoria</strong>.</mat-error>
+              <mat-error *ngIf="creationUserForm.controls['password'].hasError('minlength')">Minimo 8 caratteri.</mat-error>
+              <mat-error *ngIf="creationUserForm.controls['password'].hasError('pattern')">Almeno una lettera maiuscola e minuscola, un numero e un speciale.</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col col-md-4">CONFERMA*</h3>
+            <mat-form-field appearance="outline" class="col col-md-8">
+              <input matInput [type]="hide ? 'password' : 'text'" name="new-password" placeholder="Conferma Password" formControlName="confermaPassword" [errorStateMatcher]="matcher" required>
+              <mat-error *ngIf="creationUserForm.controls['confermaPassword'].hasError('required')">Password è <strong>obbligatoria</strong>.</mat-error>
+              <mat-error *ngIf="creationUserForm.value.password != creationUserForm.value.confermaPassword">Le Password non corrispondono.</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12">
+            <mat-checkbox color="primary" [checked]="!hide" (click)="changeValue(hide)">Mostra</mat-checkbox>
+          </div>
+        </div>
+      </div>
+      <div class="box col-12">
+        <div>
+          <h5>Informazioni di contatto</h5>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col col-md-4">EMAIL*</h3>
+            <mat-form-field appearance="outline" class="col col-md-8">
+              <input matInput type="email" name="email" formControlName="email" placeholder="unitest@example.com" required>
+              <mat-error *ngIf="creationUserForm.controls['email'].hasError('required')">Email è <strong>obbligatoria</strong>.</mat-error>
+              <mat-error *ngIf="creationUserForm.controls['email'].hasError('email')">Formato email non valido.</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col col-md-4">TELEFONO*</h3>
+            <mat-form-field appearance="outline" class="col col-md-8">
+              <input matInput type="tel" name="tel" formControlName="telefono" placeholder="+39 351 000 1111" required>
+              <mat-error *ngIf="creationUserForm.controls['telefono'].hasError('required')">Telefono è <strong>obbligatorio</strong>.</mat-error>
+              <mat-error *ngIf="creationUserForm.controls['telefono'].hasError('maxlength')">Massimo <strong>20</strong> caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <button mat-raised-button color="primary" class="submit" type="submit" [disabled]="!creationUserForm.valid">Salva</button>
+      <p>
+        Le informazioni relative al tuo account vengono usate per permetterti di accedere al gestionale e ai tuoi dati.
+        <!--<br>Bridge memorizza alcuni dati a scopo di sicurezza, supporto e resoconto.-->
+      </p>
+    </footer>
+  </form>
+</div>
+
+<div *ngIf="!firstsede && admin">
+  <header>
+    <h2>Aggiungere una sede dell'azienda</h2>
+    <p>Informazioni di base e informazioni di contatto delle filiali</p>
+  </header>
+  <form novalidate [formGroup]="creationSedeForm" (ngSubmit)="AddSede()">
+
+    <div class="info-base row">
+      <div class="box col-12">
+        <div>
+          <h5>Informazioni di base</h5>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-4">NAZIONE*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="text" name="country-name" formControlName="nazione" placeholder="Nazione" required>
+              <mat-error *ngIf="creationSedeForm.controls['nazione'].hasError('required')">Nazione è <strong>obbligatoria</strong>.</mat-error>
+              <mat-error *ngIf="creationSedeForm.controls['nazione'].hasError('maxlength')">Massimo <strong>100</strong> caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="ccol-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-4">PROVINCIA*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="text" name="address-level-3" formControlName="provincia" placeholder="Provincia" required>
+              <mat-error *ngIf="creationSedeForm.controls['provincia'].hasError('required')">Provincia è <strong>obbligatorio</strong>.</mat-error>
+              <mat-error *ngIf="creationSedeForm.controls['provincia'].hasError('maxlength')">Massimo <strong>100</strong> caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-4">CAP*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="text" name="address-level-2" formControlName="cap" placeholder="CAP" required>
+              <mat-error *ngIf="creationSedeForm.controls['cap'].hasError('required')">CAP è <strong>obbligatorio</strong>.</mat-error>
+              <mat-error *ngIf="creationSedeForm.controls['cap'].hasError('minlength')">CAP deve avere <strong>5</strong> cifre.</mat-error>
+              <mat-error *ngIf="creationSedeForm.controls['cap'].hasError('maxlength')">CAP deve avere <strong>5</strong> cifre.</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-4">COMUNE*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="text" name="address-level-1" formControlName="comune" placeholder="Comune" required>
+              <mat-error *ngIf="creationSedeForm.controls['comune'].hasError('required')">Comune è <strong>obbligatorio</strong>.</mat-error>
+              <mat-error *ngIf="creationSedeForm.controls['comune'].hasError('maxlength')">Massimo <strong>100</strong> caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-8 row">
+            <h3 class="titolo col-12 col-md-3">INDIRIZZO*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-9">
+              <input matInput type="text" name="address-level-4" formControlName="indirizzo" placeholder="Indirizzo" required>
+              <mat-error *ngIf="creationSedeForm.controls['indirizzo'].hasError('required')">Indirizzo è <strong>obbligatorio</strong>.</mat-error>
+              <mat-error *ngIf="creationSedeForm.controls['indirizzo'].hasError('maxlength')">Massimo <strong>200</strong> caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4 row">
+            <h3 class="titolo col-12 col-md-4">CIVICO*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="text" name="address-level-4" formControlName="civico" placeholder="Civico" required>
+              <mat-error *ngIf="creationSedeForm.controls['civico'].hasError('required')">Civico è <strong>obbligatorio</strong>.</mat-error>
+              <mat-error *ngIf="creationSedeForm.controls['civico'].hasError('maxlength')">Massimo <strong>10</strong> caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="box col-12">
+        <div>
+          <h5>Informazioni di contatto</h5>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-4">TELEFONO*</h3>
+            <mat-form-field appearance="outline" name="tel" class="col-12 col-md-8">
+              <input matInput type="tel" formControlName="telefono" placeholder="+39 351 000 1111" required>
+              <mat-error *ngIf="creationSedeForm.controls['telefono'].hasError('required')">Telefono è <strong>obbligatorio</strong>.</mat-error>
+              <mat-error *ngIf="creationSedeForm.controls['telefono'].hasError('maxlength')">Massimo <strong>20</strong> caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <button mat-raised-button color="primary" class="submit" type="submit" [disabled]="!creationSedeForm.valid">Salva</button>
+      <p>Le informazioni relative alle filiali vengono usate per memorizzare i pneumatici. I clienti potranno visualizzare questi dettagli. <!--<br>Bridge memorizza alcuni dati a scopo di sicurezza, supporto e resoconto.--></p>
+    </footer>
+  </form>
+</div>
+
+<div *ngIf="firstsede && admin">
+
+  <header>
+    <h1>Complimenti</h1>
+  </header>
+
+  <form class="complimenti" (ngSubmit)="routeHome()">
+    <div class="box-complimenti">
+      <h2>Hai completato il setup iniziale del tuo gestionale.<br />Puoi modificare le tue info in un secondo momento</h2>
+      <button mat-raised-button color="primary" class="btn-completed" type="submit">OK</button>
+    </div>
+  </form>
+</div>
+
+<app-image-viewer *ngIf="imageClicked"
+                  [src]="imagePath"
+                  (closeViewerEmitter)="imageClicked=false">
+</app-image-viewer>

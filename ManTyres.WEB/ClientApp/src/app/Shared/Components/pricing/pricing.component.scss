@@ -1,0 +1,233 @@
+$background: #0b1426;
+$select-color: #fff;
+$select-background: #c0392b;
+$select-width: 220px;
+$select-height: 40px; 
+
+.pricing-container {
+  position: relative;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-direction: normal;
+  flex-direction: row;
+  height: 100vh;
+  background: $background;
+  text-align: center;
+  text-align: -webkit-center;
+  height: calc(100vh - 250px);
+}
+.detail-wrapper {
+  text-align: start;
+}
+.pricing-title {
+  width: 100%;
+  text-align: center;
+  color: white;
+  > h2 {
+    font-size: 72px;
+    line-height: 72px;
+  }
+  > p {
+    margin-top: 15px;
+    font-size: 20px;
+    line-height: 30px;
+  }
+}
+
+.card-price {
+  position: relative;
+  background-color: #fff;
+  box-shadow: 0 15px 20px 0 rgb(0 0 0 / 10%);
+  border-radius: 8px;
+  width: 275px;
+  text-align: center;
+  padding: 40px 25px 55px 25px;
+  transition: all 500ms cubic-bezier(0.01, 0.985, 0.73, 0.995);
+  margin: 0 20px;
+  margin-top: 40px;
+  height: 650px;
+  > h3 {
+    font-size: 32px;
+  }
+  > p {
+    font-size: 14px;
+  }
+}
+
+.container-price {
+  display: flex;
+  place-content: center;
+  margin: 50px 0;
+  > p {
+    font-size: 20px;
+    font-weight: bold;
+    align-self: end;
+    margin: 2px 5px;
+  }
+}
+
+.price {
+  font-size: 50px;
+  line-height: 52px;
+}
+
+.signup-btn {
+  border-radius: 50px;
+  margin-top: 20px;
+  width: 100%;
+  font-size: 14px;
+  line-height: 19px;
+  padding: 17px 30px 17px 30px;
+  font-weight: bold;
+  border: 2px solid $background;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.signup-btn:hover {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  color: #fff;
+  background: $background;
+}
+.free {
+  color: $background;
+  background: #fff;
+}
+.lite {
+  color: #fff;
+  background-color: rgb(66, 160, 189);
+}
+.premium {
+  color: #fff;
+  background-color: #ffd201;
+}
+.custom {
+  color: #fff;
+  background-color: black;
+}
+.detail {
+  display: flex;
+  margin-top: 10px;
+  > p {
+    font-weight: bold;
+    color: $background;
+  }
+}
+.fa-check {
+  margin: 4px 10px;
+  color: $background;
+}
+.detail-wrapper {
+  margin-top: 50px;
+}
+.price-list {
+  display: flex;
+}
+.popular {
+  color: black;
+  background-color: #ffd201;
+  text-transform: uppercase;
+  margin: 5px 0;
+  padding: 8px 0px 8px 0px;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 15px;
+  font-weight: 600;
+}
+.currency-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 48px;
+  margin-bottom: 100px;
+  > p {
+    font-size: 16px;
+    line-height: 26px;
+    color: #091e3f;
+  }
+  > select {
+    border-radius: 50px;
+    padding: 10px 15px;
+    margin: 0 20px;
+    cursor: pointer;
+    > option {
+      color: #091e3f;
+      padding: 0 10px;
+    }
+  }
+  > select option {
+    color: #091e3f;
+    padding: 0 10px;
+  }
+}
+.select-hidden {
+  display: none;
+  visibility: hidden;
+  padding-right: 10px;
+}
+.select {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  font-size: 16px;
+  color: $select-color;
+  width: $select-width;
+  height: $select-height;
+}
+.select-styled {
+  position: absolute; 
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: $select-background;
+  padding: 8px 15px;
+  &:after {
+    content:"";
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    border-color: $select-color transparent transparent transparent;
+    position: absolute;
+    top: 16px;
+    right: 10px;
+  }
+  &:hover {
+    background-color: darken($select-background, 2);
+  }
+  &:active, &.active {
+    background-color: darken($select-background, 5);
+    &:after {
+      top: 9px;
+      border-color: transparent transparent $select-color transparent;
+    }
+  }
+}
+
+.wrapper {
+  padding-top: 85px;
+  border-top: 1px solid #dbdbdb;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+table {
+  text-align: center;
+}
+
+th {
+  border: none;
+  text-align: start;
+}
+td {
+  border: 1px solid #dee2e6;
+  border-top: none;
+  border-bottom: none;
+}
+
+@media screen and (min-width: 1250px) {
+  .wrapper {
+    width: 1200px;
+  }
+}

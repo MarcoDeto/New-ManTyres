@@ -1,0 +1,199 @@
+<div class="pricing-container">
+  <div class="wrapper" style="border: none;">
+    <div class="pricing-title">
+      <h2>{{"PRICING_PLANS" | translate}}</h2>
+      <p>{{"PRICING_SUBTITTLE" | translate}}</p>
+    </div>
+    <div class="price-list">
+      <div class="pricing-body">
+        <div class="card-price">
+          <h3>{{ "FREE" | translate}}</h3>
+          <p>{{ "FREE_SUB" | translate}}</p>
+          <div class="container-price">
+            <div class="price">0€</div>
+            <p>/{{ "MONTH" | translate }} </p>
+          </div>
+          <button class="signup-btn free" (click)="signup()">{{ "SIGNUP" | translate }}</button>
+          <div class="detail-wrapper">
+            <div>
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "FREE3" | translate }} </p>
+              </div>
+            </div>
+            <div>
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "FREE1" | translate }} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pricing-body">
+        <div class="card-price" style="margin-right: 40px;">
+          <h3 style="color: rgb(66, 160, 189);">{{ "LITE" | translate}}</h3>
+          <p>{{ "LITE_SUB" | translate}}</p>
+          <div class="container-price">
+            <div class="price">{{getLiteValue().toFixed(0)}}{{getSymbol()}}</div>
+            <p>/{{ "MONTH" | translate }} </p>
+          </div>
+          <button class="signup-btn lite" (click)="signup()">{{ "SIGNUP" | translate }}</button>
+          <div class="detail-wrapper">
+            <div>
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "LITE1" | translate }} </p>
+              </div>
+            </div>
+            <div>
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "LITE2" | translate }} </p>
+              </div>
+            </div>
+            <div>
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "LITE3" | translate }} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pricing-body">
+        <div class="popular">{{ "POPULAR" | translate }}</div>
+        <div class="card-price" style="margin: 0;">
+          <h3 style="color: #FFD201">{{ "PREMIUM" | translate}}</h3>
+          <p>{{ "PREMIUM_SUB" | translate}}</p>
+          <div class="container-price">
+            <div class="price">{{getPremiumValue().toFixed(0)}}{{getSymbol()}}</div>
+            <p>/{{ "MONTH" | translate }} </p>
+          </div>
+          <button class="signup-btn premium" (click)="signup()">{{ "SIGNUP" | translate }}</button>
+          <div class="detail-wrapper">
+            <div>
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "PREMIUM1" | translate }} </p>
+              </div>
+            </div>
+            <div>
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "PREMIUM2" | translate }} </p>
+              </div>
+            </div>
+            <div>
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "PREMIUM3" | translate }} </p>
+              </div>
+            </div>
+            <div>
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "PREMIUM4" | translate }} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pricing-body">
+        <div class="card-price" style="margin-left: 40px;">
+          <h3 style="color: black;">{{ "CUSTOMIZATION" | translate}}</h3>
+          <p>{{ "CUSTOMIZATION_SUB" | translate}}</p>
+          <div class="container-price">
+            <p>{{ "CUSTOMIZATION_PRICE" | translate }} </p>
+          </div>
+          <button class="signup-btn custom" (click)="signup()">{{ "GET_QUOTE" | translate }}</button>
+          <div class="detail-wrapper">
+            <div class="detail-wrapper">
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "FREE3" | translate }} </p>
+              </div>
+            </div>
+            <div class="detail-wrapper">
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "FREE2" | translate }} </p>
+              </div>
+            </div>
+            <div class="detail-wrapper">
+              <div class="detail">
+                <i class="fas fa-check"></i>
+                <p>{{ "FREE1" | translate }} </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="currency-wrapper">
+      <p>{{"DISPLAY_PRICE" | translate}}</p>
+      <select name="currencies" id="currencies" [(ngModel)]="currencySelect">
+        <option [value]="currencies.EUR">{{currencies.EUR | translate}}</option>
+        <option [value]="currencies.USD">{{currencies.USD | translate}}</option>
+        <option [value]="currencies.ARS">{{currencies.ARS | translate}}</option>
+        <option [value]="currencies.MXN">{{currencies.MXN | translate}}</option>
+        <option [value]="currencies.GBP">{{currencies.GBP | translate}}</option>
+        <option [value]="currencies.BRL">{{currencies.BRL | translate}}</option>
+        <option [value]="currencies.INR">{{currencies.INR | translate}}</option>
+        <option [value]="currencies.CAD">{{currencies.CAD | translate}}</option>
+        <option [value]="currencies.RUB">{{currencies.RUB | translate}}</option>
+        <option [value]="currencies.SGD">{{currencies.SGD | translate}}</option>
+        <option [value]="currencies.RON">{{currencies.RON | translate}}</option>
+        <option [value]="currencies.JPY">{{currencies.JPY | translate}}</option>
+        <option [value]="currencies.MYR">{{currencies.MYR | translate}}</option>
+        <option [value]="currencies.CLP">{{currencies.CLP | translate}}</option>
+        <option [value]="currencies.PEN">{{currencies.PEN | translate}}</option>
+        <option [value]="currencies.MAD">{{currencies.MAD | translate}}</option>
+        <option [value]="currencies.AUD">{{currencies.AUD | translate}}</option>
+        <option [value]="currencies.CHF">{{currencies.CHF | translate}}</option>
+      </select>
+      <p>{{"PRE_TAX" | translate}}</p>
+    </div>
+
+  </div>
+
+  <div class="wrapper">
+    <div class="container-text">
+      <h2>{{ "AllFeatures" | translate }}</h2>
+    </div>
+    <table class="table">
+      <tbody>
+        <tr>
+          <th scope="col">{{"TireManagement" | translate}}</th>
+          <th scope="col-2" style="text-align: center;">{{ "FREE" | translate}}</th>
+          <th scope="col-2" style="text-align: center;">{{ "LITE" | translate}}</th>
+          <th scope="col-2" style="text-align: center;">{{ "PREMIUM" | translate}}</th>
+          <th scope="col-2" style="text-align: center;">{{ "CUSTOMIZATION" | translate}}</th>
+        </tr>
+        <tr>
+          <th scope="row">1</th>
+          <td><i class="fas fa-check"></i></td>
+          <td><i class="fas fa-check"></i></td>
+          <td><i class="fas fa-check"></i></td>
+          <td style="border: none;"><i class="fas fa-check"></i></td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td><i class="fas fa-check"></i></td>
+          <td><i class="fas fa-check"></i></td>
+          <td><i class="fas fa-check"></i></td>
+          <td style="border: none;"><i class="fas fa-check"></i></td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td><i class="fas fa-check"></i></td>
+          <td><i class="fas fa-check"></i></td>
+          <td><i class="fas fa-check"></i></td>
+          <td style="border: none;"><i class="fas fa-check"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

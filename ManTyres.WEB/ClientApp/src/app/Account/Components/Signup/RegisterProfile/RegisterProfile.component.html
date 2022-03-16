@@ -1,0 +1,47 @@
+<div class="register-container">
+  <div class="register-page-content">
+    <div class="register-page-header">
+      <img src="../../../../../assets/Images/logo_darkblue.svg" height="30" class="align-top logo" alt="">
+    </div>
+    <div class="register-page-form">
+      <div class="onboarding-step">
+        <div class="mb-30">
+          <h1 style="color: black;">{{"REGISTER_PROFILE_TITLE" | translate}}</h1>
+          <p>{{ "REGISTER_PROFILE_SUBTITLE" | translate }}</p>
+        </div>
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="row">
+          <div class="input-container col-md-6">
+            <label>{{ "FIRSTNAME_PLACEHOLDER" | translate }}</label>
+            <input class="form-control" maxlength="256" formControlName="firstName" required>
+            <div *ngIf="getProfileControl.firstName.touched && getProfileControl.firstName.invalid"
+              style="padding: 5px 0; font-size: 14px;">
+              <mat-error>{{ "FIRSTNAME_PLACEHOLDER" | translate }} {{"ISREQUIRED" | translate}}</mat-error>
+            </div>
+          </div>
+          <div class="input-container col-md-6">
+            <label>{{ "LASTNAME_PLACEHOLDER" | translate }}</label>
+            <input class="form-control" maxlength="256" formControlName="lastName" required>
+            <div *ngIf="getProfileControl.lastName.touched && getProfileControl.lastName.invalid"
+              style="padding: 5px 0; font-size: 14px;">
+              <mat-error>{{ "LASTNAME_PLACEHOLDER" | translate}} {{"ISREQUIRED" | translate}}</mat-error>
+            </div>
+          </div>
+          <div class="input-container col-md-6">
+            <label>{{ "PHONENUMBER_PLACEHOLDER" | translate }}</label>
+            <input class="form-control" maxlength="256" formControlName="phone" required>
+            <div *ngIf="getProfileControl.phone.touched && getProfileControl.phone.invalid"
+              style="padding: 5px 0; font-size: 14px;">
+              <mat-error>{{ "PHONENUMBER_PLACEHOLDER" | translate}} {{"ISREQUIRED" | translate}}</mat-error>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <button type="submit" class="btn signup-btn" [disabled]="profileForm.invalid">
+              <mat-progress-spinner *ngIf="caricamento" [diameter]="20" mode="indeterminate" style="margin: auto;"></mat-progress-spinner>
+              <span *ngIf="!caricamento">{{ "NEXT" | translate }}</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

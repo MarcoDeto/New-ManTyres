@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" data-name="Livello 1" width="30" height="30" style="">
+   <rect id="backgroundrect" width="100%" height="100%" x="0" y="0" fill="none" stroke="none" class="" style="" />
+   <defs>
+      <style>
+         .cls-1 {
+            font-size: 25px;
+            font-family: Anton-Regular, Anton;
+         }
+
+         .cls-1,
+         .cls-3 {
+            fill: #212529;
+         }
+
+         .cls-2 {
+            font-size: 2px;
+         }
+      </style>
+   </defs>
+   <g class="currentLayer" style="">
+      <title>Layer 1</title><text y="-0.08" id="svg_1" class="" />
+      <path class="cls-3"
+         d="M16.5,1.788139358804841e-9 V2.5200000017881394 a12.49,12.49 0 0 1 0,24.8 v2.52 A15,15 0 0 0 16.5,1.788139358804841e-9 z"
+         id="svg_11" />
+      <path class="cls-3"
+         d="M2.5,14.92000000178814 a12.5,12.5 0 0 1 11,-12.4 V1.788139358804841e-9 a15,15 0 0 0 0,29.84 V27.320000001788138 A12.5,12.5 0 0 1 2.5,14.92000000178814 z"
+         id="svg_12" />
+      <path class="cls-3" d="M24.88,16.42000000178814 H22.35 a7.5,7.5 0 0 1 -14.7,0 H5.12 a10,10 0 0 0 19.76,0 z"
+         id="svg_13" />
+      <path class="cls-3"
+         d="M15,7.420000001788139 a7.51,7.51 0 0 1 7.35,6 h2.5300000000000002 a10,10 0 0 0 -19.76,0 H7.65 A7.51,7.51 0 0 1 15,7.420000001788139 z"
+         id="svg_14" />
+      <path class="cls-3"
+         d="M15,9.92000000178814 a5,5 0 1 0 5,5 A5,5 0 0 0 15,9.92000000178814 zm0,7.5 A2.5,2.5 0 1 1 17.5,14.92000000178814 A2.5,2.5 0 0 1 15,17.42000000178814 z"
+         id="svg_15" />
+   </g>
+</svg>

@@ -1,0 +1,18 @@
+:root{
+	--base-background-color: linear-gradient(90deg, rgb(32 32 32) 0%, rgba(0, 0, 0, 1) 100%);
+	--card-background: linear-gradient(90deg, rgba(53, 61, 64, 1) 0%, rgb(38, 46, 44) 80%);
+	--green-gradient: linear-gradient(90deg, rgba(7, 240, 99, 1) 0%, rgba(0, 131, 47, 1) 80%);
+	--dark-green-gradient: linear-gradient(270deg, rgba(4, 156, 64, 1) 0%, rgba(0, 93, 34, 1) 100%);
+	--red-gradient: linear-gradient(90deg, rgba(113, 4, 0, 1) 0%, rgba(255, 35, 35, 1) 100%);
+	--dark-red-gradient: linear-gradient(90deg, rgba(75, 3, 0, 1) 0%, rgba(194, 28, 28, 1) 100%);
+	--dark-blue-gradient: linear-gradient(90deg, rgba(0, 51, 75, 1) 0%, rgba(0, 157, 102, 1) 100%);
+	--yellow-gradient: linear-gradient(90deg, rgba(224, 150, 0, 1) 0%, rgb(255, 181, 34) 100%);
+	--dark-yellow-gradient: linear-gradient(90deg, rgb(192, 128, 0) 0%, rgb(238, 159, 0) 100%);
+	--claims-gradient: linear-gradient(90deg, #08a884 0%, #00d49a 100%);
+	--blue-gradient: linear-gradient(90deg, rgb(14, 90, 122) 0%, rgb(129, 209, 202) 100%);
+	--gray: gray;
+	--green: #10d862;
+	--modal-fade-transform: scale(0.8);
+	--font-family: "Roboto", sans-serif;
+	--Rubik: "Rubik";
+}

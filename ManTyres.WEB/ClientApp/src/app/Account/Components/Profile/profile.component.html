@@ -1,0 +1,108 @@
+<div *ngIf="caricamento">
+  <h1 class="loader">CARICAMENTO</h1>
+  <mat-progress-spinner *ngIf="caricamento" [diameter]="150" mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<div *ngIf="!caricamento">
+  <div>
+    <header>
+      <h1>Informazioni personali</h1>
+      <p>Informazioni di base e informazioni di contatto (Nome, email, ecc)</p>
+    </header>
+    <form novalidate [formGroup]="userForm" (ngSubmit)="OnSubmit()">
+
+      <div class="info-base row">
+        <div class="box col-12">
+          <div>
+            <h5>Informazioni di base</h5>
+          </div>
+          <div class="row" [ngClass]="getWidth() > 415 ? 'margin-foto' : ''">
+            <div class="col-12 col-md-6 row mobile-padding">
+              <h3 class="titolo col-4">FOTO</h3>
+
+              <div *ngIf="!getUserControl.imgProfile.value" class="upload-btn-wrapper col-6">
+                <button type="button" class="input-file"></button>
+                <input type='file' class="input-file btn" (change)="onSelectFile($event)">
+              </div>
+              <span *ngIf="getUserControl.imgProfile.value" class="col-8 col-md-6">
+                <img [src]="imagePath" height="100" (click)="imageClicked=true" matTooltip="Visualizza immagine">
+                <i class="fas fa-times-square" (click)="removeImage()" matTooltip="Rimuovi immagine" matTooltipPosition="right"></i>
+              </span>
+            </div>
+            <div class="col-12 col-md-6 row">
+              <h3 class="titolo col-12 col-md-4 mobile-padding">USERNAME*</h3>
+              <mat-form-field appearance="outline" class="col-12 col-md-8">
+                <input matInput type="text" name="username" maxlength="256" formControlName="username" placeholder="Username" required>
+                <mat-error *ngIf="userForm.controls['username'].hasError('required')">Username è <strong>obbligatorio</strong>.</mat-error>
+                <mat-error *ngIf="userForm.controls['username'].hasError('pattern')">Username deve contenere lettere non accentate e può contenere numeri o questi caratteri: . - _</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-6 row">
+              <h3 class="titolo col-12 col-md-4">NOME*</h3>
+              <mat-form-field appearance="outline" class="col-12 col-md-8">
+                <input matInput type="text" name="given-name" maxlength="50" formControlName="firstname" placeholder="Nome" value="{{userForm.get('firstname.value | titlecase}}" required>
+                <mat-error *ngIf="userForm.controls['firstname'].hasError('required')">Nome è <strong>obbligatorio</strong>.</mat-error>
+                <mat-error *ngIf="userForm.controls['firstname'].hasError('maxlength')">Massimo <strong>50</strong> caratteri.</mat-error>
+                <mat-error *ngIf="userForm.controls['firstname'].hasError('pattern')">Nome non può contenere numeri o caratteri speciali.</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 row">
+              <h3 class="titolo col-12 col-md-4">COGNOME*</h3>
+              <mat-form-field appearance="outline" class="col-12 col-md-8">
+                <input matInput type="text" name="family-name" maxlength="50" formControlName="lastname" placeholder="Cognome" value="{{userForm.get('lastname.value | titlecase}}" required>
+                <mat-error *ngIf="userForm.controls['lastname'].hasError('required')">Cognome è <strong>obbligatorio</strong>.</mat-error>
+                <mat-error *ngIf="userForm.controls['lastname'].hasError('maxlength')">Massimo <strong>50</strong> caratteri.</mat-error>
+                <mat-error *ngIf="userForm.controls['lastname'].hasError('pattern')">Cognome non può contenere numeri o caratteri speciali.</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="box col-12">
+          <div>
+            <h5>Password</h5>
+          </div>
+          <div class="row mobile-padding">
+            <button mat-raised-button color="warn" class="submit col-10 col-md-2" type="button" [routerLink]="['/account/password']"style="margin-bottom: auto;">Cambia password</button>
+            <div class="col-1"></div>
+          </div>
+        </div>
+        <div class="box col-12">
+          <div>
+            <h5>Informazioni di contatto</h5>
+          </div>
+          <div class="row" style="">
+            <div class="col-12 col-md-6 row">
+              <h3 class="titolo col-12 col-md-2 mobile-padding">EMAIL*</h3>
+              <mat-form-field appearance="outline" class="col-12 col-md-10">
+                <input matInput type="email" name="email" formControlName="email" placeholder="unitest@example.com" required>
+                <mat-error *ngIf="userForm.controls['email'].hasError('required')">Email è <strong>obbligatoria</strong>.</mat-error>
+                <mat-error *ngIf="userForm.controls['email'].hasError('email')">Formato email non valido. Esempio: <strong>unitest@example.com</strong>.</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6 row">
+              <h3 class="titolo col-12 col-md-4">TELEFONO*</h3>
+              <mat-form-field appearance="outline" class="col-12 col-md-8">
+                <input matInput type="tel" name="tel" formControlName="phoneNumber" placeholder="+39 351 000 1111" maxlength="20" required>
+                <mat-error *ngIf="userForm.controls['phoneNumber'].hasError('required')">Telefono è <strong>obbligatorio</strong>.</mat-error>
+                <mat-error *ngIf="userForm.controls['phoneNumber'].hasError('maxlength')">Massimo <strong>15</strong> caratteri.</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <button mat-raised-button color="primary" class="submit" type="submit" [disabled]="userForm.invalid">Salva</button>
+        <p>
+          Le informazioni relative al tuo account vengono usate per permetterti di accedere al gestionale e ai tuoi dati.
+        </p>
+      </footer>
+    </form>
+  </div>
+</div>
+
+<app-image-viewer *ngIf="imageClicked"
+                  [src]="imagePath"
+                  (closeViewerEmitter)="imageClicked=false">
+</app-image-viewer>

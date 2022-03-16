@@ -1,0 +1,27 @@
+{
+    "folders": [
+        {
+            "path": "ManTyres.BLL"
+        },
+        {
+            "path": "ManTyres.COMMON"
+        },
+        {
+            "path": "ManTyres.DAL"
+        },
+        {
+            "path": "ManTyres.WEB"
+        },
+        {
+            "path": "ManTyres.WEB/ClientApp"
+        }
+    ],
+    "settings": {
+        "i18n-ally.localesPaths": [
+            "src/assets/i18n"
+        ],
+        "i18n-ally.keystyle": "nested",
+        "i18n-ally.sourceLanguage": "en",
+        "git.ignoreLimitWarning": true
+    }
+}

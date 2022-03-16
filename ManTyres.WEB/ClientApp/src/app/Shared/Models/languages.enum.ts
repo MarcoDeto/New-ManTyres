@@ -1,0 +1,20 @@
+export enum LanguageNames {
+   cn = "繁體中文",
+   dk = "Danish",
+   de = "Deutsch",
+   en = "English",
+   es = "Español",
+   fr = "Français",  
+   hu = "Magyar",
+   in = "हिन्दी",
+   it = "Italiano",
+   jp = "日本",
+   no = "Norsk",
+   pl = "Polski",
+   pt = "Português",
+   ro = "Română",
+   ru = "Русский",
+   se = "Svenska",   
+   tr = "Türkçe",
+   vn = "Tiếng Việt"
+}
