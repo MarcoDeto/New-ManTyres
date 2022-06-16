@@ -17,6 +17,7 @@ import { USE_DEVICE_LANGUAGE } from '@angular/fire/compat/auth';
 import { LANGUAGE_CODE } from '@angular/fire/compat/auth';
 import { PERSISTENCE } from '@angular/fire/compat/auth';
 import { MaterialModule } from './Shared/material.module';
+import { PricingComponent } from './Shared/Components/pricing/pricing.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { MaterialModule } from './Shared/material.module';
     AccountModule,
     RouterModule.forRoot([
       { path: 'home', component: HomeComponent },
+      { path: 'price', component: PricingComponent },
       //{ path: 'account', loadChildren: () => import('./Account/Account.module').then(mod => mod.AccountModule)},
     ]),
     BrowserAnimationsModule,

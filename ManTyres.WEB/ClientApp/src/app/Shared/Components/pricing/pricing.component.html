@@ -10,7 +10,7 @@
           <h3>{{ "FREE" | translate}}</h3>
           <p>{{ "FREE_SUB" | translate}}</p>
           <div class="container-price">
-            <div class="price">0€</div>
+            <div class="price">0{{getSymbol()}}</div>
             <p>/{{ "MONTH" | translate }} </p>
           </div>
           <button class="signup-btn free" (click)="signup()">{{ "SIGNUP" | translate }}</button>
