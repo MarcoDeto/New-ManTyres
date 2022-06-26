@@ -1,4 +1,5 @@
-﻿using ManTyres.DAL.Infrastructure.MongoDB.Interfaces;
+﻿using ManTyres.COMMON.DTO;
+using ManTyres.DAL.Infrastructure.MongoDB.Interfaces;
 using ManTyres.DAL.MongoDB.Models;
 
 namespace ManTyres.DAL.MongoDB.Interfaces
@@ -7,5 +8,7 @@ namespace ManTyres.DAL.MongoDB.Interfaces
    {
       Task<User> GetByEmail(string email);
 		Task<bool> IsAlreadyExists(string email);
+      Task<bool> CheckPassword(LoginDTO request);
+      
    }
 }

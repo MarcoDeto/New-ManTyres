@@ -57,12 +57,14 @@ mat-progress-spinner {
 }
 
 .card {
+  max-width: 450px;
   background-color: transparent;
   border: none;
   padding: 2.5rem;
   padding-bottom: 1rem;
   background: #fff;
   border-radius: 5px;
+  text-align: start;
   > h1 {
     color: #0b1426;
     font-family: auto;
@@ -70,6 +72,11 @@ mat-progress-spinner {
     line-height: 2rem;
     margin: 0;
     font-weight: 600;
+  }
+  > p {
+    color: #0b1426 !important;
+    opacity: 0.7;
+    margin-top: 10px;
   }
 }
 
@@ -130,22 +137,6 @@ mat-progress-spinner {
 
 mat-error {
   font-size: 13px;
-}
-
-.login-btn {
-  width: 100%;
-  padding: 8px 2rem;
-  background-color: #0b1426 !important;
-  color: #fff;
-  font-weight: 500;
-  margin-bottom: 2rem;
-  margin-top: 1rem;
-}
-
-.login-btn:hover {
-  background-color: #fff !important;
-  color: #0b1426;
-  border: 1px solid #0b1426;
 }
 
 .recuperoPassword {
@@ -252,22 +243,72 @@ label {
   }
 }
 
-.google-signup-btn {
+.login-btn {
   width: 100%;
-  padding: 5px 2rem;
-  background-color: #fff !important;
-  color: #0b1426;
-  border: 2px solid #0b1426;
+  padding: 8px 2rem;
+  background-color: #0b1426 !important;
+  color: #fff;
   font-weight: 500;
   margin-bottom: 2rem;
   margin-top: 1rem;
-  height: 56px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
-.google-signup-btn:enabled:hover {
+.login-btn:hover {
   background-color: #fff !important;
   color: #0b1426;
-  border: 2px solid #0b1426;
+  border: 1px solid #0b1426;
+}
+
+.google-signup-btn {
+  width: 100%;
+  padding: 5px 1rem;
+  background-color: #fff;
+  color: #0b1426;
+  border: none;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  margin-top: 0rem;
+  height: 56px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.facebook-signup-btn {
+  width: 100%;
+  padding: 5px 1rem;
+  color: #0b1426;
+  background-color: #fff;
+  border: none;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+  height: 56px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.mantyres-signup-btn {
+  width: 100%;
+  padding: 5px 1rem;
+  color: #0b1426 !important;
+  background-color: #fff;
+  border: none;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  margin-top: 0rem;
+  height: 56px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.facebook-signup-btn:hover {
+  color: #fff !important;
+  background-color: #1877f2 !important;
+}
+
+.mantyres-signup-btn:hover {
+  color: #fff !important;
+  background-color: #0b1426 !important;;
+}
+
+.google-signup-btn:hover {
+  color: #fff !important;
+  background-color: #202124 !important;;
 }

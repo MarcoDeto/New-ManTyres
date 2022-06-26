@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { UserService } from 'src/app/Account/Services/user.service';
 
 @Component({
   selector: 'app-register-profile',
@@ -21,10 +22,20 @@ export class RegisterProfileComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     public translate: TranslateService,
+    private userService: UserService,
     private router: Router,
   ) { }
 
   ngOnInit() {
+    this.userService.user.subscribe(
+      user => {
+        this.profileForm = this.formBuilder.group({
+          firstName: [user?.firstName, Validators.required],
+          lastName: [user?.lastName, Validators.required],
+          phone: [user?.phoneNumber, Validators.required],
+        });
+      }
+    );
   }
 
   onSubmit() {

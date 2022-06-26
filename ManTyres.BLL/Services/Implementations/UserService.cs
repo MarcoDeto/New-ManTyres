@@ -58,11 +58,24 @@ namespace ManTyres.BLL.Services.Implementations
       public async Task<Response<UserDTO?>> FindByEmail(string email)
       {
          if (await _userRepository.IsAlreadyExists(email) == false)
-            return new Response<UserDTO?>(null, 0, HttpStatusCode.NotFound, "ERROR_NOTFOUND");
+            return new Response<UserDTO?>(null, 0, HttpStatusCode.NotFound, "ERROR_USERNOTFOUND");
 			
 			var user = await _userRepository.GetByEmail(email);
 			return new Response<UserDTO?>(_mapper.Map<UserDTO>(user), 1, HttpStatusCode.OK, "SUCCESS_GET");
       }
+
+      public async Task<Response<UserDTO?>> CheckLogin(LoginDTO request)
+      {
+         if (await _userRepository.IsAlreadyExists(request.Email) == false)
+            return new Response<UserDTO?>(null, 0, HttpStatusCode.NotFound, "ERROR_USERNOTFOUND");
+			
+         if (await _userRepository.CheckPassword(request) == false)
+            return new Response<UserDTO?>(null, 0, HttpStatusCode.Unauthorized, "ERROR_PASSWORD");
+
+         var user = await _userRepository.GetByEmail(request.Email);
+			return new Response<UserDTO?>(_mapper.Map<UserDTO>(user), 1, HttpStatusCode.OK, "SUCCESS");
+      }
+
       #endregion
 
 

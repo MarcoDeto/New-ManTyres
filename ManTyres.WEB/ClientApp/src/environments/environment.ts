@@ -11,7 +11,7 @@ export const environment = {
   },
   production: false,
   GA_ID: "766684296899-05uqa430lpvjrvi05s7ssm7hl2bpvduq.apps.googleusercontent.com",
-  FB_ID: "9a23efb6e3c918ee09b92d3fe18eb7b3",
+  FB_ID: "756292482221892",
   BASE_URL: 'https://localhost:7250/api/',
 
   Error:           'https://localhost:7250/api/Error',

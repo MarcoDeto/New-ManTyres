@@ -45,6 +45,8 @@ export class HeaderComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.userService.logout();
+        sessionStorage.clear();
+        localStorage.clear();
         this.router.navigate(['account/login']);
       }
     });

@@ -19,18 +19,20 @@ import { UserRole } from 'src/app/Shared/Models/enums';
 export class SignupComponent implements OnInit, OnDestroy {
   title = 'Sign up';
   subscribers: Subscription[] = [];
+
   loginData: LoginModel = { email: '', password: '' };
   signupForm: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32)]],
   });
+  get getSignupControl() { return this.signupForm.controls; }
+
   hide = true;
-  returnUrl: string = '';
   caricamento = false;
   emailSend = false;
-  get getSignupControl() { return this.signupForm.controls; }
-  user: any;
-  loggedIn: any;
+  logohover: boolean = false;
+  emailaddress: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -41,52 +43,96 @@ export class SignupComponent implements OnInit, OnDestroy {
     private authService: SocialAuthService,
   ) { }
 
-  ngOnInit() {
-    this.refreshToken();
-  }
+  ngOnInit() {  }
 
-  signInWithGoogle(): void {
-    debugger;
+  openGooglePopup(): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    this.authService.authState.subscribe((user) => {
-      this.SignUpWithGoogle(user);
-      this.user = user;
-      this.loggedIn = (user != null);
-    }, err => this.SignUpWithGoogle(err));
+    this.socialLogin();
   }
 
-  SignUpWithGoogle(user: any) {
-    if (user.provider == "GOOGLE" && user.idToken && user.authToken) {
-      // userid del provider sarà salvata come password
-      let toAdd: User = {
-        city: null,
-        companyName: null,
-        concurrencyStamp: null,
-        country: null,
-        cultureInfo: null,
-        email: user.email,
-        emailConfirmed: true,
-        firstName: user.firstName,
-        id: null,
-        isDeleted: false,
-        lastName: user.lastName,
-        passwordHash: user.id,
-        phoneNumber: null,
-        phoneNumberConfirmed: false,
-        photoUrl: user.photoUrl,
-        provider: user.provider,
-        securityStamp: null,
-        street: null,
-        twoFactorEnabled: false,
-        userName: user.name,
-        userRole: UserRole.Administrator,
-        website: null,
-        zipcode: null,
+  openFacebookPopup(): void {
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+    this.socialLogin();
+  }
+
+  socialLogin() {
+    this.subscribers.push(this.authService.authState.subscribe({
+      next: (user: any) => {
+        this.login(user, true);
+      },
+      error: (error: any) => {
+        this.login(error, true);
       }
-      this.userService.createAccount(toAdd).subscribe(res => {
-        this.toastr.success(this.translate.instant('SUCCESS_Welcome') + ' ' + toAdd.firstName);
-      }, err => {
-        if (err.error.code == 409) {
+    }));
+  }
+
+  login(user: any, fromSocial: boolean) {
+    var login: LoginModel = {
+      password: user.id,
+      email: user.email
+    }
+    this.userService.login(login).subscribe({
+      next: (res: any) => {
+        this.userService.setSession(res);
+        this.toastr.success(this.translate.instant('SUCCESS_WELCOME'));
+        this.router.navigate(['home']);
+      },
+      error: (err: any) => {
+        if (fromSocial == false) {
+          this.toastr.error(this.translate.instant(err.message));
+        } else if (err.error && err.error.code == 404) {
+          this.SignUpWithSocial(user);
+        }
+      }
+    });
+  }
+
+  SignUpWithSocial(user: any) {
+    const toAdd: User = {
+      city: null,
+      companyName: null,
+      concurrencyStamp: null,
+      country: null,
+      cultureInfo: null,
+      email: user.email,
+      emailConfirmed: true,
+      firstName: user.firstName,
+      id: null,
+      isDeleted: false,
+      lastName: user.lastName,
+      passwordHash: user.id,
+      phoneNumber: null,
+      phoneNumberConfirmed: false,
+      photoUrl: user.photoUrl,
+      provider: user.provider,
+      securityStamp: null,
+      street: null,
+      twoFactorEnabled: false,
+      userName: user.name,
+      userRole: UserRole.Administrator,
+      website: null,
+      zipcode: null,
+      socialUserId: null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+    this.subscribers.push(this.userService.createAccount(toAdd).subscribe({
+      next: (boolRes: any) => {
+        this.toastr.success(this.translate.instant('SUCCESS_WELCOME') + ' ' + toAdd.firstName);
+        var login: LoginModel = {
+          password: user.id,
+          email: user.email
+        }
+        this.userService.login(login).subscribe(
+          (res: any) => {
+            this.userService.setSession(res);
+            this.userService.setUser(toAdd);
+            this.router.navigate(['account/register/profile']);
+          }
+        );
+      },
+      error: (error: any) => {
+        if (error.error.code == 409) {
           var login: LoginModel = {
             password: user.id,
             email: user.email
@@ -98,34 +144,59 @@ export class SignupComponent implements OnInit, OnDestroy {
             }
           );
         } else {
-          this.toastr.error(this.translate.instant(err.message));
+          this.toastr.error(error);
         }
-      });
-    }
-  }
-
-  signInWithFB(): void {
-    //this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
-  }
-
-  signOut(): void {
-    this.authService.signOut();
-  }
-
-  refreshToken(): void {
-    this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
-    this.authService.authState.subscribe((user) => {
-      this.user = user;
-      this.loggedIn = (user != null);
-    });
+      }
+    }));
   }
 
   onSubmit() {
-    this.userService.createAccount(this.signupForm.value).subscribe(
-      res => {
+    this.signupForm.markAllAsTouched();
+    if (this.signupForm.invalid) { return; }
+
+    this.caricamento = true;
+
+    const toAdd: User = {
+      city: null,
+      companyName: null,
+      concurrencyStamp: null,
+      country: null,
+      cultureInfo: null,
+      email: this.signupForm.value.email,
+      emailConfirmed: true,
+      firstName: null,
+      id: null,
+      isDeleted: false,
+      lastName: null,
+      passwordHash: this.signupForm.value.password,
+      phoneNumber: null,
+      phoneNumberConfirmed: false,
+      photoUrl: null,
+      provider: null,
+      securityStamp: null,
+      socialUserId: null,
+      street: null,
+      twoFactorEnabled: false,
+      userName: this.signupForm.value.email,
+      userRole: UserRole.Administrator,
+      website: null,
+      zipcode: null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+    this.userService.createAccount(toAdd).subscribe({
+      next: (res: any) => { 
         this.router.navigate(['register/profile']);
+      },
+      error: (error:any) => { 
+        this.toastr.error(this.translate.instant(error.error.message));
+
+        if (error.status == 500) {
+          this.router.navigate(['/errore']);
+        }
+        this.caricamento = false;
       }
-    );
+    });
   }
 
   ngOnDestroy(): void {
@@ -134,5 +205,5 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.subscribers = [];
   }
 
-  sendEmail() { }
+  sendEmail() {}
 }

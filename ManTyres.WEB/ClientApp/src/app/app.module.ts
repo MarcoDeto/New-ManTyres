@@ -32,6 +32,7 @@ import { PricingComponent } from './Shared/Components/pricing/pricing.component'
     RouterModule.forRoot([
       { path: 'home', component: HomeComponent },
       { path: 'price', component: PricingComponent },
+      { path: 'account', loadChildren: () => import('./Account/Account.module').then(mod => mod.AccountModule)},
       //{ path: 'account', loadChildren: () => import('./Account/Account.module').then(mod => mod.AccountModule)},
     ]),
     BrowserAnimationsModule,

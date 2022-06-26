@@ -35,7 +35,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var userResult = await _userService.FindByEmail(model.Email);
+            var userResult = await _userService.CheckLogin(model);
             if (userResult.Code != HttpStatusCode.OK || userResult.Content == null)
                return BadRequest(userResult);
             else if (userResult.Content != null && userResult.Content.IsDeleted)

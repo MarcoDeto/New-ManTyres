@@ -73,7 +73,7 @@ else
    app.UseHsts();
 
 app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TeqLinkPortal v1"));
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ManTyres v1"));
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

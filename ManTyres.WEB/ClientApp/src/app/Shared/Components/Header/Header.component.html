@@ -1,11 +1,10 @@
 <div class="custom-navbar" *ngIf="hideHeader == false">
-  <h1 *ngIf="getWidth() != 375" class="logo" [routerLink]="['/home']" matTooltip="Vai alla Home"
-    matTooltipShowDelay="1000">MAN</h1>
-  <a [routerLink]="['/home']" matTooltip="Vai alla Home" matTooltipShowDelay="1000">
-    <img src="../assets/Images/logo_new.svg" height="30" class="align-top logo" alt="">
-  </a>
-  <h1 *ngIf="getWidth() != 375" class="logo" [routerLink]="['/home']" matTooltip="Vai alla Home"
-    matTooltipShowDelay="1000">TYRES</h1>
+
+  <div [routerLink]="['/home']" matTooltip="Vai alla Home" matTooltipShowDelay="1000" style="display: flex; place-items: center;">
+    <h1 *ngIf="getWidth() != 375" class="logo">MAN</h1>
+    <a><img src="../assets/Images/logo_white.png" height="30" class="align-top logo"></a>
+    <h1 *ngIf="getWidth() != 375" class="logo">TYRES</h1>
+  </div>
 
   <div *ngIf="getWidth() != 375 && userService.isLoggedIn()" style="margin-right: auto !important;">
     <div style="padding-top: 5px;" class="menu">

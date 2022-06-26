@@ -1,3 +1,4 @@
+import { MongoDocument } from "./base.model";
 import { UserRole } from "./enums";
 
 export interface Users {
@@ -11,32 +12,29 @@ export interface Users {
   isDeleted: boolean,
 }
 
-export class User {
-  constructor(
-    public id: string | null,
-    public email: string | null,
-    public phoneNumber: string | null,
-    public concurrencyStamp: string | null,
-    public securityStamp: string | null,
-    public passwordHash: string | null,
-    public userName: string | null,
-    public firstName: string | null,
-    public lastName: string | null,
-    public photoUrl: string | null,
-    public companyName: string | null,
-    public street: string | null,
-    public zipcode: string | null,
-    public country: string | null,
-    public city: string | null,
-    public website: string | null,
-    public cultureInfo: string | null,
-    public provider: string | null,
-    public userRole: UserRole,
-    public twoFactorEnabled: boolean,
-    public phoneNumberConfirmed: boolean,
-    public emailConfirmed: boolean,
-    public isDeleted: boolean,
-  ) { }
+export interface User extends MongoDocument {
+  email: string | null,
+  phoneNumber: string | null,
+  concurrencyStamp: string | null,
+  securityStamp: string | null,
+  passwordHash: string | null,
+  userName: string | null,
+  firstName: string | null,
+  lastName: string | null,
+  photoUrl: string | null,
+  companyName: string | null,
+  street: string | null,
+  zipcode: string | null,
+  country: string | null,
+  city: string | null,
+  website: string | null,
+  cultureInfo: string | null,
+  provider: string | null,
+  socialUserId: string | null,
+  userRole: UserRole,
+  twoFactorEnabled: boolean,
+  phoneNumberConfirmed: boolean,
+  emailConfirmed: boolean,
 }
 
 export class Utenza {

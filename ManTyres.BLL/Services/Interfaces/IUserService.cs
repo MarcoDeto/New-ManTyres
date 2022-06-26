@@ -13,5 +13,6 @@ namespace ManTyres.BLL.Services.Interfaces
 	{
 		Task<Response<bool>> CreateAccount(UserDTO request);
 		Task<Response<UserDTO?>> FindByEmail(string email);
+		Task<Response<UserDTO?>> CheckLogin(LoginDTO request);
 	}
 }

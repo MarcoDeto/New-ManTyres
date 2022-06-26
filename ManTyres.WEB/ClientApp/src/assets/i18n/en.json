@@ -4,7 +4,7 @@
   "ADD_ROLE_PLACEHOLDER": "Add role",
   "CHANGE_PASSWORD?": "Change password?",
   "CLOSE": "Close",
-  "CREATE_ACCOUNT": "Continue",
+  "CREATE_ACCOUNT": "I Want to Create an Account",
   "CREATE_ROLE": "Create role",
   "CREATE_USER": "Create user",
   "CUSTOM": "Custom",
@@ -35,6 +35,8 @@
   "LITE3": "Email support",
   "LOGIN_USERNAME": "Username",
   "LOGIN": "Login",
+  "LOGIN_TITLE": "Log in or Sign up in seconds",
+  "LOGIN_TITLE2": "Log in",
   "LOGOUT": "Logout",
   "MONTH": "MONTH",
   "NOT_LOGGED": "Authentication required",
@@ -109,5 +111,14 @@
   "CHARACTERS": "characters",
   "MAXIMUN": " must have a maximum of ",
   "GOOGLE_SIGNUP": "Continue With Google",
-  "GOOGLE_LOGIN": "Login With Google"
+  "FACEBOOK_SIGNUP": "Continue With Facebook",
+  "GOOGLE_LOGIN": "Login With Google",
+  "FACEBOOK_LOGIN": "Login With Facebook",
+  "MANTYRES_LOGIN": "Login With Email",
+  "LOGIN_SUBTITLE": "Use your email or another service to continue with ManTyres (it's free)!",
+  "ERROR_PASSWORD": "Password does not match",
+  "ERROR_EMAILFORMAT": "Enter a valid email",
+  "ERROR_USERNOTFOUND": "User not found",
+  "SUCCESS_WELCOME": "Welcome ",
+  "ERROR_EmailAlreadyExist": "An account already exists with this email"
 }

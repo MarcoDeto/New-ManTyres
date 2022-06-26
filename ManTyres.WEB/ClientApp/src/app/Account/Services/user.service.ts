@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, Subscriber } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { UserPassword, UserName, User } from '../../Shared/Models/user.model';
 import { Response } from '../../Shared/Models/response.model';
-import { catchError } from 'rxjs/operators';
 import { LoginModel } from '../Models/login.model';
 import * as moment from 'moment';
 
@@ -13,6 +12,9 @@ import * as moment from 'moment';
   providedIn: 'root'
 })
 export class UserService {
+  private _user: BehaviorSubject<User|null> = new BehaviorSubject<User|null>(null);
+  public user: Observable<User|null> = this._user.asObservable();
+
   private _userId: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public userId: Observable<string> = this._userId.asObservable();
 
@@ -57,7 +59,7 @@ export class UserService {
     return false;
   }
 
-  login(data: LoginModel) {
+  login(data: LoginModel): Observable<LoginModel> {
     return this.http.post<LoginModel>(environment.login, data);
   }
 
@@ -88,11 +90,14 @@ export class UserService {
   setToken(data: any) {
     this.token.next(data);
     let payLoad = JSON.parse(window.atob(data.split('.')[1]));
-    debugger;
     this._userId.next(payLoad.UserID);
     this._userUsername.next(payLoad.unique_name);
     this._userRole.next(payLoad.role);
     this._expiration.next(data.expiration);
+  }
+
+  setUser(data: any) {
+    this._user.next(data);
   }
 
   setSession(data: any) {

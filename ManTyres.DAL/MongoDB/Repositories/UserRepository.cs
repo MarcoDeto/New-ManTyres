@@ -1,4 +1,5 @@
-﻿using ManTyres.COMMON.Utils;
+﻿using ManTyres.COMMON.DTO;
+using ManTyres.COMMON.Utils;
 using ManTyres.DAL.MongoDB.Interfaces;
 using ManTyres.DAL.MongoDB.Models;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +22,9 @@ namespace ManTyres.DAL.MongoDB.Repositories
       public async Task<User> GetByEmail(string email)
       {
          _logger.LogDebug(LoggerHelper.GetActualMethodName());
-         return await base.Collection.Find(_ => _.Email == email).SingleOrDefaultAsync();
+         User result = await base.Collection.Find(_ => _.Email == email).SingleOrDefaultAsync();
+         result.PasswordHash = null;
+         return result;
       }
 
       #region UTILITIES
@@ -29,6 +32,12 @@ namespace ManTyres.DAL.MongoDB.Repositories
       {
          _logger.LogDebug(LoggerHelper.GetActualMethodName());
          return await base.Collection.Find(_ => _.Email == email).AnyAsync();
+      }
+
+      public async Task<bool> CheckPassword(LoginDTO request)
+      {
+         _logger.LogDebug(LoggerHelper.GetActualMethodName());
+         return await base.Collection.Find(_ => _.Email == request.Email && _.PasswordHash == request.Password).AnyAsync();
       }
       #endregion
    }

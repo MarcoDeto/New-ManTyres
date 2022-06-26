@@ -24,7 +24,6 @@ export class SideNavComponent implements OnInit {
 
   ngOnInit(): void {
     var test = this.userService.userRole;
-    debugger;
     //this.userRole = this.userService.userRole;
     this.initNavBarManager();
   }

@@ -1,34 +1,77 @@
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <div class="container custom-bg">
   <div class="wrap-login">
     <div class="container-logo">
       <div class="wrap-logo">
         <h1 class="logo" [routerLink]="['/home']" matTooltip="Vai alla Home" matTooltipShowDelay="1000">MAN</h1>
         <a [routerLink]="['/home']" matTooltip="Vai alla Home" matTooltipShowDelay="1000">
-          <img src="../assets/Images/logo_new.svg" height="30" class="align-top logo" alt="">
+          <img src="../assets/Images/logo_white.png" height="30" class="align-top logo" alt="">
         </a>
         <h1 class="logo" [routerLink]="['/home']" matTooltip="Vai alla Home" matTooltipShowDelay="1000">TYRES</h1>
       </div>
     </div>
     <div class="card">
-      <h2>{{ "LOGIN" | translate }}</h2>
-      <div class="card-body">
+      <div style="display: flex;" *ngIf="emailaddress">
+        <div (click)="emailaddress = false">
+          <mat-icon style="color: #0b1426; cursor: pointer;" aria-hidden="false">arrow_back_ios_new</mat-icon>
+        </div>
+        <h2>{{ 'LOGIN_TITLE2' | translate }}</h2>
+      </div>
+      <h2 *ngIf="!emailaddress">{{ 'LOGIN_TITLE' | translate }}</h2>
+      <p>{{ 'LOGIN_SUBTITLE' | translate }}</p>
+
+      <ng-container *ngIf="!emailaddress">
+        <button type="button" (click)="openFacebookPopup()" class="btn facebook-signup-btn">
+          <mat-progress-spinner *ngIf="caricamento" [diameter]="20" mode="indeterminate" style="margin: auto;">
+          </mat-progress-spinner>
+          <div *ngIf="!caricamento" style="display: flex;">
+            <img height="32" src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" />
+            <div style="align-self: center; width: 100%;">
+              <span>{{ "FACEBOOK_LOGIN" | translate }}</span>
+            </div>
+          </div>
+        </button>
+  
+        <button type="button" (click)="openGooglePopup()" class="btn google-signup-btn">
+          <mat-progress-spinner *ngIf="caricamento" [diameter]="20" mode="indeterminate" style="margin: auto;">
+          </mat-progress-spinner>
+          <div *ngIf="!caricamento" style="display: flex;">
+            <img height="32" src="https://img.icons8.com/color/32/000000/google-logo.png" />
+            <div style="align-self: center; width: 100%;">
+              <span>{{ "GOOGLE_LOGIN" | translate }}</span>
+            </div>
+          </div>
+        </button>
+  
+        <button type="button" (click)="emailaddress = true;" class="btn mantyres-signup-btn" (mouseenter)="logohover = true;"  (mouseleave)="logohover = false;">
+          <mat-progress-spinner *ngIf="caricamento" [diameter]="20" mode="indeterminate" style="margin: auto;">
+          </mat-progress-spinner>
+          <div *ngIf="!caricamento" style="display: flex;">
+            <img *ngIf="!logohover" src="../assets/Images/logo_darkblue.png" height="32">
+            <img *ngIf="logohover" src="../assets/Images/logo_white.png" height="32">
+            <div style="align-self: center; width: 100%;">
+              <span>{{ "MANTYRES_LOGIN" | translate }}</span>
+            </div>
+          </div>
+        </button>
+        
+      </ng-container>
+      
+      <div class="card-body" *ngIf="emailaddress">
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
           <div class="input-container">
-            <label>{{ "EMAILADDRESS_PLACEHOLDER" | translate }}</label>
-            <input class="form-control" maxlength="256" formControlName="email" required>
-            <div *ngIf="getLoginControl.email.dirty && getLoginControl.email.errors?.required" style="padding: 10px">
-              <mat-error>{{ "EMAILADDRESS_PLACEHOLDER" | translate }} {{"ISREQUIRED" | translate}}</mat-error>
+            <label for="email">{{ "EMAILADDRESS_PLACEHOLDER" | translate }}</label>
+            <input name="email" id="email" type="email" class="form-control" maxlength="256" formControlName="email" required>
+            <div *ngIf="getLoginControl.email.touched && getLoginControl.email.invalid" class="error_wrapper">
+              <mat-error *ngIf="getLoginControl.email.errors?.required">{{"ISREQUIRED" | translate}}</mat-error>
+              <mat-error *ngIf="getLoginControl.email.errors?.email">{{"ERROR_EMAILFORMAT" | translate}}</mat-error>
             </div>
           </div>
           <div class="input-container">
-            <label>{{ "PASSWORD_PLACEHOLDER" | translate }}</label>
-            <input class="form-control" maxlength="256" formControlName="password" required>
-            <div *ngIf="getLoginControl.password.dirty && getLoginControl.password.errors?.required"
-              style="padding: 10px">
-              <mat-error>{{ "PASSWORD_PLACEHOLDER" | translate}} {{"ISREQUIRED" | translate}}</mat-error>
+            <label for="current-password">{{ "PASSWORD_PLACEHOLDER" | translate }}</label>
+            <input name="current-password" id="current-password" type="password" class="form-control" maxlength="256" formControlName="password" required>
+            <div *ngIf="getLoginControl.password.touched && getLoginControl.password.invalid" class="error_wrapper">
+              <mat-error *ngIf="getLoginControl.password.errors?.required">{{"ISREQUIRED" | translate}}</mat-error>
             </div>
           </div>
 
@@ -36,20 +79,10 @@
             <mat-progress-spinner *ngIf="caricamento" [diameter]="30" mode="indeterminate"></mat-progress-spinner>
             <span *ngIf="!caricamento">{{ "LOGIN" | translate }}</span>
           </button>
-
-          <button type="button" (click)="openGooglePopup()" class="btn google-signup-btn">
-            <mat-progress-spinner *ngIf="caricamento" [diameter]="20" mode="indeterminate" style="margin: auto;">
-            </mat-progress-spinner>
-            <img src="https://img.icons8.com/color/32/000000/google-logo.png" />
-            &nbsp;
-            <span *ngIf="!caricamento">{{ "GOOGLE_LOGIN" | translate }}</span>
-          </button>
-          <!-- <re-captcha (resolved)="resolved($event)" siteKey="6Lc4fMQeAAAAANcjwZJE3DvxoifE_JUqMyQpGrGu"></re-captcha> -->
         </form>
+
       </div>
       <div class="link-wrapper">
-        <a [routerLink]="['/account/register']">{{"CREATE_ACCOUNT" | translate}}</a>
-        <span>-</span>
         <a [routerLink]="['/account/password/reset/request']">{{"FORGOT_PASSWORD" | translate}}</a>
       </div>
     </div>

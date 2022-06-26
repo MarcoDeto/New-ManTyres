@@ -9,6 +9,8 @@ import { PasswordComponent } from './Components/password/password.component';
 import { SharedModule } from '../Shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
 import { RecaptchaModule, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from "angularx-social-login";
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { RecaptchaModule, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
   imports: [
     RecaptchaModule,
     CommonModule,
+    SocialLoginModule,
     SharedModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot([
@@ -41,6 +44,28 @@ import { RecaptchaModule, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
       { path: 'login', redirectTo: 'account' },
     ]),
   ],
-  //providers: [{ provide: RECAPTCHA_V3_SITE_KEY, useValue: "6Lc4fMQeAAAAANcjwZJE3DvxoifE_JUqMyQpGrGu" }],
+  exports: [
+    SocialLoginModule,
+    RecaptchaModule,
+  ],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(environment.GA_ID)
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider(environment.FB_ID)
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    },
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: "6Lc4fMQeAAAAANcjwZJE3DvxoifE_JUqMyQpGrGu" }
+  ]
 })
 export class AccountModule { }

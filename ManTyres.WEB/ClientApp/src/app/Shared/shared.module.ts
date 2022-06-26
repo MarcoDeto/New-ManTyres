@@ -20,8 +20,6 @@ import { LoaderComponent } from './Components/Loader/loader.component';
 import { PricingComponent } from "./Components/pricing/pricing.component";
 import { ToastrModule } from "ngx-toastr";
 import { HeaderComponent } from "./Components/Header/Header.component";
-import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from "angularx-social-login";
-import { environment } from "src/environments/environment";
 import { SideNavComponent } from "./Components/SideNav/SideNav.component";
 import { RecaptchaModule } from "ng-recaptcha";
 
@@ -58,8 +56,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
     NgChartsModule,
-    SocialLoginModule,
-    RecaptchaModule
+    RecaptchaModule,
   ],
   exports: [
     ErrorComponent,
@@ -79,28 +76,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgChartsModule,
     LoaderComponent,
     HeaderComponent,
-    SocialLoginModule,
     SideNavComponent,
-    RecaptchaModule
+    RecaptchaModule,
   ],
-  providers: [
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(environment.GA_ID)
-          },
-          /*{
-            id: FacebookLoginProvider.PROVIDER_ID,
-            provider: new FacebookLoginProvider(environment.FB_ID)
-          }*/
-        ]
-      } as SocialAuthServiceConfig,
-    }
-  ],
+  providers: []
 })
 export class SharedModule {
   constructor(public translate: TranslateService) {
