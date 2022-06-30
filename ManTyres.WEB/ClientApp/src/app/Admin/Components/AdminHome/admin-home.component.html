@@ -1,0 +1,68 @@
+<div class="container">
+  <div style="margin-top: 2rem;">
+    <div class="titolo">
+      <h3 class="left">Amministrazione</h3>
+    </div>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="row list">
+        <a class="col-12 col-sm-3 link" [routerLink]="['/admin/users']">
+          <div>
+            <mat-icon fontSet="fa" fontIcon="fa-user-friends"></mat-icon>
+          </div>
+          <span>Gestisci Utenze</span>
+        </a>
+        <a class="col-12 col-sm-3 link" [routerLink]="['/admin/sedi']">
+          <div>
+            <mat-icon fontSet="fas" fontIcon="fa-warehouse-alt"></mat-icon>
+          </div>
+          <span>Gestisci Sedi</span>
+        </a>
+        <a class="col-12 col-sm-3 link" [routerLink]="['/dashboard']">
+          <div>
+            <mat-icon fontSet="fas" fontIcon="fa-chart-line"></mat-icon>
+          </div>
+          <span>Dashboard</span>
+        </a>
+        <a class="col-12 col-sm-3 link" [routerLink]="['/admin/insertdb']">
+          <div>
+            <mat-icon fontSet="fas" fontIcon="fa-file-excel"></mat-icon>
+          </div>
+          <span>Carica Excel</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top: 2rem;">
+    <div class="titolo">
+      <h3 class="left">Gestionario</h3>
+    </div>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="row list">
+        <a class="col-12 col-sm-3 col-md-3 col-lg-3 link" [routerLink]="['/inventario']">
+          <div>
+            <mat-icon fontSet="fas" fontIcon="fa-inventory"></mat-icon>
+          </div>
+          <span>Inventario</span>
+        </a>
+        <a class="col-12 col-sm-3 col-md-3 col-lg-3 link" [routerLink]="['/pneumatici']">
+          <div>
+            <mat-icon fontSet="far" fontIcon="fa-tire"></mat-icon>
+          </div>
+          <span>Pneumatici</span>
+        </a>
+        <a class="col-12 col-sm-3 col-md-3 col-lg-3 link" [routerLink]="['/clienti']">
+          <div>
+            <mat-icon fontSet="fa" fontIcon="fa-users"></mat-icon>
+          </div>
+          <span>Clienti</span>
+        </a>
+        <a class="col-12 col-sm-3 col-md-3 col-lg-3 link" [routerLink]="['/veicoli']">
+          <div>
+            <mat-icon fontSet="fa" fontIcon="fa-cars"></mat-icon>
+          </div>
+          <span>Veicoli</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

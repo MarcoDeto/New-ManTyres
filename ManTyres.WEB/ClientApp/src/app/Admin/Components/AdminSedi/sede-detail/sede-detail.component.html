@@ -1,0 +1,118 @@
+<div>
+  <header>
+    <h2>Aggiungere una sede dell'azienda</h2>
+    <p>Informazioni di base e informazioni di contatto delle filiali</p>
+  </header>
+  <form novalidate [formGroup]="sedeForm" (ngSubmit)="onSubmit()" autocomplete="on">
+
+    <div class="info-base row">
+      <div class="box col-12">
+        <div>
+          <h5>Informazioni di base</h5>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+
+          <div class="col-12 col-sm-6 col-md-6 row">
+            <h3 class="titolo col-12 col-md-3">INDIRIZZO*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-9">
+              <input matInput type="text" name="address-level-4" formControlName="indirizzo" placeholder="Indirizzo"
+                required>
+              <mat-error *ngIf="getSedeControl.indirizzo.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+              <mat-error *ngIf="getSedeControl.indirizzo.errors?.maxlength">Massimo <strong>200</strong>
+                caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-3 row">
+            <h3 class="titolo col-12 col-md-4">COMUNE*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="text" name="address-level-3" formControlName="comune" placeholder="Comune" required>
+              <mat-error *ngIf="getSedeControl.comune.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+              <mat-error *ngIf="getSedeControl.comune.errors?.maxlength">Massimo <strong>100</strong>
+                caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-3 row">
+            <h3 class="titolo col-12 col-md-4">NAZIONE*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="text" name="country-name" formControlName="nazione" placeholder="Nazione" required>
+              <mat-error *ngIf="getSedeControl.nazione.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+              <mat-error *ngIf="getSedeControl.nazione.errors?.maxlength">Massimo <strong>100</strong>
+                caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </div>
+      <div class="box col-12 col-md-6 box_addInfo">
+        <div class="row">
+
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-6">CAP*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="number" name="address-level-2" formControlName="cap" placeholder="CAP" required>
+              <mat-error *ngIf="getSedeControl.cap.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+              <mat-error *ngIf="getSedeControl.cap.errors?.minlength">CAP deve avere <strong>5</strong> cifre.
+              </mat-error>
+              <mat-error *ngIf="getSedeControl.cap.errors?.maxlength">CAP deve avere <strong>5</strong> cifre.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-6">PROVINCIA*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="text" formControlName="provincia" placeholder="Provincia" required>
+              <mat-error *ngIf="getSedeControl.provincia.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+              <mat-error *ngIf="getSedeControl.provincia.errors?.maxlength">Massimo <strong>100</strong>
+                caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+      </div>
+      <div class="box col-12 col-md-6 box_info">
+        <div>
+          <h5>Informazioni di contatto</h5>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-4 mobile-padding">{{ "EMAIL_PLACEHOLDER" | translate }}*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-10">
+              <input matInput type="email" name="email" formControlName="email" placeholder="unitest@example.com"
+                required>
+              <mat-error *ngIf="getSedeControl.email.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+              <mat-error *ngIf="getSedeControl.email.errors?.email">{{'ERROR_EMAILFORMAT' | translate}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-4">{{ "PHONENUMBER_PLACEHOLDER" | translate }}*</h3>
+            <mat-form-field appearance="outline" name="tel" class="col-12 col-md-8">
+              <input matInput type="tel" formControlName="telefono" placeholder="+39 351 000 1111" maxlength="20"
+                required>
+              <mat-error *ngIf="getSedeControl.telefono.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+    <footer>
+      <div class="row" style="justify-content: center;">
+        <button *ngIf="IsEditMode()" mat-raised-button class="col btn" color="warn" type="button"
+          (click)="Delete(sede!.sedeId)">Elimina</button>
+        <button mat-raised-button class="submit" type="submit">
+          <span *ngIf="IsEditMode()">{{ "SAVE" | translate }}</span>
+          <span *ngIf="IsNewMode()">{{ "CREATE" | translate }}</span>
+        </button>
+      </div>
+      <p style="margin-top: 20px !important;">Le informazioni relative alle filiali vengono usate per memorizzare i pneumatici. I clienti potranno
+        visualizzare questi dettagli.
+        <!--<br>Bridge memorizza alcuni dati a scopo di sicurezza, supporto e resoconto.-->
+      </p>
+    </footer>
+  </form>
+</div>

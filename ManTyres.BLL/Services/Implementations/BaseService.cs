@@ -71,6 +71,8 @@ namespace ManTyres.BLL.Services.Implementations
 			_logger.LogDebug(LoggerHelper.GetActualMethodName());
 			_logger.LogTrace("Request: ", request);
 
+			var test = _mapper.Map<V>(request);
+
 			var result = await _repository.Add(_mapper.Map<V>(request));
 			if (result == null)
 				_logger.LogTrace("422. Unprocessable entity");

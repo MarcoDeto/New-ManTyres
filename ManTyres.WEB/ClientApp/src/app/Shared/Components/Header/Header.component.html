@@ -1,6 +1,6 @@
 <div class="custom-navbar" *ngIf="hideHeader == false">
 
-  <div [routerLink]="['/home']" matTooltip="Vai alla Home" matTooltipShowDelay="1000" style="display: flex; place-items: center;">
+  <div [routerLink]="['/']" matTooltip="Vai alla Home" matTooltipShowDelay="1000" style="display: flex; place-items: center;">
     <h1 *ngIf="getWidth() != 375" class="logo">MAN</h1>
     <a><img src="../assets/Images/logo_white.png" height="30" class="align-top logo"></a>
     <h1 *ngIf="getWidth() != 375" class="logo">TYRES</h1>
@@ -120,4 +120,5 @@
       </a>
     </mat-menu>
   </div>
+  <mat-icon style="color: #FFF;">language</mat-icon>
 </div>

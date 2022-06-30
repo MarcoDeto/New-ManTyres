@@ -1,0 +1,286 @@
+.list {
+  padding: 20px;
+}
+
+.btn {
+  padding: .5rem 0;
+  font-size: 16px;
+}
+
+.btn_backgroud {
+  background-color: rgb(232,239,247);
+}
+
+.link {
+  padding: 10px 0 !important;
+}
+
+.link:hover {
+  background-color: rgba(176, 196, 222, 0.4);
+  cursor: pointer;
+}
+
+.fa-filter {
+  cursor: pointer;
+}
+
+.filter {
+  text-align: center;
+}
+
+.search {
+  padding: 10px !important;
+}
+
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+th {
+  background-color: rgba(176, 196, 222,0.5) !important;
+}
+
+th.mat-header-cell {
+  padding-left: 24px;
+  text-align: left;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+td.mat-cell {
+  padding-left: 24px;
+}
+
+tr.example-element-row:not(.example-expanded-row, .mat-column-actions):hover {
+  background-color: rgba(176, 196, 222,0.3);
+  cursor: pointer;
+}
+
+tr.example-element-row:not(.example-expanded-row, .mat-column-actions):active {
+  background-color: rgba(176, 196, 222,0.3);
+}
+
+.mat-column-actions {
+  padding: 0px 10px !important;
+  text-align: center;
+  font-size: 18px;
+}
+
+.mat-column-expandedDetail {
+  background-color: rgba(176, 196, 222,0.2);
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  padding: 0 10px;
+}
+
+.example-element-diagram {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  margin: 10px 0 !important;
+  background: #000000
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+.container-body {
+  height: 0;
+  padding: 0;
+}
+
+.container-sidebar {
+  float: right;
+  width: 15%;
+  //height: 100vh;
+  padding: 0;
+  background: linear-gradient( 136deg, #3C4CAD, #24DEBB);
+}
+
+.basic-container {
+  height: 100%;
+}
+
+.row {
+  margin: 0;
+}
+
+.info {
+  padding: 5px 0 !important;
+}
+
+.ico {
+  padding: 0 10px;
+}
+
+.icon {
+  padding: 0 !important;
+  text-align: end;
+  vertical-align: middle;
+}
+
+.fa-sun {
+  color: #C1682D !important;
+}
+
+.fa-snowflake {
+  color: #2E86C1 !important;
+}
+
+h3 {
+  margin: 0 !important;
+}
+
+.card-label-title {
+  align-self: center;
+}
+
+.card-label-value {
+  align-self: center;
+}
+
+th.mat-header-row {
+  background-color: aqua !important;
+}
+
+mat-form-field {
+  width: 100%;
+  background: white;
+  font-size: 16px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+:host ::ng-deep .mat-paginator-page-size {
+  margin-bottom: 15px
+}
+
+:host ::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+:host ::ng-deep .mat-form-field-wrapper {
+  padding: 0px;
+}
+
+.sfondo-filtri {
+  background-color: transparent;
+}
+
+.nav-menu {
+  background: rgb(33, 37, 41) !important;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  text-transform: uppercase;
+  padding: 0;
+}
+
+mat-paginator {
+  background-color: rgba(176, 196, 222,0.5) !important;
+}
+
+.filter-body {
+  background-color: transparent;
+  margin: 5px 10px;
+}
+
+.error {
+  width: 100%;
+  text-align: center !important;
+  margin-top: 10px;
+}
+
+.svuota-cestino {
+  cursor: pointer;
+  padding: 10px 0;
+}
+
+.svuota-cestino:hover {
+  opacity: 0.8;
+}
+
+.excel {
+  cursor: pointer;
+  padding: 10px 0;
+  //margin: 30px 0;
+  opacity: 0.8;
+}
+
+.excel:hover {
+  opacity: 1;
+}
+
+.wrapper-mobile {
+  display: none;
+}
+
+.spazio-mobile {
+  display: none;
+}
+
+@media(max-width: 415px) {
+
+  .wrapper-mobile {
+    display: block;
+    bottom: 0rem;
+    right: 0rem;
+    position: fixed;
+    width: 100%;
+    font-size: 30px;
+  }
+
+  .spazio-mobile {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 47px;
+    background: transparent;
+  }
+
+  .mat-column-actions {
+    padding: 0px !important;
+    width: 20%;
+  }
+
+  .btn-mobile {
+    border-radius: 0;
+  }
+
+  .mat-column-expandedDetail {
+    padding: 0 !important;
+  }
+
+  .row-mobile {
+    padding: 10px 0 !important;
+  }
+}
+
+.btn-warning:focus, .btn-success:focus, .btn-secondary:focus, .btn-outline-warning:focus, .btn-outline-success:focus, .btn-outline-secondary:focus {
+  box-shadow: 0 0 0 0 !important;
+}
+
+.fas {
+    cursor: pointer;
+}

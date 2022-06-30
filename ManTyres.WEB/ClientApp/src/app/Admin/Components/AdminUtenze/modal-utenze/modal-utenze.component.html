@@ -1,0 +1,48 @@
+<mat-dialog-content class="mat-typography">
+
+  <div *ngIf="IsViewMode()">
+    <div mat-dialog-title class="header" *ngIf="getWidth() < 415">
+      <button class="close" mat-icon-button matTooltip="Chiudi" matTooltipShowDelay="1000" (click)="closeDialog()"><mat-icon>close</mat-icon></button>
+      <button *ngIf="!data.user.isDeleted" mat-icon-button matTooltip="Modifica" (click)="editUser(data.user.id)"><mat-icon>edit</mat-icon></button>
+      <button *ngIf="!data.user.isDeleted" mat-icon-button matTooltip="Elimina" (click)="deleteUser(data.user.id)"><mat-icon>delete</mat-icon></button>
+      <!-- <button *ngIf="data.user.isDeleted" mat-icon-button matTooltip="Riattiva" (click)="reactivateUser(data.user)"><mat-icon>restore</mat-icon></button> -->
+    </div>
+    <div class="body">
+      <div class="title">
+        <div>
+          <img [src]="imagePath" (click)="imageClicked=true" matTooltip="Visualizza immagine" *ngIf="data.user.imgProfile != ''">
+          <i class="fas fa-user-circle" *ngIf="data.user.imgProfile == ''"></i>
+          <button type="button" mat-fab color="primary" *ngIf="data.user.imgProfile == null">
+            <i class="fas fa-user"></i>
+          </button>
+        </div>
+        <div class='nome-mobile'>
+          <h1 mat-dialog-title>{{data.user.firstName}} {{data.user.lastName}}</h1>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+      <div class="dettagli">
+        <span>Dettagli utente</span>
+        <div class="details">
+          <i class="fas fa-user"></i>
+          <p>{{data.user.userName}}</p>
+        </div>
+        <div class="details">
+          <i class="fas fa-envelope"></i>
+          <p class="emailtext">{{data.user.email}}</p>
+        </div>
+        <div class="details" *ngIf="data.user.phoneNumber != '' && data.user.phoneNumber != null">
+          <i class="fas fa-phone-alt"></i>
+          <p>{{data.user.phoneNumber}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<app-image-viewer *ngIf="imageClicked"
+                  [src]="imagePath"
+                  (closeViewerEmitter)="imageClicked=false">
+</app-image-viewer>

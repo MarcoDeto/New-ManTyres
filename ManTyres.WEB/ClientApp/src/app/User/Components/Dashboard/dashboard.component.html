@@ -1,0 +1,64 @@
+<div class="row tot">
+  <div class="col-xl-3 col-md-6 col-lg-3 panel" >
+    <mat-card class="testo pneumatici" [ngClass]="pneumatici ? 'pneumatici' : 'pneumatici-disable'" (click)="CreatePneumatici()">
+      <mat-card-content>
+        <h3>Pneumatici</h3>
+        <mat-divider></mat-divider>
+        <h1>{{ Pneumatici }}</h1>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-xl-3 col-md-6 col-lg-3 panel" >
+    <mat-card class="testo veicoli" [ngClass]="veicoli ? 'veicoli' : 'veicoli-disable'" (click)="CreateVeicoli()">
+      <mat-card-content>
+        <h3>Veicoli</h3>
+        <mat-divider></mat-divider>
+        <h1>{{ Veicoli }}</h1>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-xl-3 col-md-6 col-lg-3 panel" >
+    <mat-card class="testo clienti" [ngClass]="clienti ? 'clienti' : 'clienti-disable'" (click)="CreateClienti()">
+      <mat-card-content>
+        <h3>Clienti</h3>
+        <mat-divider></mat-divider>
+        <h1>{{ Clienti }}</h1>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-xl-3 col-md-6 col-lg-3 panel">
+    <mat-card class="testo utenti">
+      <mat-card-content>
+        <h3>Utenti</h3>
+        <mat-divider></mat-divider>
+        <h1>{{ Utenti }}</h1>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div class="container" *ngIf="getWidth() > 415">
+  <div class="group-button">
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+      <button type="button" mat-stroked-button class="btn btn-primary" (click)="GetChart(0)">Settimana</button>
+      <button type="button" mat-stroked-button class="btn btn-primary" (click)="GetChart(1)">Mese</button>
+      <button type="button" mat-stroked-button class="btn btn-primary" (click)="GetChart(3)">3 Mesi</button>
+      <button type="button" mat-stroked-button class="btn btn-primary" (click)="GetChart(6)">6 Mesi</button>
+      <button type="button" mat-stroked-button class="btn btn-primary" (click)="GetChart(12)">Anno</button>
+      <button type="button" mat-stroked-button class="btn btn-primary" (click)="GetChart(1000)">Sempre</button>
+    </div>
+
+    <div class="btn-toolbar right" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group mr-2" role="group" aria-label="Second group">
+        <button type="button" mat-stroked-button class="btn btn-primary" (click)="CreateGiornaliero()" [ngClass]="quantita ? 'active-btn' : ''">Quantità</button>
+      </div>
+      <div class="btn-group" role="group" aria-label="Third group">
+        <button type="button" mat-stroked-button class="btn btn-primary" (click)="CreateGlobale()" [ngClass]="globale ? 'active-btn' : ''">Andamento</button>
+      </div>
+    </div>
+  </div>
+
+  <canvas baseChart height="300" width="800" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+          [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+
+</div>

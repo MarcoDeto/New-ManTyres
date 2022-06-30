@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { tap  } from "rxjs/operators";
 import { Router } from "@angular/router";
-import { UserService } from "src/app/Account/Services/user.service";
+import { UserService } from "src/app/Auth/Services/user.service";
 
 
 @Injectable()

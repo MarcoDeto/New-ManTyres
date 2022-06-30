@@ -54,12 +54,20 @@ input, button, a {
   border: 0;
 }
 
+input:focus, select:focus, mat-select:focus {
+  outline: none !important;
+}
+
 .no-padding {
   padding: 0 !important;
 }
 
 .custom_popup {
   width: 36em !important;
+}
+
+.mat-error {
+  font-weight: 700;
 }
 
 .error_wrapper {

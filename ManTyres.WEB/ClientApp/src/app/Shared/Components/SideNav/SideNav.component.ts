@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/Account/Services/user.service';
+import { UserService } from 'src/app/Auth/Services/user.service';
 import { UserRole } from '../../Models/enums';
 
 @Component({
@@ -36,16 +36,13 @@ export class SideNavComponent implements OnInit {
     switch (this.userRole) {
       case UserRole.Developer:
       case UserRole.Administrator: {
-        this.icons = [
-          { label: "content/Claims-Dashboard", icon: "fas fa-clipboard-check" },
-          { label: "content/EndUsers", icon: "fas fa-users" },
-          { label: "content/Technicians", icon: "fas fa-toolbox" },
-          { label: "content/Equipments", icon: "fas fa-tools" },
-          { label: "Map", icon: "fas fa-globe" },
-          { label: "content/Distributors", icon: "fas fa-building" },
-          { label: "content/Workshops", icon: "icon-WorkshopIcon_TeqLink" },
-          { label: "content/DistributorQuotations", icon: "fas fa-credit-card" },
-          { label: "content/Requests", icon: "fas fa-envelope-open-text" },
+        this.icons= [
+          { label: 'admin/home' , icon: "fas fa-clipboard-check" },
+          { label: 'admin/users' , icon: "fas fa-clipboard-check" },
+          { label: 'admin/user/:userId' , icon: "fas fa-clipboard-check" },
+          { label: 'admin/sedi' , icon: "fas fa-clipboard-check" },
+          { label: 'admin/sede/:sedeId' , icon: "fas fa-clipboard-check" },
+          { label: 'admin/insertdb' , icon: "fas fa-clipboard-check" },
         ];
         break;
       }

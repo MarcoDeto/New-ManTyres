@@ -74,7 +74,7 @@ namespace Tyre.WSL.Controllers
             }
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public async Task<IActionResult> ImportClienti(IFormFile file)
         {
 
@@ -154,9 +154,10 @@ namespace Tyre.WSL.Controllers
                 _logger.LogError(e, "Errore");
                 return StatusCode(500, e.Message);
             }
-        }
+        }*/
 
-        [HttpGet]
+
+        /*[HttpGet]
         public async Task<IActionResult> ExportClienti()
         {
             string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
@@ -256,7 +257,7 @@ namespace Tyre.WSL.Controllers
                 _logger.LogError(e, "Errore");
                 return StatusCode(500, e.Message);
             }
-        }
+        }*/
     }
 }
 

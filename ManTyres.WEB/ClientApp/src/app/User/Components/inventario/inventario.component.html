@@ -1,0 +1,226 @@
+<div class="center-page" *ngIf="caricamento">
+  <img class="spinner rotating" src="../assets/Images/loader.png">
+</div>
+
+<div class="mat-app-background basic-container row" *ngIf="caricamento == false">
+
+  <div class="container-body" [ngClass]="filtri ? 'col-lg-10' : 'col-lg-12'">
+    <nav class="navbar navbar-expand-lg navbar-light row" style=" background-color: rgba(176, 196, 222,0.5);" [ngClass]="getWidth() < 576 ? 'no-padding' : ''">
+      <div class="btn-group row col-12 col-sm-12 col-md-7 col-lg-6 no-padding" role="group" *ngIf="getWidth() > 415">
+        <button type="button" class="btn col-4" [ngClass]="inventario ? 'btn-warning' : 'btn-outline-warning'" (click)="getInventario(skip, take, sede, stagione, inizioOrderByDesc)">
+          <i class="fa-inventory" [ngClass]="inventario ? 'fas' : 'fal'"></i>
+          INVENTARIO
+        </button>
+        <button type="button" class="btn col-4" [ngClass]="archivio ? 'btn-success' : 'btn-outline-success'" (click)="getArchivio(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc)">
+          <i class="fa-archive" [ngClass]="archivio ? 'fas' : 'fal'"></i>
+          ARCHIVIO
+        </button>
+        <button type="button" class="btn col-4" [ngClass]="cestino ? 'btn-secondary' : 'btn-outline-secondary'" (click)="getCestino(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc)">
+          <i class="fa-trash-alt" [ngClass]="cestino ? 'fas' : 'fal'"></i>
+          CESTINO
+        </button>
+      </div>
+      <h3 *ngIf="getWidth() > 415" class="col-2 col-sm-2 col-md-1 col-lg-1 filter" (click)="showfiltri()" [matTooltip]="filtri ? 'Nascondi filtri' : 'Mostra filtri'"><i class="fa-filter" [ngClass]="filtri ? 'fas' : 'fal'"></i></h3>
+      <form class="form-inline row col-12 col-sm-10 col-md-4 col-lg-5 search" novalidate [formGroup]="searchForm" (ngSubmit)="search()">
+        <input class="form-control col-8" type="search" formControlName="targa" placeholder="Targa" aria-label="Search" value="{{searchForm.get('targa').value | uppercase}}" style="text-transform: uppercase;">
+        <button class="btn btn-outline-primary col-4" type="submit">Cerca</button>
+      </form>
+    </nav>
+
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="lista" multiTemplateDataRows>
+
+        <ng-container matColumnDef="N">
+          <th mat-header-cell *matHeaderCellDef matTooltip="Quantità pneumatici">N</th>
+          <td mat-cell *matCellDef="let row">{{row.pneumatici.quantita}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="pneumaticiId">
+          <th mat-header-cell *matHeaderCellDef>pneumatici</th>
+          <td mat-cell *matCellDef="let row">
+            <i class="fas icona-stagione" [ngClass]="row.pneumatici.stagione.nome == 'estate' ? 'fa-sun' : 'fa-snowflake'"></i>
+            {{row.pneumatici.marca}}&nbsp;{{row.pneumatici.modello}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="depositoId">
+          <th mat-header-cell *matHeaderCellDef>Ubicazione</th>
+          <td mat-cell *matCellDef="let row">{{row.deposito.ubicazione}}&nbsp;{{row.deposito.sede.comune}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="inizioDeposito">
+          <th mat-header-cell *matHeaderCellDef>
+            <div *ngIf="getWidth() < 992">Inizio</div>
+            <div *ngIf="getWidth() > 992">Inizio Deposito</div>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div *ngIf="getWidth() < 992">{{ row.inizioDeposito | date:'shortDate' }}</div>
+            <div *ngIf="getWidth() > 992">{{ row.inizioDeposito | date:'short' }}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fineDeposito" *ngIf="archivio == true || cestino == true">
+          <th mat-header-cell *matHeaderCellDef>
+            <div *ngIf="getWidth() < 992">Fine</div>
+            <div *ngIf="getWidth() > 992">Fine Deposito</div>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <div *ngIf="getWidth() < 992">{{ row.fineDeposito | date:'shortDate' }}</div>
+            <div *ngIf="getWidth() > 992">{{ row.fineDeposito | date:'short' }}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="userId">
+          <th mat-header-cell *matHeaderCellDef>User</th>
+          <td mat-cell *matCellDef="let row"><div *ngIf="row.user != null">{{row.user.userName}}</div><div *ngIf="row.user == null">null</div></td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <div>
+              <i class="fas fa-file-pdf" *ngIf="inventario == true" (click)="Pdf(row)" matTooltip="Download PDF"></i>
+              <i class="fas fa-trash-alt ico" *ngIf="archivio == true" (click)="DelFromArchivio(row)" matTooltip="Elimina"></i>
+              <i class="fas fa-trash-undo-alt ico" *ngIf="cestino == true" (click)="RipristinaFromCestino(row)" matTooltip="Ripristina"></i>
+              <i class="fas fa-trash-alt ico" *ngIf="cestino == true" (click)="DelFromCestino(row)" matTooltip="Elimina"></i>
+            </div>
+          </td>
+
+        </ng-container>
+
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplay.length">
+            <div class="example-element-detail"
+                 [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12 no-padding row" *ngIf="row.pneumatici.veicolo">
+                <div class="row col-12 col-md-7 col-lg-7 link" (click)="editPneumatici(row)">
+                  <div class="col-1 col-sm-3 col-md-1 col-lg-1 icon">
+                    <h3><i class="fas fa-ruler"></i> </h3>
+                  </div>
+                  <div class="col-5 col-sm-12 col-md-4 col-lg-5 info row">
+                    <div class="card-label-value col-12">{{row.pneumatici.misura}}</div>
+                  </div>
+                  <div class="col-6 col-sm-12 col-md-7 col-lg-5 info row">
+                    <div class="card-label-title col-7">BATTISTRADA:</div>
+                    <div class="card-label-value col-5">{{row.battistrada}}mm</div>
+                  </div>
+                </div>
+                <div class="row col-12 col-md-5 col-lg-5 row-mobile link" (click)="infoCliente(row.pneumatici.veicolo.cliente)">
+                  <div class="col-1 col-sm-3 col-md-1 col-lg-1 icon">
+                    <h3 *ngIf="!row.pneumatici.veicolo.cliente.isAzienda"><i class="fas fa-user"></i></h3>
+                    <h3 *ngIf="row.pneumatici.veicolo.cliente.isAzienda"><i class="fas fa-building"></i></h3>
+                  </div>
+                  <div class="col-10 col-sm-12 col-md-8 col-lg-9 info row">
+                    <div class="card-label-title col-12">PROPRIETARIO:&nbsp;{{row.pneumatici.veicolo.cliente.cognome}}&nbsp;{{row.pneumatici.veicolo.cliente.nome}}</div>
+                  </div>
+                </div>
+                <div class="row col-12" style="padding: 10px 0;" *ngIf="getWidth() < 415">
+                  <div class="col-1 icon">
+                    <h3><i class="fas fa-play"></i></h3>
+                  </div>
+                  <div class="col-5 info row">
+                    <div class="card-label-value col-12">{{ row.inizioDeposito | date:'short' }}</div>
+                  </div>
+                  <div class="col-1 icon" *ngIf="!inventario">
+                    <h3><i class="fas fa-stop"></i></h3>
+                  </div>
+                  <div class="col-5 info row" *ngIf="!inventario">
+                    <div class="card-label-value col-12">{{ row.fineDeposito | date:'short' }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+            class="example-element-row"
+            [class.example-expanded-row]="expandedElement === element"
+            (click)="expandedElement = expandedElement === element ? null : element">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+      </table>
+      <mat-spinner *ngIf="caricamento"></mat-spinner>
+      <div class="error" *ngIf="notFound"><h5 class="error">Error 404</h5></div>
+      <div class="error" *ngIf="dbEmpty"><h5 class="error">Nessun pneumatico</h5></div>
+      <mat-paginator class="table-primary" showFirstLastButtons [length]="length"
+                     [pageSize]="take" [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent = $event"></mat-paginator>
+      <div class="spazio-mobile"></div>
+    </div>
+  </div>
+  <div *ngIf="getWidth() < 992" class="col-md-9" style="height: 0;"></div>
+  <div class="container-sidebar col-md-3 col-lg-2" *ngIf="getWidth() > 767 && filtri == true">
+    <form [formGroup]="inventarioForm" (ngSubmit)="submitForm()">
+      <div class="sfondo-filtri">
+        <div class="nav-menu">Ordina</div>
+        <div class="filter-body">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Inizio deposito</mat-label>
+            <mat-select formControlName="inizioOrderByDesc" placeholder="Inizio deposito" [(value)]="inizioOrderByDesc">
+              <mat-option selected value="true" (click)="clickOnInizioOrder()">Le più recenti in alto</mat-option>
+              <mat-option value="false" (click)="clickOnInizioOrder()">Le meno recenti in alto</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="full-width" *ngIf="!inventario">
+            <mat-label>Fine deposito</mat-label>
+            <mat-select formControlName="fineOrderByDesc" placeholder="Fine deposito">
+              <mat-option value="true" (click)="clickOnFineOrder()">Le più recenti in alto</mat-option>
+              <mat-option value="false" (click)="clickOnFineOrder()">Le meno recenti in alto</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="sfondo-filtri">
+        <div class="nav-menu">Filtra</div>
+        <div class="filter-body">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Sede</mat-label>
+            <mat-select formControlName="sede" placeholder="Sede">
+              <mat-option value=0 (click)="submitForm()">Tutte</mat-option>
+              <mat-option *ngFor="let s of sedi" [value]="s.sedeId" (click)="submitForm()">
+                {{s.comune}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Stagione</mat-label>
+            <mat-select formControlName="stagione" placeholder="Stagione">
+              <mat-option value=0 (click)="submitForm()">Tutte</mat-option>
+              <mat-option *ngFor="let s of stagioni" [value]="s.stagioneId" (click)="submitForm()">
+                {{s.nome}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="sfondo-filtri">
+        <div class="nav-menu svuota-cestino" style="margin-top: 30px;" *ngIf="cestino == true" (click)="RipristinaCestino()"><i class="fas fa-trash-undo-alt ico"></i> Ripristina Cestino</div>
+      </div>
+      <div class="sfondo-filtri">
+        <div class="nav-menu svuota-cestino" style="margin-bottom: 30px;" *ngIf="cestino == true" (click)="SvuotaCestino()"><i class="fas fa-trash-alt ico"></i> Svuota Cestino</div>
+      </div>
+      <div class="sfondo-filtri">
+        <div class="nav-menu" style="margin-top: 30px;">
+          <p style="margin: 0;" *ngIf="inventario">Esporta inventario</p>
+          <p style="margin: 0;" *ngIf="archivio">Esporta archivio</p>
+          <p style="margin: 0;" *ngIf="cestino">Esporta tutti i dati</p>
+          <div class="nav-menu excel" style="background-color: #008000 !important;" (click)="export()"><i class="fas fa-file-excel ico"></i> Export Excel</div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<span class="wrapper-mobile" *ngIf="getWidth() < 415">
+  <button type="button" class="btn-mobile col-4" [ngClass]="inventario ? 'btn-warning' : 'btn-outline-warning btn_backgroud'" (click)="getInventario(skip, take, sede, stagione, inizioOrderByDesc)">
+    <i class="fa-inventory" [ngClass]="inventario ? 'fas' : 'fal'"></i>
+  </button>
+  <button type="button" class="btn-mobile col-4" [ngClass]="archivio ? 'btn-success' : 'btn-outline-success btn_backgroud'" (click)="getArchivio(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc)">
+    <i class="fa-archive" [ngClass]="archivio ? 'fas' : 'fal'"></i>
+  </button>
+  <button type="button" class="btn-mobile col-4" [ngClass]="cestino ? 'btn-secondary' : 'btn-outline-secondary btn_backgroud'" (click)="getCestino(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc)">
+    <i class="fa-trash-alt" [ngClass]="cestino ? 'fas' : 'fal'"></i>
+  </button>
+</span>
+<router-outlet></router-outlet>

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { UserService } from 'src/app/Account/Services/user.service';
+import { UserService } from 'src/app/Auth/Services/user.service';
 import Swal from 'sweetalert2';
 import { LanguageNames } from '../../Models/languages.enum';
 

@@ -68,6 +68,7 @@ export class SetupComponent implements OnInit, OnDestroy{
     provincia: null,
     sedeId: 0,
     telefono: null,
+    email: null,
   };
 
 
@@ -185,6 +186,7 @@ export class SetupComponent implements OnInit, OnDestroy{
       indirizzo: this.creationSedeForm.value.indirizzo,
       civico: this.creationSedeForm.value.civico,
       telefono: this.creationSedeForm.value.telefono,
+      email: this.creationSedeForm.value.email,
       isDeleted: false
     }
 

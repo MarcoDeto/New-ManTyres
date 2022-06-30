@@ -8,6 +8,7 @@ export class Sedi {
     public indirizzo: string | null,
     public civico: string | null,
     public telefono: string | null,
+    public email: string | null,
     public isDeleted: boolean
   ) { }
 }

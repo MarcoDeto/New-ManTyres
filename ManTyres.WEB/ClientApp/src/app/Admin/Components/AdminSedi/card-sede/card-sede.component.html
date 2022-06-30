@@ -1,0 +1,44 @@
+<a class="card">
+  <div class="contenitore" [ngClass]="hover ? 'mat-elevation-z8' : ''" (mouseenter)="hoverListItem(hover)" (mouseleave)="hoverListItem(hover)">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-3 icons">
+          <h1><i class="fas fa-warehouse-alt"></i></h1>
+        </div>
+        <div class="col-9 info">
+          <div class="col-sm-12 card-title">{{sede!.comune | uppercase}}</div>
+          <div class="col-sm-12 card-subtitle">{{sede!.cap}}&nbsp;{{sede!.provincia}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-3 col-sm-3 col-md-2 col-lg-2 icons">
+          <h3><i class="fas fa-map-marker-alt"></i> </h3>
+        </div>
+        <div class="col-7 col-sm-7 col-md-10 col-lg-10 info">
+          <div class="card-label-title">Indirizzo</div>
+          <div class="card-label-value">{{sede!.indirizzo}}&nbsp;{{sede!.civico}}</div>
+        </div>
+      </div>
+      <div class="row margin-vert">
+        <div class="col-3 col-sm-3 col-md-2 col-lg-2 icons">
+          <h3><i class="fas fa-flag"></i> </h3>
+        </div>
+        <div class="col-7 col-sm-7 col-md-10 col-lg-10 info">
+          <div class="card-label-title">Nazione</div>
+          <div class="card-label-value">{{sede!.nazione}}</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 col-sm-3 col-md-2 col-lg-2 icons">
+          <h3><i class="fas fa-phone"></i></h3>
+        </div>
+        <div class="col-7 col-sm-7 col-md-10 col-lg-10 info">
+          <div class="card-label-title">Telefono</div>
+          <div class="card-label-value">{{sede!.telefono}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>

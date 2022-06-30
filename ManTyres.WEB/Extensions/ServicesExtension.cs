@@ -8,6 +8,11 @@ namespace TeqLinkPortal.API.Extensions
       public static IServiceCollection LoadServices(this IServiceCollection services)
       {
          services.AddScoped<IUserService, UserService>();
+         services.AddScoped<ICountryService, CountryService>();
+         services.AddScoped<ICityService, CityService>();
+         services.AddScoped<IPlaceService, PlaceService>();
+         services.AddScoped<ICarService, CarService>();
+         services.AddScoped<IExcelService, ExcelService>();
          return services;
       }
    }

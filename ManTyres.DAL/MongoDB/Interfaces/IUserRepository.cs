@@ -7,8 +7,7 @@ namespace ManTyres.DAL.MongoDB.Interfaces
    public interface IUserRepository : IBaseRepository<User>
    {
       Task<User> GetByEmail(string email);
-		Task<bool> IsAlreadyExists(string email);
-      Task<bool> CheckPassword(LoginDTO request);
-      
+	  Task<bool> IsAlreadyExists(string email);
+      Task<bool> CheckPassword(LoginDTO request); 
    }
 }

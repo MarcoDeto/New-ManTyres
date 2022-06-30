@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Currencies } from '../../Models/currencies.enum';
-import { CurrenciesService } from '../../Services/currencies.service.ts.service';
+import { CurrenciesService } from '../../Services/currencies.service';
 
 @Component({
   selector: 'app-pricing',

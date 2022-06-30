@@ -1,0 +1,80 @@
+<div class="mat-elevation-z8 table-primary mat-app-background basic-container">
+  <span class="mobile-label add">
+    <button mat-fab color="primary" (click)="addUser()" matTooltip="Nuovo utente" matTooltipPosition="left">
+      <mat-icon>add</mat-icon>
+    </button>
+  </span>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Cerca</mat-label>
+    <mat-icon matSuffix>search</mat-icon>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Cerca" class="search">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="data" matSort>
+    <ng-container matColumnDef="firstName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Ordina">Nome&nbsp;<span *ngIf="getWidth() < 415">utenti</span></mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">
+        <button mat-icon-button color="primary">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+        {{row.firstName}}&nbsp;<span *ngIf="getWidth() < 415">{{row.lastName}}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Ordina">Cognome</mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">{{row.lastName}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="phoneNumber">
+      <mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Ordina">Telefono</mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">{{row.phoneNumber}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Ordina">Email</mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">{{row.email}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="userName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Ordina">Username</mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">{{row.userName}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+
+      <mat-header-cell *matHeaderCellDef>
+        <mat-icon width="30" class="fa-plus-square" [ngClass]="hoverAdd ? 'fas' : 'fad'" (mouseenter)="hoverAdd = !hoverAdd" (mouseleave)="hoverAdd = !hoverAdd"
+        *ngIf="getWidth() > 415" (click)="addUser()" matTooltip="Nuovo utente" matTooltipPosition="left">add_circle</mat-icon>
+      </mat-header-cell>
+
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">
+        <div *ngIf="getWidth() > 800; else moreVert" style="padding-bottom: 15px !important;">
+          <mat-icon class="fas fa-edit ico" *ngIf="!row.isDeleted" (click)="editUser(row.id)" matTooltip="Modifica">edit</mat-icon>
+          <mat-icon class="fas fa-trash-alt ico" *ngIf="!row.isDeleted" (click)="deleteUser(row.id)" matTooltip="Disattiva">delete</mat-icon>
+          <!-- <i class="fas fa-trash-undo ico" *ngIf="row.isDeleted" (click)="reactivateUser(row)" matTooltip="Riattiva"></i> -->
+        </div>
+        <ng-template #moreVert>
+          <button mat-icon-button aria-label="More vertical button" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button *ngIf="!row.isDeleted" (click)="editUser(row.id)" mat-menu-item><mat-icon>edit</mat-icon>Modifica</button>
+            <button *ngIf="!row.isDeleted" (click)="deleteUser(row.id)" mat-menu-item><mat-icon>delete</mat-icon>Disattiva</button>
+            <!-- <button *ngIf="row.isDeleted" (click)="reactivateUser(row)" mat-menu-item><mat-icon>restore</mat-icon>Riattiva</button> -->
+          </mat-menu>
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row class="table_row mat-row cdk-row ng-tns-c203-3 ng-star-inserted" *matRowDef="let row; columns: displayedColumns;" (click)="infoUser(row)"></mat-row>
+
+  </table>
+  <div *ngIf="caricamento" style="padding: 10px;"><mat-spinner></mat-spinner></div>
+  <div class="error" *ngIf="notFound"><h5 class="error">Error 404</h5></div>
+  <div class="error" *ngIf="dbEmpty"><h5 class="error">Nessun utente salvato nel database</h5></div>
+  <mat-paginator class="table-primary" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>
+<router-outlet></router-outlet>

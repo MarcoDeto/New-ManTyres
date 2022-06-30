@@ -1,0 +1,99 @@
+<div class="mat-elevation-z8 mat-app-background basic-container">
+  <span class="mobile-label add">
+    <button mat-fab color="primary" (click)="addVeicolo()" matTooltip="Nuovo Veicolo" matTooltipPosition="left">
+      <mat-icon>add</mat-icon>
+    </button>
+  </span>
+
+  <!--<input type='file' class="input-file btn" (change)="onSelectFile($event)">-->
+  <mat-form-field appearance="outline">
+    <mat-label>Cerca</mat-label>
+    <mat-icon matSuffix>search</mat-icon>
+    <input matInput [(ngModel)]="targa" (ngModelChange)="targa = $event.toUpperCase()" (keyup)="applyFilter($event)" placeholder="Targa o nome cliente">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="veicoli" matSort>
+    <ng-container matColumnDef="targa">
+      <mat-header-cell (click)="orderBy()" *matHeaderCellDef mat-sort-header matTooltip="Ordina">Targa&nbsp;<span *ngIf="getWidth() < 415">veicolo</span></mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="row.IsDeleted ? 'inactive-user table-active' : ''">
+        <button type="button" mat-icon-button color="primary">
+          <mat-icon>directions_car</mat-icon>
+        </button>
+        {{row.targa}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="marca">
+      <mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Ordina">Marca</mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">{{row.marca}}&nbsp;<span *ngIf="getWidth() < 415">{{row.Modello}}</span></mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="modello">
+      <mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Ordina">Modello</mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">{{row.modello}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="cliente">
+      <mat-header-cell *matHeaderCellDef>Cliente</mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">
+        <div *ngIf="row.cliente != null" class="row" style="margin: 0;">
+          <mat-icon *ngIf="row.cliente.isAzienda">business</mat-icon>
+          <mat-icon *ngIf="!row.cliente.isAzienda">account_circle</mat-icon>
+          &nbsp;{{row.cliente.nome}}&nbsp;{{row.cliente.cognome}}
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+
+      <mat-header-cell *matHeaderCellDef>
+        <i class="fa-plus-square" [ngClass]="hoverAdd ? 'fas' : 'fad'" (mouseenter)="hoverAdd = !hoverAdd" (mouseleave)="hoverAdd = !hoverAdd"
+           *ngIf="getWidth() > 415" (click)="addVeicolo()" matTooltip="Nuovo veicolo" matTooltipPosition="left"></i>
+      </mat-header-cell>
+
+      <mat-cell *matCellDef="let row" [ngClass]="row.IsDeleted ? 'inactive-user table-active' : ''">
+        <div *ngIf="getWidth() > 800; else moreVert">
+          <i class="fas fa-edit ico" *ngIf="!row.isDeleted" (click)="editVeicolo(row, $event)" matTooltip="Modifica"></i>
+          <!--<i class="fas fa-trash-alt ico" *ngIf="!row.isDeleted" (click)="deactivateVeicolo(row.veicoloId, $event)" matTooltip="Elimina"></i>
+          <i class="fas fa-trash-undo ico" *ngIf="row.isDeleted" (click)="reactivateVeicolo(row.veicoloId)" matTooltip="Riattiva"></i>-->
+        </div>
+        <ng-template #moreVert>
+          <button mat-icon-button aria-label="More vertical button" (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button *ngIf="!row.isDeleted" (click)="editVeicolo(row, null)" matTooltip="Modifica" mat-menu-item aria-label="Edit button"><mat-icon>edit</mat-icon>Modifica</button>
+            <!--<button *ngIf="!row.isDeleted" (click)="deactivateVeicolo(row.veicoloId, null)" matTooltip="Elimina" mat-menu-item aria-label="Delete button"><mat-icon>delete</mat-icon>Elimina</button>
+            <button *ngIf="row.isDeleted" (click)="reactivateVeicolo(row.veicoloId)" matTooltip="Riattiva" mat-menu-item aria-label="Reactivate button"><mat-icon>restore</mat-icon>Riattiva</button>-->
+          </mat-menu>
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row class="mat-row cdk-row example-element-row ng-tns-c203-3 ng-star-inserted" *matRowDef="let row; columns: displayedColumns;" (click)="infoVeicolo(row)"></mat-row>
+
+  </table>
+  <div *ngIf="caricamento" style="padding: 10px;"><mat-spinner></mat-spinner></div>
+  <div class="error" *ngIf="notFound"><h5 class="error">Error 404</h5></div>
+  <div class="error" *ngIf="dbEmpty"><h5 class="error">Nessun veicolo salvato nel database</h5></div>
+
+  <div>
+    <mat-paginator class="table-primary" showFirstLastButtons [length]="length" [pageSize]="take" *ngIf="getWidth() < 415"
+                   [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent = $event"></mat-paginator>
+
+    <mat-toolbar *ngIf="getWidth() > 415">
+      <mat-toolbar-row style="background-color: #fff;">
+        <div class="nav-menu" style="margin: 30px 0;">
+          <div class="nav-menu excel btn btn-success" (click)="export()" style="padding: 0 15px 0 5px;">
+            <i class="fas fa-download ico"></i> Scarica excel <i class="fas fa-file-excel"></i>
+          </div>
+        </div>
+        <span class="example-spacer"></span>
+        <mat-paginator class="table-primary" showFirstLastButtons [length]="length" [pageSize]="take"
+                       [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent = $event"></mat-paginator>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+</div>
+<router-outlet></router-outlet>

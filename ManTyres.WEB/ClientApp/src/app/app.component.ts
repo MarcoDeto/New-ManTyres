@@ -1,6 +1,6 @@
 import { Component, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { UserService } from './Account/Services/user.service';
+import { UserService } from './Auth/Services/user.service';
 import { LoaderService } from './Shared/Services/loader.service';
 
 @Component({
@@ -35,7 +35,7 @@ export class AppComponent {
   }
 
   onRouterOutletActivate(event: any) {
-    if (event.route.url._value[0] == undefined)
+    if (!event || !event.route.url || !event.route.url._value || !event.route.url._value[0])
       return;
     this.titleService.setTitle(`${this.title} - ${event.title}`);
     if (event.route.url._value[0].path.includes('login') ||

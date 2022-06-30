@@ -1,0 +1,173 @@
+<form novalidate [formGroup]="pneumaticiForm" (ngSubmit)="submitForm()">
+
+  <div class="mat-dialog-title">
+    <h1>Informazioni Pneumatici</h1>
+  </div>
+
+  <mat-dialog-content class="mat-typography">
+    <div *ngIf="IsEditOrNewMode()" class="box">
+
+      <div class="row">
+        <div class="col-sm">
+          <div class="row mobile-padding">
+            <h3 class="titolo col-8 col-sm-4">TARGA*</h3>
+            <!--<button type="button" *ngIf="pneumaticiForm.get('targa').value == 0 || pneumaticiForm.controls['targa'].hasError('required')" class="addVeicolo col-4 col-sm-2" matTooltip="Aggiungi Veicolo" matTooltipShowDelay="500" (click)="addVeicolo()"> <mat-icon class="primary-icon" matSuffix>add_circle_outline</mat-icon> </button>
+            <button type="button" *ngIf="pneumaticiForm.get('targa').value != 0 && !pneumaticiForm.controls['targa'].hasError('required')" class="delVeicolo col-4 col-sm-2" matTooltip="Rimuovi Veicolo" matTooltipShowDelay="500" (click)="removeVeicolo()"> <mat-icon class="clear-icon" matSuffix>clear</mat-icon> </button>-->
+            <mat-form-field appearance="outline" class="full-width col-sm-8">
+              <mat-select formControlName="targa" placeholder="Scegli o Crea" required>
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Cerca Targa..." i18n-placeholderLabel noEntriesFoundLabel="'Nessun veicolo trovato'" i18n-noEntriesFoundLabel [formControl]="filter" [searching]="searching"> </ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let v of filtered | async" [value]="v.veicoloId">
+                  {{v.targa}}
+                </mat-option>
+              </mat-select>
+              <mat-hint><a (click)="addVeicolo()">Crea nuovo</a></mat-hint>
+              <mat-error *ngIf="pneumaticiForm.controls['targa'].hasError('required')">Targa è <strong>obbligatoria</strong>.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="row">
+            <h3 class="titolo col-sm-4">MARCA*</h3>
+            <mat-form-field appearance="outline" class="full-width col-sm-8">
+              <input matInput type="text" maxlength="50" formControlName="marca" placeholder="Marca" value="{{pneumaticiForm.get('marca').value | titlecase}}" required>
+              <mat-error *ngIf="pneumaticiForm.controls['marca'].hasError('required')">Marca è <strong>obbligatoria</strong>.</mat-error>
+              <mat-error *ngIf="pneumaticiForm.controls['marca'].hasError('maxlength')">Massimo <strong> 50</strong> caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="row">
+            <h3 class="titolo col-sm-4">MODELLO</h3>
+            <mat-form-field appearance="outline" class="full-width col-sm-8">
+              <input matInput type="text" maxlength="50" formControlName="modello" placeholder="Modello" value="{{pneumaticiForm.get('modello').value | titlecase}}">
+              <!--<mat-error *ngIf="pneumaticiForm.controls['modello'].hasError('required')">Modello è <strong>obbligatorio</strong>.</mat-error>-->
+              <mat-error *ngIf="pneumaticiForm.controls['modello'].hasError('maxlength')">Massimo <strong> 50</strong> caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <div class="row">
+            <h3 class="titolo col-sm-4">SEDE*</h3>
+            <mat-form-field appearance="outline" class="full-width col-sm-8">
+              <mat-select formControlName="sede" placeholder="Sede" required>
+                <mat-option *ngFor="let s of sedi" [value]="s.sedeId">
+                  {{s.comune}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="pneumaticiForm.controls['sede'].hasError('required')">Sede è <strong>obbligatoria</strong>.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="row">
+            <h3 class="titolo col-sm-4">UBICAZIONE*</h3>
+            <mat-form-field appearance="outline" class="full-width col-sm-8">
+              <input matInput type="text" maxlength="50" formControlName="ubicazione" placeholder="Ubicazione" required>
+              <mat-error *ngIf="pneumaticiForm.controls['ubicazione'].hasError('required')">Ubicazione è <strong>obbligatoria</strong>.</mat-error>
+              <mat-error *ngIf="pneumaticiForm.controls['ubicazione'].hasError('maxlength')">Massimo <strong> 50</strong> caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="row">
+            <h3 class="titolo col-sm-4">STAGIONE*</h3>
+            <mat-form-field appearance="outline" class="full-width col-sm-8">
+              <mat-select formControlName="stagioneId" placeholder="Stagione" required>
+                <mat-option *ngFor="let s of stagioni" [value]="s.stagioneId">
+                  {{s.nome}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="pneumaticiForm.controls['stagioneId'].hasError('required')">Stagione è <strong>obbligatoria</strong>.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <div class="row">
+            <h3 class="titolo col-sm-4">DOT</h3>
+            <mat-form-field appearance="outline" class="full-width col-sm-8">
+              <input matInput type="text" maxlength="4" formControlName="dot" placeholder="0000">
+              <!--<mat-error *ngIf="pneumaticiForm.controls['dot'].hasError('required')">Dot è <strong>obbligatorio</strong>.</mat-error>-->
+              <mat-error *ngIf="pneumaticiForm.controls['dot'].hasError('minLength')">Minimo <strong> 4</strong> cifre.</mat-error>
+              <mat-error *ngIf="pneumaticiForm.controls['dot'].hasError('maxlength')">Massimo <strong> 4</strong> cifre.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="row">
+            <h3 class="titolo col-sm-4">MISURA*</h3>
+            <mat-form-field appearance="outline" class="full-width col-sm-8">
+              <input matInput type="text" maxlength="20" formControlName="misura" placeholder="215/55 R 17 94 H M+S" value="{{pneumaticiForm.get('misura').value | uppercase}}" required>
+              <mat-error *ngIf="pneumaticiForm.controls['misura'].hasError('required')">Misura è <strong>obbligatoria</strong>.</mat-error>
+              <mat-error *ngIf="pneumaticiForm.controls['misura'].hasError('maxlength')">Massimo <strong> 20</strong> caratteri.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="row">
+            <h3 class="titolo col-sm-4">BATTISTRADA*</h3>
+            <mat-form-field appearance="outline" class="full-width col-sm-8">
+              <input matInput type="number" min="0" formControlName="battistrada" placeholder="0000" required>
+              <span matSuffix>mm</span>
+              <mat-error *ngIf="pneumaticiForm.controls['battistrada'].hasError('required')">Battistrada è <strong>obbligatorio</strong>.</mat-error>
+              <mat-error *ngIf="pneumaticiForm.controls['battistrada'].hasError('min')">Min <strong>1</strong>.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <div class="row">
+            <h3 class="titolo col-sm-6" style="text-transform: uppercase">quantità*</h3>
+            <mat-form-field appearance="outline" class="full-width col-sm-6">
+              <input matInput type="number" min="1" max="8" formControlName="quantità" placeholder="Quantità" required>
+              <mat-error *ngIf="pneumaticiForm.controls['quantità'].hasError('required')">Quantità è <strong>obbligatoria</strong>.</mat-error>
+              <mat-error *ngIf="pneumaticiForm.controls['quantità'].hasError('min')">Quantità minima: <strong>1</strong>.</mat-error>
+              <mat-error *ngIf="pneumaticiForm.controls['quantità'].hasError('max')">Quantità massima: <strong>8</strong>.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="row">
+            <h3 class="titolo col-sm-4">DATA UBICAZIONE*</h3>
+            <mat-form-field appearance="outline" class="full-width col-sm-8">
+              <input matInput [ngxMatDatetimePicker]="picker" placeholder="Scegli data"
+                     [min]="minDate" [max]="maxDate" formControlName="inizioDeposito" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                                       [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                                       [touchUi]="touchUi" [color]="color" [enableMeridian]="enableMeridian"
+                                       [disableMinute]="false" [hideTime]="false">
+              </ngx-mat-datetime-picker>
+              <mat-error *ngIf="pneumaticiForm.controls['inizioDeposito'].hasError('required')">Data ubicazione è <strong>obbligatoria</strong>.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="row">
+            <h3 class="titolo col-sm-3">STATO PNEUMATICI*</h3>
+            <mat-form-field appearance="outline" class="full-width col-sm-9">
+              <input matInput type="text" formControlName="statoGomme" placeholder="Esempio: Ottime Condizioni" required>
+              <mat-error *ngIf="pneumaticiForm.controls['statoGomme'].hasError('required')">Stato Pneumatici è<strong> obbligatorio</strong>.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button type="reset" mat-raised-button (click)="closeDialog()">Annulla</button>
+    <button type="submit" mat-raised-button color="primary">
+      {{ IsNewMode()?'Aggiungi':'Salva' }}
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -21,7 +21,7 @@ export class PopUpNotificationService {
 
   show(message: any) {
     if (message) {
-      this.toastr.success();
+      this.toastr.success(this.translate.instant(message));
     } else {
       this.toastr.success('OK');
     }

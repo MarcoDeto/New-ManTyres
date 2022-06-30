@@ -16,6 +16,7 @@ namespace ManTyres.DAL.MongoDB.Models
       public string? FirstName { get; set; }
       public string? LastName { get; set; }
       public string? PhotoUrl { get; set; }
+      public byte[]? imgProfile { get; set; }
       public string? CompanyName { get; set; }
       public string? Street { get; set; }
       public string? Zipcode { get; set; }

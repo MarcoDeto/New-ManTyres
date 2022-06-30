@@ -1,0 +1,307 @@
+<div class="mat-dialog-title row" *ngIf="IsEditOrNewMode()">
+  <h1>Informazioni Cliente</h1>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+  <div *ngIf="IsEditOrNewMode()">
+    <mat-tab-group mat-align-tabs="center" (selectedIndexChange)="IsAzienda($event)" [selectedIndex]="indice">
+      <mat-tab>
+        <ng-template mat-tab-label (click)="editIsAzienda()">
+          <mat-icon class="example-tab-icon">account_box</mat-icon>
+          &nbsp;Privato
+        </ng-template>
+        <form novalidate [formGroup]="PrivatoForm" (ngSubmit)="submitForm()" *ngIf="!isAzienda">
+          <div style=" padding: 0 15px 15px 15px;">
+            <div class="row">
+              <div class="col-sm-8 col-md-6">
+                <div class="row mobile-padding">
+                  <h3 class="titolo col-md-3 col-lg-2">NOME*</h3>
+                  <mat-form-field appearance="outline" class="full-width col-md-9 col-lg-10">
+                    <input matInput type="text" name="first-name" maxlength="50" formControlName="nome" placeholder="Nome" value="{{PrivatoForm.get('nome').value | titlecase}}" required>
+                    <mat-error *ngIf="PrivatoForm.controls['nome'].hasError('required')">Nome è <strong>obbligatorio</strong>.</mat-error>
+                    <mat-error *ngIf="PrivatoForm.controls['nome'].hasError('maxlength')">Massimo <strong>50</strong> caratteri.</mat-error>
+                    <mat-error *ngIf="PrivatoForm.controls['nome'].hasError('pattern')">Nome non può contenere numeri o caratteri speciali.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-6">
+                <div class="row">
+                  <h3 class="titolo col-sm-4">CODICE FISCALE</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-8">
+                    <input matInput type="text" formControlName="codiceFiscale" placeholder="RSSMRA70A41F205Z" value="{{PrivatoForm.get('codiceFiscale').value | uppercase}}">
+                    <!-- <mat-error *ngIf="PrivatoForm.controls['codiceFiscale'].hasError('required')">Codice Fiscale è <strong>obbligatorio</strong>.</mat-error> -->
+                    <mat-error *ngIf="PrivatoForm.controls['codiceFiscale'].hasError('pattern')">Formato errato. Esempio: <strong>RSSMRA70A41F205Z</strong>.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="row">
+                  <h3 class="titolo col-md-2">EMAIL</h3>
+                  <mat-form-field appearance="outline" class="full-width col-md-10">
+                    <input matInput type="email" name="email" formControlName="email" placeholder="tyre@example.com">
+                    <mat-error *ngIf="PrivatoForm.controls['email'].hasError('email')">Formato errato. Esempio: <strong>tyre@example.com</strong>.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="row">
+                  <h3 class="titolo col-sm-4">TELEFONO</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-8">
+                    <input matInput type="tel" name="tel" formControlName="telefono" placeholder="+39 351 000 1111">
+                    <mat-error *ngIf="PrivatoForm.controls['telefono'].hasError('maxlength')">Massimo <strong>20</strong> caratteri.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="row">
+                  <h3 class="titolo col-sm-3 col-lg-2">INDIRIZZO</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-9 col-lg-10">
+                    <input matInput type="text" formControlName="indirizzo" placeholder="Indirizzo">
+                    <mat-error *ngIf="PrivatoForm.controls['indirizzo'].hasError('maxlength')">Massimo <strong>200</strong> caratteri.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="row">
+                  <h3 class="titolo col-sm-5">NAZIONE</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-7">
+                    <input matInput type="text" formControlName="nazione" placeholder="Nazione">
+                    <mat-error *ngIf="PrivatoForm.controls['nazione'].hasError('maxlength')">Massimo <strong>100</strong> caratteri.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm col-md-4">
+                <div class="row">
+                  <h3 class="titolo col-sm-4">COMUNE</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-8">
+                    <input matInput type="text" formControlName="comune" placeholder="Comune">
+                    <mat-error *ngIf="PrivatoForm.controls['comune'].hasError('maxlength')">Massimo <strong>100</strong> caratteri.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm col-md-4">
+                <div class="row">
+                  <h3 class="titolo col-sm-6">PROVINCIA</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-6">
+                    <input matInput type="text" formControlName="provincia" placeholder="Provincia">
+                    <mat-error *ngIf="PrivatoForm.controls['provincia'].hasError('maxlength')">Massimo <strong>100</strong> caratteri.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm col-md-4">
+                <div class="row">
+                  <h3 class="titolo col-sm-5">CAP</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-7">
+                    <input matInput type="number" formControlName="CAP" placeholder="CAP">
+                    <mat-error *ngIf="PrivatoForm.controls['CAP'].hasError('min')">CAP deve avere <strong>5</strong> cifre.</mat-error>
+                    <mat-error *ngIf="PrivatoForm.controls['CAP'].hasError('max')">CAP deve avere <strong>5</strong> cifre.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label (click)="editIsAzienda()">
+          <mat-icon class="example-tab-icon">business</mat-icon>
+          &nbsp;Azienda
+        </ng-template>
+        <form novalidate [formGroup]="AziendaForm" (ngSubmit)="submitForm()" *ngIf="isAzienda">
+          <div style="padding: 0 15px 15px 15px;">
+            <div class="row">
+              <div class="col-sm-8 col-md-6">
+                <div class="row mobile-padding">
+                  <h3 class="titolo col-md-3 col-lg-2">NOME*</h3>
+                  <mat-form-field appearance="outline" class="full-width col-md-9 col-lg-10">
+                    <input matInput type="text" maxlength="50" formControlName="nome" placeholder="Nome" value="{{AziendaForm.get('nome').value | titlecase}}" required>
+                    <mat-error *ngIf="AziendaForm.controls['nome'].hasError('required')">Nome è <strong>obbligatorio</strong>.</mat-error>
+                    <mat-error *ngIf="AziendaForm.controls['nome'].hasError('maxlength')">Massimo <strong>50</strong> caratteri.</mat-error>
+                    <mat-error *ngIf="AziendaForm.controls['nome'].hasError('pattern')">Nome non può contenere numeri o caratteri speciali.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-4 col-md-6">
+                <div class="row">
+                  <h3 class="titolo col-sm-4">PARTITA IVA</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-8">
+                    <input matInput type="text" formControlName="partitaIVA" placeholder="Partita IVA">
+                    <!-- <mat-error *ngIf="AziendaForm.controls['partitaIVA'].hasError('required')">Partita IVA è <strong>obbligatoria</strong>.</mat-error> -->
+                    <mat-error *ngIf="AziendaForm.controls['partitaIVA'].hasError('minlength')">Partita IVA deve avere <strong>11</strong> cifre.</mat-error>
+                    <mat-error *ngIf="AziendaForm.controls['partitaIVA'].hasError('maxlength')">Partita IVA deve avere <strong>11</strong> cifre.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm">
+                <div class="row">
+                  <h3 class="titolo col-md-2">EMAIL</h3>
+                  <mat-form-field appearance="outline" class="full-width col-md-10">
+                    <input matInput type="email" formControlName="email" placeholder="tyre@example.com">
+                    <mat-error *ngIf="AziendaForm.controls['email'].hasError('email')">Formato email non valido. Esempio: <strong>tyre@example.com</strong>.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm">
+                <div class="row">
+                  <h3 class="titolo col-sm-4">TELEFONO</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-8">
+                    <input matInput type="tel" formControlName="telefono" placeholder="+39 351 000 1111">
+                    <mat-error *ngIf="AziendaForm.controls['telefono'].hasError('maxlength')">Massimo <strong>20</strong> caratteri.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="row">
+                  <h3 class="titolo col-sm-3 col-lg-2">INDIRIZZO</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-9 col-lg-10">
+                    <input matInput type="text" formControlName="indirizzo" placeholder="Indirizzo">
+                    <mat-error *ngIf="AziendaForm.controls['indirizzo'].hasError('maxlength')">Massimo <strong>200</strong> caratteri.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="row">
+                  <h3 class="titolo col-sm-4">NAZIONE</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-8">
+                    <input matInput type="text" formControlName="nazione" placeholder="Nazione">
+                    <mat-error *ngIf="AziendaForm.controls['nazione'].hasError('maxlength')">Massimo <strong>100</strong> caratteri.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm col-md-4">
+                <div class="row">
+                  <h3 class="titolo col-sm-4">COMUNE</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-8">
+                    <input matInput type="text" formControlName="comune" placeholder="Comune">
+                    <mat-error *ngIf="AziendaForm.controls['comune'].hasError('maxlength')">Massimo <strong>100</strong> caratteri.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm col-md-4">
+                <div class="row">
+                  <h3 class="titolo col-sm-6">PROVINCIA</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-6">
+                    <input matInput type="text" formControlName="provincia" placeholder="Provincia">
+                    <mat-error *ngIf="AziendaForm.controls['provincia'].hasError('maxlength')">Massimo <strong>100</strong> caratteri.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-sm col-md-4">
+                <div class="row">
+                  <h3 class="titolo col-sm-4">CAP</h3>
+                  <mat-form-field appearance="outline" class="full-width col-sm-8">
+                    <input matInput type="number" formControlName="CAP" placeholder="CAP">
+                    <mat-error *ngIf="AziendaForm.controls['CAP'].hasError('min')">CAP deve avere <strong>5</strong> cifre.</mat-error>
+                    <mat-error *ngIf="AziendaForm.controls['CAP'].hasError('max')">CAP deve avere <strong>5</strong> cifre.</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
+
+  </div>
+
+  <div *ngIf="IsViewMode()">
+    <div class="dialog_info_mobile_header" *ngIf="getWidth() < 415">
+      <button class="close" mat-icon-button matTooltip="Chiudi" matTooltipShowDelay="1000" (click)="closeDialog()" style="float: left;"><mat-icon>close</mat-icon></button>
+      <button mat-icon-button matTooltip="Modifica" (click)="ShowEdit()"><mat-icon>edit</mat-icon></button>
+      <!--<button mat-icon-button matTooltip="Elimina" (click)="deleteCliente(data.cliente.clienteId)"><mat-icon>delete</mat-icon></button>-->
+    </div>
+    <div class="dialog_info_body">
+      <div class="dialog_info_title_box">
+        <div [ngClass]="getWidth() > 415 ? 'dialog_info_icon' : ''">
+          <button type="button" mat-fab color="primary">
+            <mat-icon *ngIf="data.cliente.isAzienda">business</mat-icon>
+            <mat-icon *ngIf="!data.cliente.isAzienda">account_circle</mat-icon>
+          </button>
+        </div>
+        <div [ngClass]="getWidth() > 415 ? 'dialog_info_title_subtitle' : 'dialog_info_title_subtitle_mobile'">
+          <h2>{{data.cliente.nome}}</h2>
+        </div>
+        <div class="dialog_info_actions" *ngIf="getWidth() > 415">
+          <button mat-icon-button matTooltip="Modifica" (click)="ShowEdit()"><mat-icon>edit</mat-icon></button>
+          <!--<button mat-icon-button matTooltip="Elimina" (click)="deleteCliente(data.cliente.clienteId)"><mat-icon>delete</mat-icon></button>-->
+          <button cdkFocusInitial mat-icon-button matTooltip="Chiudi" (click)="closeDialog()"><mat-icon>close</mat-icon></button>
+        </div>
+      </div>
+
+      <mat-divider class="dialog_info_divider" [ngClass]="data.cliente.codiceFiscale || data.cliente.partitaIva || data.cliente.email || data.cliente.telefono ||
+      data.cliente.indirizzo || data.cliente.cap || data.cliente.comune || data.cliente.provincia || data.cliente.nazione || veicoli.length != 0 ? '' : 'dialog_info_divider_disable'">
+      </mat-divider>
+
+      <div class="dialog_info_details_box" *ngIf="data.cliente.codiceFiscale || data.cliente.partitaIva || data.cliente.email || data.cliente.telefono
+      || data.cliente.indirizzo || data.cliente.cap || data.cliente.comune || data.cliente.provincia || data.cliente.nazione || veicoli.length != 0">
+        <div class="row" style="padding: 0 10px; margin-bottom: 10px; width: 100%;">
+          <span class="col-12 no-padding" *ngIf="data.cliente.codiceFiscale || data.cliente.partitaIva || data.cliente.email || data.cliente.telefono
+      || data.cliente.indirizzo || data.cliente.cap || data.cliente.comune || data.cliente.provincia || data.cliente.nazione">
+            Dettagli cliente
+          </span>
+          <div class="dialog_info_details col-12 col-sm-6" *ngIf="data.cliente.codiceFiscale">
+            <i class="fas fa-user"></i>
+            <p>{{data.cliente.codiceFiscale | uppercase}}</p>
+          </div>
+          <div class="dialog_info_details col-12 col-sm-6" *ngIf="data.cliente.partitaIva">
+            <i class="fas fa-address-card"></i>
+            <p>{{data.cliente.partitaIva}}</p>
+          </div>
+          <div class="col-12 row no-padding" *ngIf="data.cliente.email || data.cliente.telefono">
+            <div class="dialog_info_details col-12 col-sm-6" *ngIf="data.cliente.email">
+              <i class="fas fa-envelope"></i>
+              <p class="emailtext">{{data.cliente.email}}</p>
+            </div>
+            <div class="dialog_info_details col-12 col-sm-6" *ngIf="data.cliente.telefono">
+              <i class="fas fa-phone-alt"></i>
+              <p>{{data.cliente.telefono}}</p>
+            </div>
+          </div>
+          <div class="col-12 row no-padding" *ngIf="data.cliente.indirizzo || data.cliente.cap || data.cliente.comune || data.cliente.provincia || data.cliente.nazione">
+            <div class="dialog_info_details col-12 col-sm-5" *ngIf="data.cliente.indirizzo">
+              <i class="fas fa-map-marker-alt"></i>
+              <p>{{data.cliente.indirizzo}} {{data.cliente.civico}}</p>
+            </div>
+            <div class="dialog_info_details col-12 col-sm-4" *ngIf="data.cliente.cap|| data.cliente.comune || data.cliente.provincia">
+              <i class="fas fa-map-marker-alt" [ngClass]="data.cliente.indirizzo ? 'white' : ''"></i>
+              <p>{{data.cliente.cap}} {{data.cliente.comune}} {{data.cliente.provincia}}</p>
+            </div>
+            <div class="dialog_info_details col-12 col-sm-3" *ngIf="data.cliente.nazione">
+              <i class="fas fa-map-marker-alt" [ngClass]="data.cliente.indirizzo || data.cliente.cap || data.cliente.comune || data.cliente.provincia ? 'white' : ''"></i>
+              <p>{{data.cliente.nazione}}</p>
+            </div>
+          </div>
+        </div>        
+
+        <div style="padding: 0 10px">
+          <span *ngIf="veicoli.length != 0">Veicoli</span>
+          <div class="row">
+            <div *ngFor="let veicolo of veicoli" align="center" class="col-sm-6 col-md-6 col-lg-4" style=" padding: 10px 15px;">
+              <veicolo [veicolo]="veicolo"></veicolo>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions *ngIf="IsEditOrNewMode()">
+  <button type="reset" mat-raised-button (click)="closeDialog()">Chiudi</button>
+  <button mat-raised-button color="primary" (click)="submitForm()" [disabled]>
+    {{ IsNewMode()?'Aggiungi':'Salva' }}
+  </button>
+</mat-dialog-actions>

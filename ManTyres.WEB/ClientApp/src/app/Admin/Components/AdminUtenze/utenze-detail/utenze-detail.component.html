@@ -1,0 +1,145 @@
+<div>
+  <header>
+    <h1>{{ "USERS_DETAIL_TITLE" | translate }}</h1>
+    <p>{{ "USERS_DETAIL_SUBTITLE" | translate }}</p>
+  </header>
+  <form novalidate [formGroup]="userForm" (ngSubmit)="OnSubmit()">
+
+    <div class="info-base row">
+      <div class="box col-12">
+        <div>
+          <h5>{{ "USERS_DETAIL_INFO" | translate }}</h5>
+        </div>
+        <div class="row" style="margin-top: 20px;" [ngClass]="getWidth() > 415 ? 'margin-foto' : 'flex-column-reverse'">
+
+          <div class="col-12 col-sm-6 col-md-3 row">
+            <h3 class="titolo col-12 col-md-4">{{ 'FIRST_NAME_PLACEHOLDER' | translate }}*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="text" name="given-name" maxlength="50" formControlName="firstname" placeholder="{{'FIRST_NAME_PLACEHOLDER' | translate }}" value="{{userForm.value.firstname | titlecase}}" required>
+              <mat-error *ngIf="getUserControl.firstname.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+              <mat-error *ngIf="getUserControl.firstname.errors?.pattern">{{ 'ERROR_NUMBERSCHARACTERS' | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-3 row">
+            <h3 class="titolo col-12 col-md-4">{{ 'LAST_NAME_PLACEHOLDER' | translate }}*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="text" name="family-name" maxlength="50" formControlName="lastname" placeholder="{{ 'LAST_NAME_PLACEHOLDER' | translate }}" value="{{userForm.value.lastname | titlecase}}" required>
+              <mat-error *ngIf="getUserControl.lastname.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+              <mat-error *ngIf="getUserControl.lastname.errors?.pattern">{{ 'ERROR_NUMBERSCHARACTERS' | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-3 row">
+            <h3 class="titolo col-12 col-md-4 mobile-padding">{{ 'LOGIN_USERNAME' | translate }}*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput type="text" name="username" maxlength="256" formControlName="username" placeholder="{{ 'LOGIN_USERNAME' | translate }}" required>
+              <mat-error *ngIf="getUserControl.username.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+              <mat-error *ngIf="getUserControl.username.errors?.pattern">{{ 'ERROR_USERNAME_FORMAT' | translate }}</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-3 row mobile-padding">
+            <h3 class="titolo col-4">{{ "FOTO_PLACEHOLDER" | translate }}</h3>
+            <div *ngIf="!imagePath" class="upload-btn-wrapper col-6">
+              <button type="button" class="input-file"></button>
+              <input type='file' class="input-file btn" (change)="onSelectFile($event)">
+            </div>
+            <span *ngIf="imagePath" class="col-8 col-md-6">
+              <img [src]="imagePath" height="100" (click)="imageClicked=true" matTooltip="Visualizza immagine">
+              <mat-icon class="fas fa-times-square" (click)="removeImage()" matTooltip="Rimuovi immagine" matTooltipPosition="right">backspace</mat-icon>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="box col-12 col-md-6 box_info">
+        <div>
+          <h5>{{ "USERS_DETAIL_CONTACT" | translate }}</h5>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-2 mobile-padding">{{ "EMAIL_PLACEHOLDER" | translate }}*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-10">
+              <input matInput type="email" name="email" formControlName="email" placeholder="unitest@example.com" required>
+              <mat-error *ngIf="getUserControl.email.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+              <mat-error *ngIf="getUserControl.email.errors?.email">{{'ERROR_EMAILFORMAT' | translate}}</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-4">{{ "PHONENUMBER_PLACEHOLDER" | translate }}*</h3>
+            <mat-form-field appearance="outline" name="tel" class="col-12 col-md-8">
+              <input matInput type="tel" formControlName="phoneNumber" placeholder="+39 351 000 1111" maxlength="20" required>
+              <mat-error *ngIf="getUserControl.phoneNumber.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+      </div>
+      <div class="box col-12 col-md-3 box_role row">
+        <div style="padding: 0 !important;">
+          <h5>{{ "ROLE_PLACEHOLDER" | translate }}</h5>
+        </div>
+
+        <div class="row" style="margin-top: 20px;">
+          <h3 class="titolo col-12 col-md-4">{{ "ROLE_PLACEHOLDER" | translate }}*</h3>
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-select formControlName="role">
+              <mat-option [value]="Role.Administrator">{{ "ROLE_ADMIN" | translate }}</mat-option>
+              <mat-option [value]="Role.Manager">{{ "ROLE_MANAGER" | translate }}</mat-option>
+              <mat-option [value]="Role.Marketer">{{ "ROLE_MARKETING" | translate }}</mat-option>
+              <mat-option [value]="Role.Worker">{{ "ROLE_WORKSHOP" | translate }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </div>
+      <div class="box col-3 box_password row">
+        <div style="padding: 0 !important;">
+          <h5>Password</h5>
+        </div>
+        <div class="row" style="margin-top: 20px;">
+          <h3 class="titolo col-12 col-md-4" *ngIf="getWidth() > 500">PASSWORD*</h3>
+          <button mat-raised-button color="warn" class="reset col-10 col-md-2 " type="button" (click)="resetPassword = !resetPassword" style="margin-bottom: auto;">RESET</button>
+        </div>
+        <!-- <div class="row" *ngIf="IsNewMode() || resetPassword">
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-4 mobile-padding">PASSWORD*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput [type]="hide ? 'password' : 'text'" name="new-password" placeholder="Password" formControlName="password" autocomplete="new-password" required>
+              <mat-error *ngIf="getUserControl.password.errors?.required">Password è <strong>obbligatoria</strong>.</mat-error>
+              <mat-error *ngIf="getUserControl.password.errors?.maxlength">Minimo 8 caratteri.</mat-error>
+              <mat-error *ngIf="getUserControl.password.errors?.pattern">Almeno una lettera maiuscola e minuscola, un numero e un speciale.</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6 row">
+            <h3 class="titolo col-12 col-md-4">CONFERMA*</h3>
+            <mat-form-field appearance="outline" class="col-12 col-md-8">
+              <input matInput [type]="hide ? 'password' : 'text'" name="new-password" placeholder="Conferma" formControlName="confermaPassword" [errorStateMatcher]="matcher" required>
+              <mat-error *ngIf="getUserControl.confermaPassword.errors?.required">Password è <strong>obbligatoria</strong>.</mat-error>
+              <mat-error *ngIf="userForm.value.password !== userForm.value.confermaPassword">Le Password non corrispondono.</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="row col-12">
+            <mat-checkbox color="primary" [checked]="!hide" (click)="changeValue(hide)" class="col-6 col-md-2">Mostra</mat-checkbox>
+            <p *ngIf="IsEditMode() && getWidth() > 415" class="col-6" style="font-size: 12px;">Compilando questo campo si modifica direttamente la password dell'utente. Ricordarsi di comunicare il cambiamento!</p>
+            <button *ngIf="resetPassword" mat-raised-button class="submit col-4 col-md-2" type="button" (click)="resetPassword = !resetPassword" style="margin-bottom: auto;">Annulla</button>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <footer>
+      <button mat-raised-button class="submit" type="submit">
+        <span *ngIf="IsEditMode()">{{ "SAVE" | translate }}</span>
+        <span *ngIf="IsNewMode()">{{ "CREATE" | translate }}</span>
+      </button>
+      <p style="margin-top: 15px !important;"> {{ "USERS_DETAIL_BOTTOM" | translate }} </p>
+    </footer>
+  </form>
+</div>
+
+<app-image-viewer *ngIf="imageClicked"
+                  [src]="imagePath"
+                  (closeViewerEmitter)="imageClicked=false">
+</app-image-viewer>

@@ -1,0 +1,45 @@
+<div class="container">
+  <h1 style="text-align: center; margin:30px 0 50px 0">Inserimento dati da un file Excel&nbsp;&nbsp;<i class="fas fa-file-excel"></i></h1>
+
+  <ng-container *ngIf="loading == false">
+    <div class="row" style="padding: 10px">
+      <h3 class="col-12 col-sm-6">Inserisci tutti i dati</h3>
+      <button class="btn btn-outline-success tracciato col-12 col-sm-6" (click)="tracciatoPneumatici()">
+        <i class="fas fa-file-download"></i> Scarica il tracciato di esempio
+      </button>
+      <p class="col-12" style="margin-top: 10px !important;">
+        Il tracciato di esempio in formato excel contiene i nomi delle colonne che il sistema è in grado di leggere.
+      </p>
+      <p class="col-12">Impostare le colonne 'INIZIO DEPOSITO' e 'FINE DEPOSITO' in formato Datetime.</p>
+      <p class="col-12">CONSIGLIO: scaricare e aprire il tracciato di esempio scaricabile qua sopra e poi copiarci la lista completa.</p>
+      <p class="col-12">AVVERTENZA: Se le caselle 'INIZIO DEPOSITO', 'TARGA' e 'CLIENTE' sono vuote, la riga non verrà salvata.</p>
+    </div>
+    <form novalidate [formGroup]="importForm" (ngSubmit)="caricaTutto()">
+      <div class="row" style=" margin: 5px 0 10px 0;">
+        <p class="titolo col-sm-8" style="text-transform:uppercase">SELEZIONA LA SEDE (SE NEL FILE NON è STATA INSERITA)</p>
+        <select class="custom-select custom-select-lg col-sm-4 select-sedi" formControlName="sede" placeholder="Sede">
+          <option selected value=0>Scegli sede</option>
+          <option *ngFor="let s of sedi" [value]="s.sedeId">
+            {{s.comune}}
+          </option>
+        </select>
+      </div>
+      <div class="input-group mb-3">
+        <div class="custom-file">
+          <input #input type="file" class="custom-file-input" id="input" (change)="loadAll($event)">
+          <label #label id="label" class="custom-file-label" for="input" aria-describedby="inputGroupFileAddon02">Scegli un file..</label>
+        </div>
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-outline-primary">Carica</button>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-container *ngIf="loading == true">
+    <div class="center-page">
+      Attendere, caricamento dati in corso...
+      <img class="spinner rotating" src="assets/Images/loader.png">
+    </div>
+  </ng-container>
+</div>

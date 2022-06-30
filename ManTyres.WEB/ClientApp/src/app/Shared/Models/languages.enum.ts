@@ -4,7 +4,7 @@ export enum LanguageNames {
    de = "Deutsch",
    en = "English",
    es = "Español",
-   fr = "Français",  
+   fr = "Français",
    hu = "Magyar",
    in = "हिन्दी",
    it = "Italiano",
@@ -14,7 +14,7 @@ export enum LanguageNames {
    pt = "Português",
    ro = "Română",
    ru = "Русский",
-   se = "Svenska",   
+   se = "Svenska",
    tr = "Türkçe",
    vn = "Tiếng Việt"
 }

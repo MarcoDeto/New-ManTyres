@@ -1,0 +1,78 @@
+.panel {
+  padding: 10px;
+}
+
+.tot {
+  margin: 5px;
+}
+
+.testo {
+  text-align: center;
+  color: white;
+}
+
+.mat-divider {
+  border-top-color: white;
+  position: inherit !important;
+  width: 100% !important;
+}
+
+.pneumatici {
+  background-color: rgb(0, 123, 255);
+}
+
+.pneumatici-disable {
+  background-color: rgba(0, 123, 255,0.7);
+  cursor: pointer;
+}
+
+.pneumatici-disable:hover {
+  background-color: rgb(0, 123, 255);
+}
+
+.veicoli {
+  background-color: rgb(255, 193, 7);
+}
+
+.veicoli-disable {
+  background-color: rgba(255, 193, 7,0.7);
+  cursor: pointer;
+}
+
+.veicoli-disable:hover {
+  background-color: rgb(255, 193, 7);
+}
+
+.clienti {
+  background-color: rgb(40, 167, 69);
+}
+
+.clienti-disable {
+  background-color: rgba(40, 167, 69,0.7);
+  cursor: pointer;
+}
+
+.clienti-disable:hover {
+  background-color: rgb(40, 167, 69);
+}
+
+.utenti {
+  background-color: #dc3545;
+}
+
+.group-button {
+  margin: auto;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.right {
+  float: right;
+  justify-content: flex-end;
+}
+
+.active-btn {
+  color: #fff !important;
+  background-color: #0062cc !important;
+  border-color: #005cbf !important;
+}

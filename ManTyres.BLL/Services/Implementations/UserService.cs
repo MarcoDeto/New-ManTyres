@@ -6,11 +6,8 @@ using ManTyres.DAL.MongoDB.Interfaces;
 using ManTyres.DAL.MongoDB.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
 using Newtonsoft.Json;
 using System.Net;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace ManTyres.BLL.Services.Implementations
 {
@@ -18,7 +15,7 @@ namespace ManTyres.BLL.Services.Implementations
    {
       private readonly IUserRepository _userRepository;
       private readonly IMapper _mapper;
-      private readonly ILogger<IUserService> _logger;
+      private readonly ILogger<UserService> _logger;
 
       public UserService(IUserRepository userRepository, IMapper mapper, ILogger<UserService> logger) : base(userRepository, mapper, logger)
       {

@@ -1,0 +1,26 @@
+<body>
+  <div class="col-sm-12 col-md-12 col-lg-12">
+    <div class="row list">
+      <div *ngFor="let sede of sedi" class="col-sm-6 col-md-6 col-lg-4 card">
+        <card-sede [sede]="sede" [routerLink]="['/admin/sede', sede.sedeId]"></card-sede>
+      </div>
+      <a class="col-sm-6 col-md-6 col-lg-4 card" [routerLink]="['/admin/sede', 'Add']">
+        <div class="contenitore add" [ngClass]="hover ? 'mat-elevation-z8' : ''" (mouseenter)="hoverListItem(hover)" (mouseleave)="hoverListItem(hover)">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-3 icons">
+                <div class="card-title"><i class="fas fa-warehouse-alt"></i></div>
+              </div>
+              <div class="col-9 info">
+                <div class="col-12 card-title">NUOVA</div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body-add">
+            <i class="fas fa-plus"></i>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</body>

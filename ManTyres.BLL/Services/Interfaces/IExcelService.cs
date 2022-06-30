@@ -14,14 +14,16 @@ namespace ManTyres.BLL.Services.Interfaces
 		Response<byte[]> TracciatoClienti();
 		Response<byte[]> TracciatoVeicoli();
 		Response<byte[]> TracciatoAll();
-		Task<Response<bool>> ImportClienti(Stream file);
+		/*Task<Response<bool>> ImportClienti(Stream file);
 		Task<Response<bool>> ImportVeicoli(Stream file);
-		Task<Response<bool>> ImportAll(Stream file, int sedeId, string userId, string ci);
-		Task<Response<byte[]>> ExportClienti();
+		Task<Response<bool>> ImportAll(Stream file, int sedeId, string userId, string ci);*/
+		Task<Response<bool>> ImportCountries(Stream file);
+		Task<Response<bool>> ImportCities(Stream file);
+		/*Task<Response<byte[]>> ExportClienti();
 		Task<Response<byte[]>> ExportVeicoli();
 		Task<Response<byte[]>> ExportPneumatici(int sede, int stagione, bool orderByDesc);
 		Task<Response<byte[]>> ExportInventario(int sede, int stagione, bool orderByDesc);
 		Task<Response<byte[]>> ExportArchivio(int sede, int stagione, bool? inizioOrderByDesc, bool? fineOrderByDesc);
-		Task<Response<byte[]>> ExportCestino(int sede, int stagione, bool? inizioOrderByDesc, bool? fineOrderByDesc);
+		Task<Response<byte[]>> ExportCestino(int sede, int stagione, bool? inizioOrderByDesc, bool? fineOrderByDesc);*/
 	}
 }

@@ -1,0 +1,219 @@
+@import '../../../../Shared/variables.scss';
+
+:host ::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 1.34375em !important;
+  padding-top: 1.34375em !important;
+  width: 100% !important;
+  float: none !important;
+}
+
+:host ::ng-deep .mat-form-field-flex {
+  display: inline-flex;
+  align-items: baseline;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+:host ::ng-deep .mat-form-field-infix {
+  border-top: .84375em solid transparent;
+}
+
+form {
+  margin: 15px 0;
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  padding: 2px;
+}
+
+.mat-typography {
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: auto;
+  background: linear-gradient(white 30%, rgba(255, 255, 255, 0)), linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%, radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)), radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+  /* Opera doesn't support this in the shorthand */
+  background-attachment: local, local, scroll, scroll;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  margin-bottom: 1rem;
+}
+
+::ng-deep .mat-form-field-subscript-wrapper {
+  font-size: 80% !important;
+}
+
+.mat-dialog-title {
+  margin: 0;
+  display: block;
+  font-size: 24px;
+  padding: 0;
+}
+
+.inputImg {
+  width: 100%;
+}
+
+.view-container {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.user-field {
+  font-size: medium;
+}
+
+.field-title {
+  text-indent: .5em;
+  margin-bottom: .5rem;
+  font-weight: 500;
+  font-style: oblique;
+}
+
+mat-hint {
+  color: #0014ffc7;
+}
+
+/* INFO USER*/
+.header {
+  padding: 10px;
+  margin: 0;
+  padding-bottom: 0;
+  text-align: end;
+  color: #77787d;
+}
+
+.close {
+  float: left;
+}
+
+.body {
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  width: 99%;
+}
+
+.nome {
+  width: 60%;
+  float: left;
+  padding-left: 20px;
+  height: 56px;
+  font-size: 22px;
+  text-align: start;
+}
+
+.nome-mobile {
+  padding-top: 15px;
+}
+
+.profilo {
+  float: left;
+}
+
+.buttons {
+  float: right;
+  display: block;
+  height: 56px;
+  padding: 8px;
+  text-align: end;
+  color: #77787d;
+}
+
+mat-divider {
+  margin: 10px;
+  margin-left: 0px;
+  width: 100%;
+}
+
+.dettagli {
+  width: 100%;
+  font: 20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+}
+
+p {
+  font-size: 16px;
+  padding: 0px;
+  margin: 0px;
+}
+
+span {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.fa-user-circle {
+  font-size: 100px;
+  float: none;
+  width: 100%;
+  text-align: center;
+  color: #3f51b5;
+}
+
+i {
+  font-size: 19px;
+  float: left;
+  width: 40px;
+  text-align: center;
+  color: #77787d;
+}
+
+.emailtext {
+  color: #2962ff;
+}
+
+.details {
+  margin: 20px 0 20px 0;
+}
+
+h1 {
+  font-size: 26px;
+  margin: 0;
+}
+
+.mat-fab {
+  box-shadow: 0 0 black;
+  background-color: #3f51b5;
+}
+/* small tablet styles */
+@media screen and (min-width: 620px) {
+}
+/* large tablets & laptop styles */
+@media screen and (min-width: 960px) {
+}
+/* desktop styles */
+@media screen and (min-width: 1200px) {
+}
+
+.momentanea {
+  border: solid 0.5px #e0e0e0;
+  border-radius: 0.5em;
+  padding-bottom: 1rem;
+  padding-left: 10px;
+}
+
+.image-container, .with-img {
+  text-align: center;
+}
+
+.image-hint {
+  font-size: 10.5px;
+}
+
+img {
+  border-radius: 50%;
+  height: 100px;
+  width: 100px !important;
+  border: none;
+}

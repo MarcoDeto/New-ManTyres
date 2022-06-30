@@ -1,0 +1,126 @@
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  transform: translateY(-1.1em) scale(.75);
+  width: 133.33333%;
+}
+
+.mat-elevation-z8 {
+  padding: 10px 10px 5px 10px;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+  max-height: 750px;
+  min-width: 300px;
+  justify-content: flex-start;
+  margin: 0;
+  padding-left: 10px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.example-element-row:not(.example-expanded-row):hover {
+  background: #a5c4e5;
+  cursor: pointer;
+}
+
+.example-element-row:not(.example-expanded-row):active {
+  background: #a5c4e5;
+}
+
+.example-element-row {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+
+mat-header-cell, mat-cell {
+  padding: 0px !important;
+  font-size: 18px;
+  vertical-align: middle;
+  /* flex-direction: column; */
+  justify-content: stretch;
+}
+
+.mat-column-actions {
+  flex: 0 0 10% !important;
+  justify-content: center;
+}
+
+.mat-column-email {
+  flex: 0 0 30% !important;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.mobile-label {
+  display: none;
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+.inactive-user {
+  color: #888888 !important;
+}
+
+.error {
+  width: 100%;
+  text-align: center !important;
+  margin-top: 10px;
+}
+
+.fa-plus-square {
+  font-size: 45px;
+  cursor: pointer;
+  color: #0069d9;
+}
+
+.btn-add {
+  color: #fff !important;
+  background-color: #0069d9 !important;
+  border-color: #0062cc !important;
+}
+
+.btn-add:hover {
+  color: black !important;
+  background-color: transparent !important;
+  border: none !important;
+  transform: scale(1.5) !important;
+}
+
+.ico {
+  font-size: 20px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+
+@media(max-width: 415px) {
+  .mobile-label {
+    width: 100px;
+    display: inline-block;
+    font-weight: bold;
+  }
+
+  .mobile-table {
+    width: 0px !important;
+  }
+
+  .add {
+    bottom: 1.5rem;
+    right: -1.5em;
+    position: fixed;
+  }
+}

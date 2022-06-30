@@ -1,14 +1,47 @@
-<h1>Hello, world!</h1>
-<p>Welcome to your new single-page application, built with:</p>
-<ul>
-  <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-  <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for client-side code</li>
-  <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
-<p>To help you get started, we've also set up:</p>
-<ul>
-  <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-  <li><strong>Angular CLI integration</strong>. In development mode, there's no need to run <code>ng serve</code>. It runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-  <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
-</ul>
-<p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+<div class="body_container">
+  <div class="place_wrapper row">
+    <app-place [place]="place" *ngFor="let place of places" class="col-3"></app-place>
+  </div>
+</div>
+
+<div class="search_bar">
+  <div class="search_wrapper">
+    <div class="search_box">
+      <label>Dove</label>
+      <div><input placeholder="Cerca gommista"></div>
+    </div>
+    <div class="search_box">
+      <label>Pneumatici</label>
+      <p style="width: 100%;">Seleziona misura</p>
+    </div>
+    <div class="search_box">
+      <label>Veicolo</label>
+      <div><input placeholder="Seleziona veicolo"></div>
+    </div>
+    <div class="search_box_icon">
+      <mat-icon>search</mat-icon>
+      <label>Cerca</label>
+    </div>
+  </div>
+
+  <div class="search_expand">
+    <label>Utilizza la tua posizione {{ipAddress}}</label>
+    <p>Pneumatici {{location?.city}} {{location?.country}}</p>
+    <p>{{places.length}}</p>
+
+    <p *ngIf="complete">FINISH</p>
+    <button (click)="getIPAddress()">START</button>
+    <button (click)="addPlaces()">addPlaces</button>
+    
+    <button (click)="getAllPlaces()">getPlaces</button>
+    <button (click)="updatePlaces()">updatePlaces</button>
+  </div>
+
+</div>
+
+
+
+<img *ngIf="photo_reference" [src]="'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='+photo_reference+'&key='+GOOGLE_MAPS_API_KEY">
+<a href="https://maps.google.com/maps/contrib/116714758872346814177">Joe Gomme</a>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkxjqWpry4Gp2gNprd-dtiOhShY5YnbP0&callback=initMap"></script>
