@@ -1,9 +1,5 @@
 <div class="container" *ngIf="place">
-  <div>
-    <img #image *ngIf="imageSelected == i" class="d-block w-100" [style.height.px]="imageWidth"
-    [src]="'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='+photo+'&key='+GOOGLE_MAPS_API_KEY">
-  </div>
-  <div class="carousel slide" *ngIf="place.google_Photos && place.google_Photos.length > 0">
+  <div class="carousel slide" *ngIf="place.google_Photos">
     <ol class="carousel-indicators">
       <li *ngFor="let photo of place.google_Photos; let i = index;"
           [ngClass]="imageSelected == i ? 'active' : ''">
@@ -15,14 +11,16 @@
           [src]="'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='+photo+'&key='+GOOGLE_MAPS_API_KEY">
       </div>
     </div>
-    <a class="carousel-control-prev _1d3iagv" (click)="previous()" style="cursor: pointer;">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="_1d3iagv carousel-control-next" (click)="next()" style="cursor: pointer;">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
+    <ng-container *ngIf="place.google_Photos && place.google_Photos.length > 0">
+      <a class="carousel-control-prev _1d3iagv" (click)="previous()" style="cursor: pointer;">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="_1d3iagv carousel-control-next" (click)="next()" style="cursor: pointer;">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </ng-container>
   </div>
 
   <div class="info_wrapper">
