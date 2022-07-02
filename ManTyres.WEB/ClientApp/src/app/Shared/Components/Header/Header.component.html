@@ -1,6 +1,7 @@
-<div class="custom-navbar" *ngIf="hideHeader == false">
+<div class="custom-navbar" *ngIf="hideHeader()">
 
-  <div [routerLink]="['/']" matTooltip="Vai alla Home" matTooltipShowDelay="1000" style="display: flex; place-items: center;">
+  <div [routerLink]="['/']" matTooltip="Vai alla Home" matTooltipShowDelay="1000"
+    style="display: flex; place-items: center;">
     <h1 *ngIf="getWidth() != 375" class="logo">MAN</h1>
     <a><img src="../assets/Images/logo_white.png" height="30" class="align-top logo"></a>
     <h1 *ngIf="getWidth() != 375" class="logo">TYRES</h1>
@@ -8,7 +9,8 @@
 
   <div *ngIf="getWidth() != 375 && userService.isLoggedIn()" style="margin-right: auto !important;">
     <div style="padding-top: 5px;" class="menu">
-      <button class="hamburger hamburger--collapse nav-link" type="button" [ngClass]="open ? 'is-active' : ''" (click)="changeSideNav()">
+      <button class="hamburger hamburger--collapse nav-link" type="button" [ngClass]="open ? 'is-active' : ''"
+        (click)="changeSideNav()">
         <span class="hamburger-box">
           <span class="hamburger-inner"></span>
         </span>
@@ -20,28 +22,7 @@
       <span class="span-link">Pricing</span>
     </a>
   </div>
-  <ng-container *ngIf="userService.isLoggedIn()">
-    <div *ngIf="getWidth() != 375" style="margin-right: 20px;">
-      <a class="nav-link" mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>person</mat-icon>
-        <mat-icon>arrow_drop_down</mat-icon>
-      </a>
-      <mat-menu #menu="matMenu">
-        <a mat-menu-item [routerLink]="['/login']">
-          <mat-icon>login</mat-icon>
-          <span>{{ "LOGIN" | translate}}</span>
-        </a>
-        <a mat-menu-item [routerLink]="['/account/profile']">
-          <mat-icon>account_circle</mat-icon>
-          <span>Profilo</span>
-        </a>
-        <a mat-menu-item (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          <span>{{ "LOGOUT" | translate }}</span>
-        </a>
-      </mat-menu>
-    </div>
-  </ng-container>
+
   <ng-container *ngIf="userService.isLoggedOut()">
     <div *ngIf="getWidth() != 375">
       <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/account/login']">
@@ -120,5 +101,89 @@
       </a>
     </mat-menu>
   </div>
-  <mat-icon style="color: #FFF;">language</mat-icon>
+
+  <mat-icon class="language_icon" (click)="openLocalSettings()">language</mat-icon>
+
+  <ng-container>
+    <div *ngIf="getWidth() != 375" class="user_wrapper" style="margin-left: 20px;">
+      <a class="nav-link" [matMenuTriggerFor]="menu" style="padding: 2px 0;">
+        <mat-icon class="user_icon" 
+          *ngIf="!userService.userShared || 
+          !userService.userShared.photoUrl">
+          account_circle
+        </mat-icon>
+        <ng-container *ngIf="userService.userShared && userService.userShared.photoUrl">
+          <img height="35" [src]="userService.userShared.photoUrl">
+        </ng-container>
+        <mat-icon [ngStyle]="{'margin-bottom': userService.userShared && userService.userShared.photoUrl ? '5px' : '0' }">arrow_drop_down</mat-icon>
+      </a>
+      <mat-menu #menu="matMenu">
+        <ng-container *ngIf="userService.isLoggedIn() == false">
+          <a mat-menu-item [routerLink]="['/account/register']">
+            <span style="font-weight: 800;">{{ "SIGNUPFREE" | translate}}</span>
+            <img src="../../../../assets/Images/logo_darkblue.png">
+          </a>
+          <a mat-menu-item [routerLink]="['/account/login']">
+            <span>{{ "LOGIN" | translate}}</span>
+            <mat-icon>login</mat-icon>
+          </a>
+        </ng-container>
+        <ng-container *ngIf="userService.isLoggedIn()">
+          <a mat-menu-item [routerLink]="['/login']">
+            <span>{{ "MESSAGES" | translate}}</span>
+            <mat-icon>sms</mat-icon>
+          </a>
+          <a mat-menu-item [routerLink]="['/login']">
+            <span>{{ "DEPOSITS" | translate}}</span>
+            <mat-icon>work_history</mat-icon>
+          </a>
+          <a mat-menu-item [routerLink]="['/login']">
+            <span>{{ "FAVORITES" | translate}}</span>
+            <mat-icon>favorite</mat-icon>
+          </a>
+        </ng-container>
+
+        <mat-divider></mat-divider>
+
+        <ng-container *ngIf="userService.isLoggedIn()">
+
+          <a mat-menu-item [routerLink]="['/account/profile']">
+            <span>{{ "MANAGE_LISTINGS" | translate }}</span>
+            <mat-icon>storefront</mat-icon>
+          </a>
+
+          <a mat-menu-item (click)="logout()">
+            <span>{{ "INVITE_COMPANY" | translate }}</span>
+            <mat-icon>share</mat-icon>
+          </a>
+
+          <a mat-menu-item [routerLink]="['/account/profile']">
+            <span>{{ "ACCOUNT" | translate }}</span>
+            <mat-icon>account_circle</mat-icon>
+          </a>
+        </ng-container>
+
+        <mat-divider *ngIf="userService.isLoggedIn()"></mat-divider>
+        
+        <ng-container *ngIf="userService.isLoggedIn() == false">
+          <a mat-menu-item (click)="logout()">
+            <span>{{ "RUN_BUSINESS" | translate }}</span>
+            <mat-icon>paid</mat-icon>
+          </a>
+          <a mat-menu-item (click)="logout()">
+            <span>{{ "INVITE_COMPANY" | translate }}</span>
+            <mat-icon>share</mat-icon>
+          </a>
+        </ng-container>
+        <a mat-menu-item (click)="logout()">
+          <span>{{ "ASSISTANCE" | translate }}</span>
+          <mat-icon>contacts</mat-icon>
+        </a>
+        <a mat-menu-item (click)="logout()" *ngIf="userService.isLoggedIn()">
+          <span>{{ "LOGOUT" | translate }}</span>
+          <mat-icon>logout</mat-icon>
+        </a>
+      </mat-menu>
+    </div>
+  </ng-container>
 </div>

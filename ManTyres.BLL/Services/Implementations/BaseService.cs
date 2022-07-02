@@ -24,6 +24,15 @@ namespace ManTyres.BLL.Services.Implementations
 			_logger.LogDebug("ctor");
 		}
 
+		public Response<List<T>> GetResponse(List<V> result)
+		{
+			if (result != null && result.Count() > 0)
+         {
+            return new Response<List<T>>(result.ConvertAll(_mapper.Map<T>), result.Count(), HttpStatusCode.OK, null);
+         }
+         return new Response<List<T>>(new List<T>(){}, 0, HttpStatusCode.NoContent, null);
+		}
+
 		public async Task<Response<List<T>>> Get(int skip, int limit)
 		{
 			_logger.LogDebug("Get (list)");
@@ -162,5 +171,7 @@ namespace ManTyres.BLL.Services.Implementations
 				Message = result == false ? "NotFound" : "SuccessfullyDeleted"
 			};
 		}
+
+		
 	}
 }

@@ -12,6 +12,7 @@ namespace ManTyres.BLL.Services.Interfaces
 	public interface IPlaceService : IBaseService<PlaceDTO, PlaceRepository, Place>
 	{
 		Task<Response<List<PlaceDTO>>> GetWhereIsNull();
+		Task<Response<List<PlaceDTO>>> GetNear(double LAT, double LNG);
 		Task<Response<List<PlaceDTO>>> GetByPlacesId(string[] places_id);
 		Task<Response<bool>> AddPlaces(List<PlaceDTO> places);
 		Task<Response<bool>> AddPlace(PlaceDTO place);

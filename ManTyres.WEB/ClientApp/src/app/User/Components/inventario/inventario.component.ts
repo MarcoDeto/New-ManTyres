@@ -46,7 +46,7 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
 
   lista: Inventario[] = [];
   columnsToDisplay = ['N','pneumaticiId', 'depositoId', 'inizioDeposito', 'userId', 'actions'];
-  expandedElement: Inventario | null = null;
+  expandedElement: Inventario | undefined;
   veicolo: Veicolo | undefined;
   sedi: Sedi[] = [];
   stagioni: Stagioni[] = [];

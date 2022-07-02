@@ -19,12 +19,12 @@ import { UserService } from "src/app/Auth/Services/user.service";
 export class AdminDatabaseComponent implements OnInit, OnDestroy{
   title = 'Import Excel';
   //old
-  @ViewChild('input', {static: true}) inputRef : ElementRef | null = null;
-  @ViewChild('label', { static: true}) labelRef: ElementRef | null = null;
+  @ViewChild('input', {static: true}) inputRef : ElementRef | undefined;
+  @ViewChild('label', { static: true}) labelRef: ElementRef | undefined;
   //new
   @Input() public disabled: boolean = false;
-  @Output() public uploadStatus: EventEmitter<ProgressStatus> | null = null;
-  @ViewChild('inputFile') inputFile: ElementRef | null = null;
+  @Output() public uploadStatus: EventEmitter<ProgressStatus> | undefined;
+  @ViewChild('inputFile') inputFile: ElementRef | undefined;
 
   nomeFile: any;
   all: any;

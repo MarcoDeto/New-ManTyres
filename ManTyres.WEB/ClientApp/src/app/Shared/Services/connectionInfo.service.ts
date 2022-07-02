@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { Response } from '../Models/response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,20 @@ export class ConnectionInfoService {
   }
 
   getLocation(ipAddress: string): Observable<any> {
-    return this.http.get("https://ipapi.co/" + ipAddress + "/json/");
+    return this.http.get("https://ipwho.is/" + ipAddress);
   }
+
+  GetLanguages(): Observable<Response> {
+    return this.http.get<Response>(environment.languages + 'GetAll');
+  }
+
+  GetCurrencies(): Observable<any> {
+    return this.http.post<any>("http://api.exchangeratesapi.io/v1/latest?access_key=4801364e4c3570e773b931543a4b31ca", null);
+  }
+
+  getCountryCode() { return localStorage.getItem("country_code"); }
+  setCountryCode(country_code: string) {
+    localStorage.setItem('country_code', country_code);
+  }
+  
 }

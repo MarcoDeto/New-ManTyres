@@ -35,8 +35,8 @@ export class UtenzeComponent implements OnInit, AfterViewInit, OnDestroy {// Aft
 
   users: Utenza[] = [];
 
-  @ViewChild(MatSort) sort: MatSort | null = null;
-  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
+  @ViewChild(MatSort) sort: MatSort | undefined;
+  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
   constructor(
     public dialog: MatDialog,
@@ -63,8 +63,8 @@ export class UtenzeComponent implements OnInit, AfterViewInit, OnDestroy {// Aft
   }
 
   ngAfterViewInit() {
-    this.data.sort = this.sort;
-    this.data.paginator = this.paginator;
+    this.data.sort = this.sort!;
+    this.data.paginator = this.paginator!;
   }
 
   ngOnDestroy(): void {

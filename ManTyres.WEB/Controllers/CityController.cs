@@ -1,6 +1,5 @@
 ﻿using ManTyres.BLL.Services;
 using ManTyres.BLL.Services.Interfaces;
-using ManTyres.COMMON.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -12,7 +11,6 @@ namespace Tyre.WSL.Controllers
    {
       private readonly ICityService _cityService;
       private readonly IExcelService _excelService;
-
       private readonly ILogger<CityController> _logger;
 
       public CityController(ICityService cityService, IExcelService excelService, ILogger<CityController> logger)

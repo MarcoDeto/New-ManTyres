@@ -18,8 +18,8 @@ import Swal from 'sweetalert2';
 
 export class ModalUtenzeComponent implements OnInit, OnDestroy {
   subscribers: Subscription[] = [];
-  user: Utenza | null = null;
-  userPassword: UserPassword | null = null;
+  user: Utenza | undefined;
+  userPassword: UserPassword | undefined;
   role: string = "user";
   mode: Mode = Mode.New;
   hide: boolean = false; editPassword: boolean = false;

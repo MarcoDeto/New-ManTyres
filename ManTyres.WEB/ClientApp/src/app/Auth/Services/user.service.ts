@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, Subscriber } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { UserPassword, UserName, User } from '../../Shared/Models/user.model';
+import { UserPassword, User } from '../../Shared/Models/user.model';
 import { Response } from '../../Shared/Models/response.model';
 import { LoginModel } from '../Models/login.model';
 import * as moment from 'moment';
@@ -12,6 +12,9 @@ import * as moment from 'moment';
   providedIn: 'root'
 })
 export class UserService {
+  private loading: boolean = false;
+  public userShared: User | undefined;
+
   private _user: BehaviorSubject<User|null> = new BehaviorSubject<User|null>(null);
   public user: Observable<User|null> = this._user.asObservable();
 
@@ -59,8 +62,12 @@ export class UserService {
     return false;
   }
 
-  login(data: LoginModel): Observable<LoginModel> {
-    return this.http.post<LoginModel>(environment.login, data);
+  login(data: LoginModel): Observable<Response> {
+    return this.http.post<Response>(environment.login, data);
+  }
+
+  getById(id: string): Observable<Response> {
+    return this.http.get<Response>(environment.utente + '/GetById/' + id);
   }
 
   subscribeEmail(email: string) {
@@ -96,12 +103,10 @@ export class UserService {
     this._expiration.next(data.expiration);
   }
 
-  setUser(data: any) {
-    this._user.next(data);
-  }
+  setUser(data: User) { this._user.next(data); this.userShared = data; }
 
   setSession(data: any) {
-    //localStorage.setItem('email', email);
+    this.setUser(data.user);
     let payLoad = JSON.parse(window.atob(data.token.split('.')[1]))
     localStorage.setItem('token', data.token);
     localStorage.setItem('UserID', payLoad.UserID);
@@ -139,10 +144,24 @@ export class UserService {
     localStorage.removeItem("Username");
     localStorage.removeItem("UserRole");
     localStorage.removeItem("expiration");
+    this.userShared = undefined;
   }
 
   public isLoggedIn() {
-    return moment().isBefore(this.getExpiration());
+    var result = moment().isBefore(this.getExpiration());
+    if (result && this.loading == false) {
+      var userID = this.getUserID();
+      if (userID && !this.userShared) {
+        this.loading = true;
+        this.getById(userID).subscribe(
+          res => {
+            this.userShared = res.content;
+            this.loading = false;
+          }
+        );
+      }
+    }
+    return result;
   }
 
   isLoggedOut() {

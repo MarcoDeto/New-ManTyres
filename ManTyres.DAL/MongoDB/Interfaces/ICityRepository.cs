@@ -1,5 +1,4 @@
 
-using ManTyres.DAL.Infrastructure.MongoDB.Interfaces;
 using ManTyres.DAL.MongoDB.Models;
 
 namespace ManTyres.DAL.MongoDB.Interfaces

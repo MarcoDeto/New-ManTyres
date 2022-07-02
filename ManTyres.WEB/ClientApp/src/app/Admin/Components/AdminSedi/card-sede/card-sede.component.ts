@@ -8,7 +8,7 @@ import { Sedi } from '../../../../Shared/Models/sedi.model';
 })
 export class CardSedeComponent implements OnInit {
   @Input()
-  sede: Sedi | null = null;
+  sede: Sedi | undefined;
   hover = false;
 
   constructor() { }

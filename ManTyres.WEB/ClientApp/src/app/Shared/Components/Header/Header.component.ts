@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from 'src/app/Auth/Services/user.service';
 import Swal from 'sweetalert2';
 import { LanguageNames } from '../../Models/languages.enum';
+import { LocalSettingsComponent } from './local-settings/local-settings.component';
 
 @Component({
   selector: 'app-header',
@@ -13,14 +15,13 @@ import { LanguageNames } from '../../Models/languages.enum';
 export class HeaderComponent implements OnInit {
   activeLang: LanguageNames = LanguageNames.en;
   @Input() open: boolean = false;
-  @Input() hideHeader: boolean = false;
   @Output() sidenavChanged = new EventEmitter<boolean>();
-
-
+  photoUrl = '';
   constructor(
     public userService: UserService,
-    private router: Router,
+    public router: Router,
     public translate: TranslateService,
+    public dialog: MatDialog,
   ) { }
 
   get languageNames() {
@@ -31,10 +32,10 @@ export class HeaderComponent implements OnInit {
     const lang = localStorage.getItem("lang")!;
     this.activeLang = this.getLanguage(lang);
   }
-
   getWidth(): number {
     return window.innerWidth;
   }
+
   logout() {
     Swal.fire({
       title: 'Effettuare il Logout?',
@@ -57,11 +58,29 @@ export class HeaderComponent implements OnInit {
     this.sidenavChanged.emit(this.open);
   }
 
+  hideHeader(): boolean {
+    if (
+      this.router.url != '/account/login' &&
+      this.router.url != '/account/register') {
+      return true;
+    }
+    return false;
+  }
+
   changeLang(lang: string): void {
     this.activeLang = this.getLanguage(lang);
     this.translate.setDefaultLang(lang);
     this.translate.use(lang);
     localStorage.setItem("lang", lang);
+  }
+
+  openLocalSettings() {
+    const dialogRef = this.dialog.open(LocalSettingsComponent, {
+      width: '80%',
+      data: { }
+    });
+    dialogRef.beforeClosed().subscribe((result: any) => { this.ngOnInit(); });
+    dialogRef.afterClosed().subscribe((result: any) => { this.ngOnInit(); });
   }
 
   getLanguage(lang: string): LanguageNames {

@@ -24,12 +24,13 @@ namespace ManTyres.BLL.Services.Implementations
 
       public async Task<Response<List<PlaceDTO>>> GetWhereIsNull()
       {
-         var result = await _placeRepository.GetWhereIsNull();
-         if (result != null && result.Count() > 0)
-         {
-            return new Response<List<PlaceDTO>>(result.ConvertAll(_mapper.Map<PlaceDTO>), result.Count(), HttpStatusCode.OK, null);
-         }
-         return new Response<List<PlaceDTO>>(new List<PlaceDTO>(){}, 0, HttpStatusCode.NoContent, null);
+         return base.GetResponse(await _placeRepository.GetWhereIsNull());
+      }
+
+      public async Task<Response<List<PlaceDTO>>> GetNear(double LAT, double LNG)
+      {
+         var result = await _placeRepository.GetNear(LAT, LNG);
+         return base.GetResponse(result);
       }
 
       public async Task<Response<List<PlaceDTO>>> GetByPlacesId(string[] places_id)
@@ -44,14 +45,14 @@ namespace ManTyres.BLL.Services.Implementations
 
       public async Task<Response<bool>> AddPlace(PlaceDTO place)
       {
-         if (await _placeRepository.ExistByName(place.Name))
+         if (await _placeRepository.ExistByAddress(place.Address!))
          {
             return new Response<bool>(false, 0, HttpStatusCode.Conflict, "AlreadyExist");
          }
          else
          {
             var result = await _placeRepository.Insert(_mapper.Map<Place>(place));
-            if (await _placeRepository.ExistByName(place.Name))
+            if (await _placeRepository.ExistByAddress(place.Address!))
             {
                return new Response<bool>(false, 0, HttpStatusCode.InternalServerError, "InternalServerError");
             }

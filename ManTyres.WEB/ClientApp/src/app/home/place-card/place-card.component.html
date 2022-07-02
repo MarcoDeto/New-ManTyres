@@ -1,0 +1,54 @@
+<div class="container" *ngIf="place">
+  <div style="cursor: pointer;" (click)="openDetail()">
+    <div class="carousel slide">
+      <ol class="carousel-indicators" *ngIf="GOOGLE_MAPS_API_KEY != GOOGLE_MAPS_API_KEY && place.google_Photos && place.google_Photos.length > 0">
+        <li *ngFor="let photo of place.google_Photos; let i = index;"
+            [ngClass]="imageSelected == i ? 'active' : ''">
+        </li>
+        <!-- <li [ngClass]="imageSelected == 0 ? 'active' : ''"></li>
+        <li [ngClass]="imageSelected == 1 ? 'active' : ''"></li>
+        <li [ngClass]="imageSelected > 1 ? 'active' : ''"></li>
+        <li [ngClass]="imageSelected == place.google_Photos.length - 2 ? 'active' : ''"></li>
+        <li [ngClass]="imageSelected == place.google_Photos.length - 1 ? 'active' : ''"></li> -->
+      </ol>
+      <div class="carousel-inner" *ngIf="GOOGLE_MAPS_API_KEY != GOOGLE_MAPS_API_KEY && place.google_Photos && place.google_Photos.length > 0">
+        <div class="carousel-item active img_wrapper" #carousel *ngFor="let photo of place.google_Photos; let i = index;">
+          <img #image *ngIf="imageSelected == i" class="d-block" [style.height.px]="imageWidth"
+            [src]="placesService.getImageUrl(photo)">
+        </div>
+      </div>
+      <div class="carousel-inner" *ngIf="GOOGLE_MAPS_API_KEY == GOOGLE_MAPS_API_KEY || !place.google_Photos || place.google_Photos.length == 0">
+        <div class="carousel-item active img_wrapper" #carousel>
+          <img #image class="d-block w-100 default_img" [style.height.px]="imageWidth"
+            src="../../../assets/Images/Default/DEFAULT_place2.png">
+        </div>
+      </div>
+      
+      <a class="carousel-control-prev _1d3iagv" (click)="previous()" style="cursor: pointer;">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="_1d3iagv carousel-control-next" (click)="next()" style="cursor: pointer;">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+      <a class="favorite" (click)="favorite()" style="cursor: pointer;">
+        <img height="28px" src="../../../assets/Images/Default/FAVORITE.png">
+      </a>
+      <a class="verified" style="cursor: pointer;" *ngIf="place.google_Photos && place.google_Photos.length > 0">
+        <img height="28px" src="../../../assets/Images/Default/verified.png">
+      </a>
+    </div>
+  
+
+  
+    <div class="info_wrapper">
+      <h6>{{place.name}}</h6>
+      <p>{{getAddressLabel(place.address!)}}</p>
+      <p>{{getCityLabel(place.address!)}}</p>
+  
+      <!-- <p>{{place.locality}}, {{place.country}}</p>
+      <p *ngIf="place.address">{{getAddressLabel(place.address)}}</p> -->
+    </div>
+  </div>
+</div>

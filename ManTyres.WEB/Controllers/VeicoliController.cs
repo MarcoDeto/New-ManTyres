@@ -1,12 +1,10 @@
 ﻿using ManTyres.BLL.Services.Interfaces;
 using ManTyres.COMMON.DTO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
+
 namespace Tyre.WSL.Controllers
 {
-	[ApiController]
+   [ApiController]
     [Route("api/[controller]/[action]")]
     public class VeicoliController : ControllerBase
     {

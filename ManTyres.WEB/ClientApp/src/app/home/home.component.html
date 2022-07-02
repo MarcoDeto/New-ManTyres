@@ -1,6 +1,6 @@
 <div class="body_container">
   <div class="place_wrapper row">
-    <app-place [place]="place" *ngFor="let place of places" class="col-3"></app-place>
+    <place-card [place]="place" *ngFor="let place of places" class="col-3"></place-card>
   </div>
 </div>
 
@@ -38,10 +38,3 @@
   </div>
 
 </div>
-
-
-
-<img *ngIf="photo_reference" [src]="'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference='+photo_reference+'&key='+GOOGLE_MAPS_API_KEY">
-<a href="https://maps.google.com/maps/contrib/116714758872346814177">Joe Gomme</a>
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkxjqWpry4Gp2gNprd-dtiOhShY5YnbP0&callback=initMap"></script>

@@ -136,5 +136,18 @@
   "SuccessfullyUpdated": "Successfully updated",
   "ERROR_NUMBERSCHARACTERS": "It cannot contain numbers or special characters",
   "ERROR_USERNAME_FORMAT": "Username must contain unaccented letters and can contain numbers or these characters: . - _",
-  "CREATE": "Creates"
+  "CREATE": "Creates",
+  "REVIEWS": "reviews",
+  "SHARE": "Share",
+  "ASSISTANCE": "Assistance",
+  "ACCOUNT": "Account",
+  "MESSAGES": "Messages",
+  "DEPOSITS": "Deposits",
+  "FAVORITES": "Favorites",
+  "MANAGE_LISTINGS": "Manage listings",
+  "RUN_BUSINESS": "Run the business",
+  "INVITE_COMPANY": "Invite a company",
+  "LANGUAGE_REGION": "Language and region",
+  "CURRENCY": "Currency",
+  "CHOOSE_LANGUAGE": "Choose a language and region"
 }

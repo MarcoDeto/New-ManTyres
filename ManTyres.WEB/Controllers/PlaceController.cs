@@ -21,7 +21,22 @@ namespace Tyre.WSL.Controllers
          _excelService = excelService;
          _logger = logger;
       }
-      
+
+      [HttpPost]
+      public async Task<ActionResult> AddPlace([FromBody] PlaceDTO place)
+      {
+         try
+         {
+            var response = await _placeService.AddPlace(place);
+            return StatusCode((int)response.Code, response);
+         }
+         catch (Exception e)
+         {
+            _logger.LogError(e, "Errore");
+            return StatusCode(500, e.Message);
+         }
+      }
+
       [HttpPost]
       public async Task<ActionResult> AddPlaces([FromBody] List<PlaceDTO> places)
       {
@@ -52,6 +67,21 @@ namespace Tyre.WSL.Controllers
          }
       }
 
+      [HttpGet]
+      public async Task<ActionResult> GetNear(double LAT, double LNG)
+      {
+         try
+         {
+            var result = await _placeService.GetNear(LAT, LNG);
+            return StatusCode((int)result.Code, result);
+         }
+         catch (Exception e)
+         {
+            _logger.LogError(e, "Errore");
+            return StatusCode(500, e.Message);
+         }
+      }
+
       [HttpPatch]
       public async Task<ActionResult> GetByPlacesId([FromBody] string[] places_id)
       {
@@ -68,11 +98,26 @@ namespace Tyre.WSL.Controllers
       }
 
       [HttpGet]
+      public async Task<ActionResult> Get(string Id)
+      {
+         try
+         {
+            var result = await _placeService.Get(Id);
+            return StatusCode((int)result.Code, result);
+         }
+         catch (Exception e)
+         {
+            _logger.LogError(e, "Errore");
+            return StatusCode(500, e.Message);
+         }
+      }
+
+      [HttpGet]
       public async Task<ActionResult> UpdatePlaces()
       {
          try
          {
-            var places = await _placeService.Get(0,0);
+            var places = await _placeService.Get(0, 0);
             foreach (var place in places.Content)
             {
                place.ISO2 = "IT";

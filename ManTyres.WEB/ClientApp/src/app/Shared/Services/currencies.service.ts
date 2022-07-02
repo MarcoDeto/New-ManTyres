@@ -13,8 +13,6 @@ export class CurrenciesService {
     private http: HttpClient,
   ) { }
 
-  GetValue(): Observable<any> {
-    return this.http.post<any>("http://api.exchangeratesapi.io/v1/latest?access_key=4801364e4c3570e773b931543a4b31ca", null);
-  }
+
 
 }

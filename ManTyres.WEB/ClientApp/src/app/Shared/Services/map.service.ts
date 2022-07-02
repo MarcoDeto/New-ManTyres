@@ -95,7 +95,7 @@ export class MapService {
 			environment.GOOGLE_PLACE_URL +
 			"nearbysearch/json?keyword=gomme&location=" +
 			coords.latitude + ', ' + coords.longitude +
-			"&radius=1500&key=" +
+			"&radius=5000&key=" +
 			environment.GOOGLE_MAPS_API_KEY
 		);
 	}

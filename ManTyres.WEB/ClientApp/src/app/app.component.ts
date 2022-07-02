@@ -9,10 +9,9 @@ import { LoaderService } from './Shared/Services/loader.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'MANTYRES';
+  title = 'ManTyres';
 
   opened: boolean = false;
-  hideHeader: boolean = false;
   caricamento: boolean = false;
 
   constructor(
@@ -35,16 +34,13 @@ export class AppComponent {
   }
 
   onRouterOutletActivate(event: any) {
-    if (!event || !event.route.url || !event.route.url._value || !event.route.url._value[0])
+    if (!event || !event.route || !event.route.url || 
+      !event.route.url._value || !event.route.url._value[0] 
+      || !event.title) {
+        this.titleService.setTitle(this.title);
       return;
+    }
     this.titleService.setTitle(`${this.title} - ${event.title}`);
-    if (event.route.url._value[0].path.includes('login') ||
-      event.route.url._value[0].path.includes('register') ||
-      event.route.url._value[0].path.includes('setup') ||
-      event.title === 'PAGE NOT FOUND' ||
-      event.route.url._value[0].path.includes('forbidden')
-    ) { this.hideHeader = true; }
-    else this.hideHeader = false;
   }
 
   ngOnInit(): void {

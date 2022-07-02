@@ -39,7 +39,7 @@
   "EMAILADDRESS_PLACEHOLDER": "Indirizzo email",
   "FOTO_PLACEHOLDER": "Foto",
   "ISREQUIRED": "É obbligatorio.",
-  "SIGNUP": "Iscriviti",
+  "SIGNUP": "Registrati",
   "SIGNUP_TITLE": "Ciao! Iniziamo",
   "AGREE": "Registrandoti, crei un account ManTyres e accetti ",
   "AND": "e",
@@ -136,5 +136,18 @@
   "SuccessfullyUpdated": "Aggiornato con successo",
   "ERROR_NUMBERSCHARACTERS": "Non può contenere numeri o caratteri speciali",
   "ERROR_USERNAME_FORMAT": "Il nome utente deve contenere lettere non accentate e può contenere numeri o questi caratteri: . - _",
-  "CREATE": "Crea"
+  "CREATE": "Crea",
+  "REVIEWS": "recensioni",
+  "SHARE": "Condividi",
+  "ASSISTANCE": "Assistenza",
+  "ACCOUNT": "Account",
+  "MESSAGES": "Messaggi",
+  "DEPOSITS": "Depositi",
+  "FAVORITES": "Preferiti",
+  "MANAGE_LISTINGS": "Gestisci gli annunci",
+  "RUN_BUSINESS": "Gestisci l'azienda",
+  "INVITE_COMPANY": "Invita un azienda",
+  "LANGUAGE_REGION": "Lingua e regione",
+  "CURRENCY": "Valuta",
+  "CHOOSE_LANGUAGE": "Scegli una lingua e un'area geografica"
 }

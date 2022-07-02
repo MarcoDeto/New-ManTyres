@@ -37,10 +37,11 @@ namespace ManTyres.DAL.MongoDB.Repositories
       public async Task<Country> GetByISO(string ISO)
       {
          _logger.LogDebug(LoggerHelper.GetActualMethodName());
-         if (ISO.Length == 2)
+         /*if (ISO.Length == 2)
             return await Collection.Find(_ => _.ISO2 == ISO).SingleOrDefaultAsync();
          
-         return await Collection.Find(_ => _.ISO3!.StartsWith(ISO)).SingleOrDefaultAsync();
+         return await Collection.Find(_ => _.ISO3!.StartsWith(ISO)).SingleOrDefaultAsync();*/
+         return await Collection.Find(_ => _.ISO_Codes != null && _.ISO_Codes.StartsWith(ISO.ToUpper())).SingleOrDefaultAsync();
       }
 
       public async Task<bool> InsertList(List<Country> entity)

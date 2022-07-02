@@ -1,0 +1,29 @@
+<div class="container" *ngIf="place">
+  <h3>{{place.name}}</h3>
+  <div class="subtitle_wrapper">
+    <mat-icon>star</mat-icon>
+    <p>{{place.google_Rating}}</p>
+    <p style="margin: 0 5px;">·</p>
+    <a class="underline" style="margin-right: 20px;">0&nbsp;{{'REVIEWS'|translate}}</a>
+    <img style="margin-right: 5px;" src="../../../assets/Images/Icons/explore.svg">
+    <a class="underline" style="margin-right: auto;">{{place.country}}</a>
+    <img style="margin-right: 10px;" src="../../../assets/Images/Icons/favorite.svg">
+    <a class="underline" style="margin-right: 20px;">{{'SAVE'|translate}}</a>
+    <mat-icon>ios_share</mat-icon>
+    <a class="underline">{{'SHARE'|translate}}</a>
+  </div>
+
+  <div class="images_wrapper row">
+    <img class="d-block col-6" [src]="placesService.getImageUrl(place.google_Photos[0])">
+    <div class="col-6 row images_square">
+      <img class="d-block col-6 half_height" [src]="placesService.getImageUrl(place.google_Photos[1])">
+      <img class="d-block col-6 half_height" [src]="placesService.getImageUrl(place.google_Photos[2])">
+      <img class="d-block col-6 half_height" [src]="placesService.getImageUrl(place.google_Photos[3])">
+      <img class="d-block col-6 half_height" [src]="placesService.getImageUrl(place.google_Photos[4])">
+      <button mat-raised-button class="photos btn btn-light" style="cursor: pointer;">
+        <mat-icon>apps</mat-icon>
+        Mostra tutte le foto
+      </button>
+    </div>
+  </div>
+</div>

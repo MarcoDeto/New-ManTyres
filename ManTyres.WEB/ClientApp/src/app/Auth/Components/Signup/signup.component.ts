@@ -75,7 +75,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       next: (res: any) => {
         this.userService.setSession(res);
         this.toastr.success(this.translate.instant('SUCCESS_WELCOME'));
-        this.router.navigate(['home']);
+        this.router.navigate(['']);
       },
       error: (err: any) => {
         if (fromSocial == false) {
@@ -141,7 +141,7 @@ export class SignupComponent implements OnInit, OnDestroy {
           this.userService.login(login).subscribe(
             res => {
               this.userService.setSession(res);
-              this.router.navigate(['home']);
+              this.router.navigate(['']);
             }
           );
         } else {

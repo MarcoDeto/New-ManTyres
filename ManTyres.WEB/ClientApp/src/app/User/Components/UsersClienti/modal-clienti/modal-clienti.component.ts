@@ -6,7 +6,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { ToastrService } from 'ngx-toastr';
 import { Response } from 'src/app/Shared/Models/response.model'
 import { ValidatorsService } from 'src/app/Shared/Validators/validators.services';
-import { UserService } from 'src/app/Shared/Services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
@@ -16,6 +15,7 @@ import { ClientiComponent } from '../clienti/clienti.component';
 import { VeicoliService } from '../../../Services/VeicoliService';
 import { Veicolo } from '../../../../Shared/Models/veicoli.mdel';
 import { ModalVeicoliComponent } from '../../UsersVeicoli/modal-veicoli/modal-veicoli.component';
+import { UserService } from 'src/app/Auth/Services/user.service';
 
 @Component({
   selector: 'app-modal-clienti',
@@ -24,17 +24,17 @@ import { ModalVeicoliComponent } from '../../UsersVeicoli/modal-veicoli/modal-ve
 })
 export class ModalClientiComponent implements OnInit, OnDestroy {
   subscribers: Subscription[];
-  currentUserRole: string;
+  currentUserRole: string = '';
 
-  PrivatoForm: FormGroup;
-  creationClienteControl: AbstractControl;
+  PrivatoForm: FormGroup = this.formBuilder.group({});
+  creationClienteControl: AbstractControl | undefined;
 
-  AziendaForm: FormGroup;
-  creationAziendaControl: AbstractControl;
+  AziendaForm: FormGroup = this.formBuilder.group({});
+  creationAziendaControl: AbstractControl | undefined;
 
-  cliente: Cliente;
+  cliente: Cliente | undefined;
   veicoli: Veicolo[] = [];
-  mode: Mode;
+  mode: Mode | undefined;
   isAzienda: boolean = false;
   indice: number = 0;
 
@@ -49,7 +49,6 @@ export class ModalClientiComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private toastr: ToastrService,
     private validators: ValidatorsService,
-    public dialog: MatDialog,
   ) {
     this.subscribers = [];
   }
@@ -117,7 +116,7 @@ export class ModalClientiComponent implements OnInit, OnDestroy {
     }
   }
 
-  IsAzienda($event) {
+  IsAzienda($event: any) {
     if ($event == 1) {
       this.isAzienda = true;
     }
@@ -204,7 +203,7 @@ export class ModalClientiComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscribers.forEach(s => s.unsubscribe());
     this.subscribers.splice(0);
-    this.subscribers = null;
+    this.subscribers = [];
   }
 
   buttonDisabled() {
@@ -279,7 +278,7 @@ export class ModalClientiComponent implements OnInit, OnDestroy {
     });
   }
 
-  reactiveCliente(data) {
+  reactiveCliente(data: any) {
     Swal.fire({
       title: 'Ripristinare cliente?',
       icon: 'warning',

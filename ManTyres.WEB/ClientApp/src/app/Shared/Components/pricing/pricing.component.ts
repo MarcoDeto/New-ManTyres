@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Currencies } from '../../Models/currencies.enum';
-import { CurrenciesService } from '../../Services/currencies.service';
+import { ConnectionInfoService } from '../../Services/connectionInfo.service';
 
 @Component({
   selector: 'app-pricing',
@@ -187,12 +187,12 @@ export class PricingComponent implements OnInit {
 
   constructor(
     private titleService: Title,
-    private currenciesService: CurrenciesService,
+    private currenciesService: ConnectionInfoService,
     private router: Router,
   ) { }
 
   ngOnInit() {
-    this.currenciesService.GetValue().subscribe(res => {
+    this.currenciesService.GetCurrencies().subscribe(res => {
       this.rates = res.rates;
     });
   }

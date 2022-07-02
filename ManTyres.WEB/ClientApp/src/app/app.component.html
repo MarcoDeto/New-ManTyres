@@ -1,5 +1,5 @@
 
-<app-header [hideHeader]="hideHeader" [open]="opened" (sidenavChanged)="opened = $event"></app-header>
+<app-header [open]="opened" (sidenavChanged)="opened = $event"></app-header>
 
 <ng-container *ngIf="userService.isLoggedOut()">
   <div class="center-page" *ngIf="caricamento">

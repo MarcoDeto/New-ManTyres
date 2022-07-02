@@ -1,7 +1,6 @@
 ﻿using ManTyres.BLL.Services;
 using ManTyres.BLL.Services.Interfaces;
 using ManTyres.COMMON.DTO;
-using ManTyres.DAL.SQLServer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -35,10 +34,10 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var userResult = await _userService.CheckLogin(model);
-            if (userResult.Code != HttpStatusCode.OK || userResult.Content == null)
-               return BadRequest(userResult);
-            else if (userResult.Content != null && userResult.Content.IsDeleted)
+            var user = await _userService.CheckLogin(model);
+            if (user.Code != HttpStatusCode.OK || user.Content == null)
+               return BadRequest(user);
+            else if (user.Content != null && user.Content.IsDeleted)
                return BadRequest(new Response<object> { Content = null, Code = HttpStatusCode.Unauthorized, Count = 0, Message = "ERROR_REMOVED" });
 
             IdentityOptions _options = new IdentityOptions();
@@ -48,9 +47,9 @@ namespace Tyre.WSL.Controllers
             {
                Subject = new ClaimsIdentity(new Claim[]
                 {
-                        new Claim(type: "UserID", value: userResult!.Content!.Id.ToString()),
-                        new Claim(type: "UserName", value: userResult!.Content!.UserName!),
-                        new Claim(type: "Role", value: userResult!.Content!.Role.ToString())
+                        new Claim(type: "UserID", value: user!.Content!.Id.ToString()),
+                        new Claim(type: "UserName", value: user!.Content!.UserName!),
+                        new Claim(type: "Role", value: user!.Content!.Role.ToString())
                 }),
                Expires = DateTime.Now.AddHours(int.Parse(_appSettings.Value.JWT_Expire)),
                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -60,9 +59,14 @@ namespace Tyre.WSL.Controllers
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(securityToken);
 
-            _logger.LogInformation($"{userResult!.Content!.UserName!} Login at {DateTime.Now}");
+            _logger.LogInformation($"{user!.Content!.UserName!} Login at {DateTime.Now}");
 
-            return Ok(new { token, expiration = tokenDescriptor.Expires });
+            return Ok(new Response<object> { 
+					Content = new { token, expiration = tokenDescriptor.Expires, user = user.Content },
+					Code = HttpStatusCode.OK, 
+					Count = 1, 
+					Message = null
+				});
          }
          catch (Exception e)
          {

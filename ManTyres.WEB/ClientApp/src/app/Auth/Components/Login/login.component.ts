@@ -9,12 +9,14 @@ import { GoogleLoginProvider, FacebookLoginProvider, SocialAuthService } from 'a
 import { TranslateService } from '@ngx-translate/core';
 import { UserRole } from 'src/app/Shared/Models/enums';
 import { User } from 'src/app/Shared/Models/user.model';
+import { Response } from 'src/app/Shared/Models/response.model';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent implements OnInit, OnDestroy {
   title = 'Login';
   subscribers: Subscription[] = [];
@@ -74,15 +76,17 @@ export class LoginComponent implements OnInit, OnDestroy {
       email: user.email
     }
     this.userService.login(login).subscribe({
-      next: (res: any) => {
-        this.userService.setSession(res);
+      next: (res: Response) => {
+        this.userService.setSession(res.content);
         this.toastr.success(this.translate.instant('SUCCESS_WELCOME'));
-        this.router.navigate(['home']);
+        this.router.navigate(['']);
       },
       error: (err: any) => {
         if (fromSocial == false) {
-          this.toastr.error(this.translate.instant(err.message));
-        } else if (err.error && err.error.code == 404) {
+          this.toastr.error(this.translate.instant(err.error.message));
+        } else if (err.error && err.error.code !== 404) {
+          this.toastr.error(this.translate.instant(err.error.message));
+        } else if (err.error && err.error.code === 404) {
           this.SignUpWithSocial(user);
         }
       }
@@ -111,7 +115,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.caricamento = true;
     this.subscribers.push(this.userService.login(this.loginForm.value).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.userService.setSession(res);
         this.router.navigate(['']);
         var payLoad = JSON.parse(window.atob(res.token.split('.')[1]));
@@ -185,7 +188,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.userService.login(login).subscribe(
             res => {
               this.userService.setSession(res);
-              this.router.navigate(['home']);
+              this.router.navigate(['']);
             }
           );
         } else {

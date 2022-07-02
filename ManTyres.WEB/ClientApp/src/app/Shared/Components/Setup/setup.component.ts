@@ -223,7 +223,7 @@ export class SetupComponent implements OnInit, OnDestroy{
   //#region metodi per image
   imageClicked: boolean = false;
   toImage = 'data:image/jpg;base64';
-  imagePath: any | null = null;
+  imagePath: any | undefined;
   image_url = '';
 
   onSelectFile(event: any) {

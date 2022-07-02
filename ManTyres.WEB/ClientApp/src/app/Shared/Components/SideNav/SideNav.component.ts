@@ -8,7 +8,7 @@ import { UserRole } from '../../Models/enums';
   styleUrls: ['./SideNav.component.scss']
 })
 export class SideNavComponent implements OnInit {
-  activeNav: Icon | null = null;
+  activeNav: Icon | undefined;
   patchOff: boolean = false;
   icons: Icon[] = [];
 

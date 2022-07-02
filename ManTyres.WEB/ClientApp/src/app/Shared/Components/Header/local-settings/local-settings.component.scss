@@ -1,0 +1,57 @@
+::ng-deep .mat-dialog-container {
+   padding: 20px !important;
+}
+
+::ng-deep .mat-tab-body-content {
+   overflow: unset !important;
+}
+
+::ng-deep .mat-dialog-content {
+   display: block;
+   margin: 0 !important;
+   padding: 20px 0 !important;
+   max-height: 65vh;
+   overflow: auto;
+   -webkit-overflow-scrolling: touch;
+}
+
+.mat-dialog-title {
+   margin: 0 !important;
+}
+
+.mat-tab-group {
+   padding: 0;
+}
+.flag {
+   align-self: center;
+   > p {
+      font-size: 40px;
+      margin: 0;
+   }
+}
+
+.language_text {
+   > h5 {
+      font-size: 16px;
+      margin: 0;
+   }
+   > p {
+      margin: 0;
+   }
+}
+
+.language_wrapper {
+   padding: 5px 0;
+   margin: 5px 0;
+   padding-right: 10px;
+   border-radius: 10px;
+   cursor: pointer;
+}
+
+.language_wrapper:hover {
+   background-color: rgb(247, 247, 247) !important;
+}
+
+.language_active {
+   border: 1px solid #0b1426;
+}

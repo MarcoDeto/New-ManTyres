@@ -2,13 +2,10 @@
 using ManTyres.COMMON.DTO;
 using ManTyres.DAL.SQLServer.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 
 namespace Tyre.WSL.Controllers
 {
-	[ApiController]
+   [ApiController]
     [Route("api/[controller]/[action]")]
     public class RolesManagerController : ControllerBase
     {

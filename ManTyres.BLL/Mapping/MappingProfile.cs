@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ManTyres.BLL.Services.Implementations;
 using ManTyres.COMMON.DTO;
 using ManTyres.DAL.MongoDB.Models;
 using ManTyres.DAL.SQLServer.Entities;
@@ -44,11 +43,14 @@ namespace ManTyres.BLL.Mapping
          CreateMap<VeicoliDTO, Veicoli>()
              .ForMember(x => x.VeicoloId, _ => _.MapFrom(y => y.VeicoloId));
 
+         CreateMap<Language, LanguageDTO>();
+         CreateMap<LanguageDTO, Language>();
+
          CreateMap<Country, CountryDTO>();
          CreateMap<CountryDTO, Country>();
 
-         CreateMap<City, Services.Implementations.CityDTO>();
-         CreateMap<Services.Implementations.CityDTO, City>();
+         CreateMap<City, CityDTO>();
+         CreateMap<CityDTO, City>();
 
          CreateMap<PlaceDTO, Place>()
                 .ForMember(x => x.Id, _ => _.MapFrom(y => y.Id));

@@ -1,12 +1,5 @@
-﻿using ManTyres.BLL.Services;
-using ManTyres.BLL.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using ManTyres.BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Tyre.WSL.Controllers
 {

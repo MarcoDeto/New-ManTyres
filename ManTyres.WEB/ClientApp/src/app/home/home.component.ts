@@ -7,6 +7,7 @@ import { MapService } from '../Shared/Services/map.service';
 import { Period, Place } from '../Shared/Models/place.model';
 import { environment } from 'src/environments/environment';
 import { CityService } from '../Shared/Services/city.service';
+import { Response } from '../Shared/Models/response.model';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,7 @@ export class HomeComponent {
     latitude: 0,
     longitude: 0
   };
-  location: IpLocation | null = null;
+  location: IpLocation | undefined;
 
   complete: boolean = false;
   GOOGLE_MAPS_API_KEY = environment.GOOGLE_MAPS_API_KEY;
@@ -29,6 +30,8 @@ export class HomeComponent {
 
   cities: City[] = [];
   places: Place[] = [];
+  placesToAdd: Place[] = [];
+  placesNearby: any = [];
   place: Place = {
     address: null,
     locality: null,
@@ -79,17 +82,14 @@ export class HomeComponent {
       navigator.geolocation.getCurrentPosition(
         (position: any) => {
           this.coords = { latitude: position.coords.latitude, longitude: position.coords.longitude }
-          //console.log(position);
         }
       );
     }*/
   }
 
   getAllPlaces() {
-    console.log('getAllPlaces');
     this.placesService.getPlaces().subscribe(
       (res: any) => {
-        console.log(res);
         if (res != null && res.content != null) {
           this.places = res.content;
         }
@@ -101,18 +101,23 @@ export class HomeComponent {
     if (!this.places || this.places.length == 0) { return; }
     this.places.forEach(
       (place: Place) => {
-      this.mapService.proxyDetail(place.google_Place_Id!).subscribe(
-        (res: any) => {
-          this.updatePlace(place, res.result);
-        } 
-      );
-    });
+        this.mapService.proxyDetail(place.google_Place_Id!).subscribe(
+          (res: any) => {
+            this.updatePlace(place, res.result);
+          }
+        );
+      });
   }
 
   addPlaces() {
     this.placesService.addPlaces(this.places).subscribe(
       res => console.log(res)
     );
+  }
+
+  calcTime(start: Date) {
+    var end = new Date();
+    console.log(end.getTime() - start.getTime());
   }
 
   getIPAddress() {
@@ -127,32 +132,71 @@ export class HomeComponent {
   getLocation() {
     this.connInfoService.getLocation(this.ipAddress).subscribe(
       (res: any) => {
+        this.connInfoService.setCountryCode(res.country_code);
         this.location = res;
         this.coords.latitude = this.location!.latitude;
         this.coords.longitude = this.location!.longitude;
-        this.mapService.proxyNearbysearch(this.coords).subscribe(
-          (res: any) => {
-            res.results.forEach((place: any) => {
-              this.google_Places_Id.push(place.place_id); 
-            });
-            this.placesService.GetByPlacesId(this.google_Places_Id).subscribe(
-              (res: any) => {
-                console.log(res);
-                this.places = res.content;
-              }
-            );
-          } 
-        );
+
+        this.getNearPlaces();
+        this.proxyNearbysearch();
         //this.getCitiesByISO(this.location!.country);
       }
     );
+  }
+
+  getNearPlaces() {
+    this.placesService.getNear(this.coords.latitude, this.coords.longitude).subscribe(
+      (res: Response) => {
+        this.places = res.content;
+      }
+    );
+  }
+
+  proxyNearbysearch() {
+    this.mapService.proxyNearbysearch(this.coords).subscribe(
+      (res: any) => {
+        if (res.results && res.results.lenght > 0) {
+          this.placesNearby = res.results;
+          console.log(this.placesNearby);
+          res.results.forEach((place: any) => {
+            this.google_Places_Id.push(place.place_id);
+          });
+          console.log(this.google_Places_Id);
+          this.placesService.GetByPlacesId(this.google_Places_Id).subscribe(
+            (res: any) => {
+              if (res && res.content) {
+                this.places = res.content;
+                if (res.content.length != this.placesNearby.length) {
+                  console.log("DIVERSO" + (this.placesNearby.length - res.content.length));
+                  this.getPlaceNotSaved();
+                }
+              }
+            }
+          );
+        }
+      }
+    );
+  }
+
+  getPlaceNotSaved() {
+    this.places.forEach(place => {
+      var index = this.placesNearby.findIndex((x: any) => x.place_id == place.google_Place_Id);
+      this.placesNearby.splice(index, 1);
+    });
+    console.log(this.placesNearby);
+    this.placesNearby.forEach((place: any) => {
+      this.mapService.proxyDetail(place.place_id!).subscribe(
+        (res: any) => {
+          this.addPlaceComplete(res.result);
+        }
+      );
+    });
   }
 
   getCitiesByISO(ISO: string) {
     this.cityService.getCitiesByISO(ISO).subscribe(
       res => {
         this.cities = res.content;
-        //console.log(this.cities);
         this.searchMyCustomer(res.content);
       }
     );
@@ -160,7 +204,6 @@ export class HomeComponent {
 
   searchMyCustomer(cities: City[]) {
     cities.forEach(city => {
-      //console.log(city);
       this.getPlaces("gomme " + city.name + " IT");
     });
     this.complete = true;
@@ -169,14 +212,11 @@ export class HomeComponent {
   getPlaces(query: string) {
     this.mapService.proxySearch(query).subscribe(
       (firstSearch: any) => {
-        //console.log(firstSearch);
         firstSearch.results.forEach((element: any) => {
-          console.log(element);
           this.addPlace(element);
 
           /*this.mapService.proxyDetail(element.place_id).subscribe(
             (res: any) => {
-              console.log(res);
               this.addPlaceComplete(res.result);
             } 
           )*/
@@ -185,10 +225,11 @@ export class HomeComponent {
     );
   }
 
+
   addPlace(data: any) {
 
-    if ( this.places.findIndex(x => x.address === data.formatted_address) !== -1 ) { 
-      return; 
+    if (this.placesToAdd.findIndex(x => x.address === data.formatted_address) !== -1) {
+      return;
     }
     if (data.photos) {
       this.photo_reference = data.photos[0]?.photo_reference;
@@ -224,13 +265,14 @@ export class HomeComponent {
       email: null,
       verified: false
     }
-    this.places.push(placeToAdd);
+    this.placesToAdd.push(placeToAdd);
   }
 
   addPlaceComplete(data: any) {
+    console.log(data)
 
-    if ( this.places.findIndex(x => x.address === data.formatted_address) !== -1 ) { 
-      return; 
+    if (this.placesToAdd.findIndex(x => x.address === data.formatted_address) !== -1) {
+      return;
     }
     if (data.photos) {
       this.photo_reference = data.photos[0]?.photo_reference;
@@ -266,7 +308,14 @@ export class HomeComponent {
       email: null,
       verified: false
     }
-    this.places.push(placeToAdd);
+    this.placesService.addPlace(placeToAdd).subscribe(
+      (res: any) => {
+        this.placesService.GetByPlacesId(this.google_Places_Id).subscribe(
+          (res: any) => {
+            this.places = res.content;
+          });
+      }
+    );
   }
 
   updatePlace(place: Place, data: any) {
@@ -274,7 +323,7 @@ export class HomeComponent {
     if (data.photos) {
       this.photo_reference = data.photos[0]?.photo_reference;
     }
-    
+
     place.address = data.formatted_address;
     place.locality = data.address_components[2]?.long_name;
     place.lat = data.geometry?.location?.lat;
@@ -298,7 +347,7 @@ export class HomeComponent {
     place.google_Rating = data.rating;
     place.google_Url = data.url;
     place.updatedAt = new Date();
-    
+
     this.placesService.updatePlace(place).subscribe();
   }
 
@@ -307,8 +356,8 @@ export class HomeComponent {
     if (!photos || photos.lenght == 0) { return []; }
     photos.forEach(
       (photo: any) => {
-      result.push(photo.photo_reference);
-    });
+        result.push(photo.photo_reference);
+      });
     return result;
   }
 
@@ -317,8 +366,8 @@ export class HomeComponent {
     if (!periods || periods.lenght == 0) { return []; }
     periods.forEach(
       (period: any) => {
-      result.push(this.periodInit(period));
-    });
+        result.push(this.periodInit(period));
+      });
     return result;
   }
 
@@ -340,30 +389,51 @@ export interface GeolocationCoordinates {
 }
 
 export interface IpLocation {
-  asn: string;
+  borders: string;
+  calling_code: string;
+  capital: string;
   city: string;
+  connection: any;
+  continent: string;
   continent_code: string;
   country: string;
-  country_area: number;
-  country_calling_code: string;
-  country_capital: string;
   country_code: string;
-  country_code_iso3: string;
-  country_name: string;
-  country_population: number;
-  country_tld: string;
-  currency: string;
-  currency_name: string;
-  in_eu: boolean;
+  flag: any;
   ip: string;
-  languages: string;
+  is_eu: boolean;
   latitude: number;
   longitude: number;
-  org: string;
   postal: string;
   region: string;
   region_code: string;
-  timezone: string;
-  utc_offset: string;
-  version: string;
+  success: true
+  timezone: any;
+  type: string;
+
+  // asn: string;
+  // city: string;
+  // continent_code: string;
+  // country: string;
+  // country_area: number;
+  // country_calling_code: string;
+  // country_capital: string;
+  // country_code: string;
+  // country_code_iso3: string;
+  // country_name: string;
+  // country_population: number;
+  // country_tld: string;
+  // currency: string;
+  // currency_name: string;
+  // in_eu: boolean;
+  // ip: string;
+  // languages: string;
+  // latitude: number;
+  // longitude: number;
+  // org: string;
+  // postal: string;
+  // region: string;
+  // region_code: string;
+  // timezone: string;
+  // utc_offset: string;
+  // version: string;
 }

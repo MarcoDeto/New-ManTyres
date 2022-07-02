@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Form, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,8 +36,8 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
   title = 'Dettagli Utente';
   userId = this.route.snapshot.paramMap.get('userId');
   subscribers: Subscription[] = [];
-  user: User | null = null;
-  userPassword: UserPassword | null = null;
+  user: User | undefined;
+  userPassword: UserPassword | undefined;
   mode: Mode = Mode.New;
   hide = true;
   resetPassword = false;
@@ -50,8 +50,8 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
     username: ["", [Validators.required, this.validators.userName()]],
     email: ["", [Validators.required, Validators.email]],
     phoneNumber: ["+39 ", [Validators.required, Validators.maxLength(20)]],
-    password: ["", [Validators.required, Validators.minLength(8), this.validators.password()]],
-    confermaPassword: ["", [Validators.required]],
+    //password: ["", [Validators.required, Validators.minLength(8), this.validators.password()]],
+    //confermaPassword: ["", [Validators.required]],
     role: [UserRole.Worker, Validators.required]
   }, { validators: this.checkPasswords.bind(this) });
   get getUserControl() { return this.userForm.controls; }
@@ -79,7 +79,6 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
         res => {
           this.user = res.content;
           this.userForm = this.formBuilder.group({
-            id: [this.user?.id],
             imgProfile: [this.user?.imgProfile],
             username: [this.user?.userName, [Validators.required, this.validators.userName()]],
             firstname: [this.user?.firstName, [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
@@ -88,7 +87,6 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
             phoneNumber: [this.user?.phoneNumber ? this.user?.phoneNumber : '+39', [Validators.required, Validators.maxLength(20)]],
             // password: ["", [Validators.minLength(8), this.validators.password()]],
             // confermaPassword: [""],
-            isDeleted: false,
             role: this.user?.role
           }, { validators: this.checkPasswords.bind(this) });
 
@@ -175,13 +173,26 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
       else {
         this.userForm.get('firstname')!.setValue(this.toPascalCase(this.userForm.value.firstname));
         this.userForm.get('lastname')!.setValue(this.toPascalCase(this.userForm.value.lastname));
-        this.subscribers.push(this.service.putUser(this.userForm.value).subscribe(
+        this.setUserToUpdate();
+        this.subscribers.push(this.service.putUser(this.user!).subscribe(
           res => {
             this.popup.show(res.message);
             this.router.navigate(['admin/users']);
           }
         ));
       }
+    }
+  }
+
+  setUserToUpdate() {
+    if (this.user) {
+      this.user.imgProfile = this.userForm.value.imgProfile;
+      this.user.userName = this.userForm.value.username;
+      this.user.firstName = this.userForm.value.firstname;
+      this.user.lastName = this.userForm.value.lastname;
+      this.user.email = this.userForm.value.email;
+      this.user.phoneNumber = this.userForm.value.phoneNumber ? this.userForm.value.phoneNumber : '+39';
+      this.user.role = this.userForm.value.role;
     }
   }
 

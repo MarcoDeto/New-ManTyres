@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   caricamento = true;
   hide = true;
 
-  currentUserName: string | null = null;
+  currentUserName: string | undefined;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -42,9 +42,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.currentUserName = this.userService.getUsername();
-    if (this.currentUserName == null) { return; }
     
+    if (this.userService.getUsername() == null) { return; }
+
+    this.currentUserName = this.userService.getUsername()!;
     this.subscribers.push(this.userService.profile(this.currentUserName).subscribe(
       (res: Response) => {
         this.user = res.content;

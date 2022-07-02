@@ -26,6 +26,30 @@ namespace ManTyres.DAL.MongoDB.Repositories
          return await Collection.Find(_ => _.Locality == null).ToListAsync();
       }
 
+      public async Task<List<Place>> GetNear(double LAT, double LNG)
+      {
+         _logger.LogDebug(LoggerHelper.GetActualMethodName());
+
+         List<Place> no_photos = await Collection.Find(_ => 
+            _.LAT >= (LAT - 0.05) && 
+            _.LAT <= (LAT + 0.05) &&
+            _.LNG >= (LNG - 0.05) && 
+            _.LNG <= (LNG + 0.05) &&
+            (_.Google_Photos == null ||
+            _.Google_Photos.Length == 0)).ToListAsync();
+
+         List<Place> result = await Collection.Find(_ => 
+            _.LAT >= (LAT - 0.05) && 
+            _.LAT <= (LAT + 0.05) &&
+            _.LNG >= (LNG - 0.05) && 
+            _.LNG <= (LNG + 0.05) && 
+            _.Google_Photos != null &&
+            _.Google_Photos.Length != 0).ToListAsync();
+            
+         result.AddRange(no_photos);
+         return result.Take(20).ToList();
+      }
+
       public async Task<List<Place>> GetByPlacesId(string[] places_id)
       {
          _logger.LogDebug(LoggerHelper.GetActualMethodName());
@@ -35,7 +59,8 @@ namespace ManTyres.DAL.MongoDB.Repositories
          foreach (var place_id in places_id)
          {
             var place = await Collection.Find(_ => _.Google_Place_Id == place_id).FirstOrDefaultAsync();
-            if (place.Google_Photos != null && place.Google_Photos.Length == 0)
+            if (place == null) { continue; }
+            else if (place != null && place.Google_Photos != null && place.Google_Photos.Length == 0)
                no_photos.Add(place);
             else
                result.Add(place);
@@ -48,6 +73,12 @@ namespace ManTyres.DAL.MongoDB.Repositories
       {
          _logger.LogDebug(LoggerHelper.GetActualMethodName());
          return await Collection.Find(_ => _.Name == name).AnyAsync();
+      }
+
+      public async Task<bool> ExistByAddress(string address)
+      {
+         _logger.LogDebug(LoggerHelper.GetActualMethodName());
+         return await Collection.Find(_ => _.Address == address).AnyAsync();
       }
 
       public async Task<bool> InsertMany(List<Place> entity)

@@ -20,14 +20,18 @@ import { MaterialModule } from './Shared/material.module';
 import { PricingComponent } from './Shared/Components/pricing/pricing.component';
 import { AdminModule } from './Admin/admin.module';
 import { NotFoundComponent } from './Shared/Components/not-found/not-found.component';
-import { PlaceComponent } from './home/place/place.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PlaceDetailComponent } from './home/place-detail/place-detail.component';
+import { PlaceCardComponent } from './home/place-card/place-card.component';
+import { LocalSettingsComponent } from './Shared/Components/Header/local-settings/local-settings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    PlaceComponent,
+    PlaceCardComponent,
+    PlaceDetailComponent,
+    LocalSettingsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -39,7 +43,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       { path: 'price', component: PricingComponent },
       { path: 'account', loadChildren: () => import('./Auth/Account.module').then(mod => mod.AccountModule)},
       { path: 'admin', loadChildren: () => import('./Admin/admin.module').then(mod => mod.AdminModule)},
-
+      { path: 'place/:id', component: PlaceDetailComponent },
+      
       { path: '**', component: NotFoundComponent }
     ]),
     BrowserAnimationsModule,

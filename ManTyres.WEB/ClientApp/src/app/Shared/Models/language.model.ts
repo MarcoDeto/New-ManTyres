@@ -1,4 +1,7 @@
 export interface Language {
-   lang: string;
-   flag: string;
+   id: string;
+   name: string;
+   code: string;
+   country: string;
+   emoji: string;
 }

@@ -1,7 +1,4 @@
-﻿
-
-
-using ManTyres.BLL.Services.Implementations;
+﻿using ManTyres.COMMON.DTO;
 
 namespace ManTyres.BLL.Services.Interfaces
 {

@@ -1,6 +1,5 @@
 using ManTyres.BLL.Services;
 using ManTyres.BLL.Services.Interfaces;
-using ManTyres.COMMON.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -12,7 +11,6 @@ namespace Tyre.WSL.Controllers
    {
       private readonly ICountryService _countryService;
       private readonly IExcelService _excelService;
-
       private readonly ILogger<CountryController> _logger;
 
       public CountryController(ICountryService countryService, IExcelService excelService, ILogger<CountryController> logger)
@@ -28,6 +26,21 @@ namespace Tyre.WSL.Controllers
          try
          {
             var response = await _countryService.GetAll();
+            return StatusCode((int)response.Code, response);
+         }
+         catch (Exception e)
+         {
+            _logger.LogError(e, "Errore");
+            return StatusCode(500, e.Message);
+         }
+      }
+
+      [HttpGet]
+      public async Task<IActionResult> GetByISO(string ISO)
+      {
+         try
+         {
+            var response = await _countryService.GetByISO(ISO);
             return StatusCode((int)response.Code, response);
          }
          catch (Exception e)

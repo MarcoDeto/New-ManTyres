@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using AutoMapper;
 using ManTyres.BLL.Services.Interfaces;
+using ManTyres.COMMON.DTO;
 using ManTyres.DAL.MongoDB.Interfaces;
 using ManTyres.DAL.MongoDB.Models;
 using Microsoft.Extensions.Logging;
@@ -26,6 +27,7 @@ namespace ManTyres.BLL.Services.Implementations
 			_logger.LogDebug("Get (list)");
 			var result = await _repository.GetAll();
 			_logger.LogTrace($"200. Returned items: {result.Count()}");
+			result = result.OrderBy(x => x.Name).ToList();
 			return new Response<List<CountryDTO>>()
 			{
 				Count = await _repository.Count(),
@@ -42,7 +44,7 @@ namespace ManTyres.BLL.Services.Implementations
 			_logger.LogTrace($"200. OK");
 			return new Response<CountryDTO>()
 			{
-				Count = result == null ? 0: 1,
+				Count = result == null ? 0 : 1,
 				Content = result == null ? null : _mapper.Map<CountryDTO>(result),
 				Code = result == null ? HttpStatusCode.NotFound : HttpStatusCode.OK,
 				Message = result == null ? "NotFound" : null

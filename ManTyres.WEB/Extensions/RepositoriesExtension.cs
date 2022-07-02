@@ -10,6 +10,7 @@ namespace ManTyres.WEB.Extensions
       public static IServiceCollection LoadRepositories(this IServiceCollection services)
       {
          services.AddScoped<IUserRepository, UserRepository>();
+         services.AddScoped<ILanguageRepository, LanguageRepository>();
          services.AddScoped<ICountryRepository, CountryRepository>();
          services.AddScoped<ICityRepository, CityRepository>();
          services.AddScoped<IPlaceRepository, PlaceRepository>();
