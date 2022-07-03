@@ -25,6 +25,7 @@ export const environment = {
   profile:         'https://localhost:7250/api/AccountManager/Profile',
   password:        'https://localhost:7250/api/AccountManager',
   languages:       'https://localhost:7250/api/Language/',
+  currencies:      'https://localhost:7250/api/Currency/',
   country:         'https://localhost:7250/api/Country/',
   city:            'https://localhost:7250/api/City/',
   place:           'https://localhost:7250/api/Place/',

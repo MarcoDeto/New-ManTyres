@@ -269,7 +269,6 @@ export class HomeComponent {
   }
 
   addPlaceComplete(data: any) {
-    console.log(data)
 
     if (this.placesToAdd.findIndex(x => x.address === data.formatted_address) !== -1) {
       return;

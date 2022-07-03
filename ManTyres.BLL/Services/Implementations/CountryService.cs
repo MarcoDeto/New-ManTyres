@@ -5,6 +5,7 @@ using ManTyres.COMMON.DTO;
 using ManTyres.DAL.MongoDB.Interfaces;
 using ManTyres.DAL.MongoDB.Models;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace ManTyres.BLL.Services.Implementations
 {
@@ -64,5 +65,20 @@ namespace ManTyres.BLL.Services.Implementations
 				Message = null
 			};
 		}
+		public async Task<Response<bool>> Update()
+      {
+         _logger.LogDebug("Update (list)");
+			string json = File.ReadAllText("countries.json");
+			List<NewCountryDTO> countries = JsonConvert.DeserializeObject<List<NewCountryDTO>>(json)!;
+			var result = await _repository.UpdateList(countries);
+         _logger.LogTrace($"200. TRUE");
+         return new Response<bool>()
+         {
+            Count = countries.Count,
+            Content = result,
+            Code = result ? HttpStatusCode.OK : HttpStatusCode.BadRequest,
+            Message = null
+         };
+      }
 	}
 }

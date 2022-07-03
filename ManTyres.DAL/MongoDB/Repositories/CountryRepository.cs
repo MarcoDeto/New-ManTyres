@@ -57,6 +57,59 @@ namespace ManTyres.DAL.MongoDB.Repositories
          return true;
       }
 
+      public async Task<bool> Add(NewCountryDTO item)
+      {
+         _logger.LogDebug(LoggerHelper.GetActualMethodName());
+
+         Country country = new Country();
+         country.Capital = item.Capital;
+         country.ContinentName = item.ContinentName;
+         country.CurrencyCode = item.CurrencyCode;
+         country.ISO2 = item.CountryCode;
+         country.Name = item.CountryName;
+         country.Population = item.Population;
+         country.Id = new ObjectId();
+
+         await Collection.InsertOneAsync(country);
+         return true;
+      }
+
+      public async Task<bool> UpdateList(List<NewCountryDTO> entity)
+      {
+         _logger.LogDebug(LoggerHelper.GetActualMethodName());
+         if (entity == null)
+            throw new ArgumentNullException("entity");
+         foreach (var item in entity)
+         {
+            if (item.CountryCode != null)
+            {
+               Country country = await GetByISO(item.CountryCode);
+               
+               if (country == null) { await Add(item); }
+               else
+               {
+                  country.Capital = item.Capital;
+                  country.ContinentName = item.ContinentName;
+                  country.CurrencyCode = item.CurrencyCode;
+                  country.ISO2 = item.CountryCode;
+                  country.ISO3 = GetISO3(country);
+                  country.Population = item.Population;
+                  var test = await Collection.FindOneAndReplaceAsync(_ => _.Name == item.CountryName, country);
+               }
+            }
+         }
+         return true;
+      }
+      private string? GetISO3(Country country)
+      {
+         if (country.ISO_Codes != null)
+         {
+            var splitted = country.ISO_Codes.Split('/');
+            return splitted[1].Substring(1);
+         }
+         return null;
+      }
+
       private IMongoDatabase GetDatabase()
       {
          var client = new MongoClient("mongodb+srv://dev:ManTyres@mantyres.fwdxdp6.mongodb.net/?retryWrites=true&w=majority");

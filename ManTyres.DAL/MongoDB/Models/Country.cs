@@ -13,5 +13,9 @@ namespace ManTyres.DAL.MongoDB.Models
 		public string? ISO_Codes { get; set; }
 		public string? ISO2 { get; set; }
 		public string? ISO3 { get; set; }
+		public string? CurrencyCode { get; set; }
+		public string? Population { get; set; }
+		public string? Capital { get; set; }
+		public string? ContinentName { get; set; }
 	}
 }

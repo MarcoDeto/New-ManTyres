@@ -1,7 +1,10 @@
+using System.Net;
 using ManTyres.BLL.Services;
 using ManTyres.BLL.Services.Interfaces;
+using ManTyres.COMMON.DTO;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Tyre.WSL.Controllers
 {
@@ -21,7 +24,7 @@ namespace Tyre.WSL.Controllers
       }
 
       [HttpGet]
-      public async Task<IActionResult> GetAllCountries()
+      public async Task<IActionResult> GetAll()
       {
          try
          {
@@ -59,7 +62,7 @@ namespace Tyre.WSL.Controllers
             using (var stream = new MemoryStream())
             {
                file.CopyTo(stream);
-               var response = await _excelService.ImportCountries(stream);
+               var response = await _excelService.ImportCities(stream);
                switch (response.Code)
                {
                   case HttpStatusCode.OK: return Ok(response);
@@ -69,6 +72,21 @@ namespace Tyre.WSL.Controllers
                   default: return NoContent();
                }
             }
+         }
+         catch (Exception e)
+         {
+            _logger.LogError(e, "Errore");
+            return StatusCode(500, e.Message);
+         }
+      }
+
+      [HttpPut]
+      public async Task<IActionResult> Update()
+      {
+         try
+         {
+            var response = await _service.Update();
+            return StatusCode((int)response.Code, response);
          }
          catch (Exception e)
          {

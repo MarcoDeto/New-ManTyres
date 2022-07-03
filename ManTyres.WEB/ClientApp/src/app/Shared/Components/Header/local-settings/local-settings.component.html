@@ -5,7 +5,7 @@
         <h2>{{'CHOOSE_LANGUAGE'|translate}}</h2>
         <div class="row" style="margin: 0 !important;">
           <div *ngFor="let language of languages" class="col-3" style="padding-left: 0 !important;">
-            <div class="language_wrapper row" [ngClass]="checkCountryCode(language) ? 'language_active' :''">
+            <div class="language_wrapper row" [ngClass]="checkLangCode(language) ? 'language_active' : '' ">
               <div class="col-3 flag"><p>{{language.emoji}}</p></div>
               <div class="language_text col-9">
                 <h5>{{language.name}}</h5>
@@ -14,13 +14,21 @@
             </div>
           </div>
         </div>
-
       </mat-dialog-content>
     </mat-tab>
     <mat-tab label="{{'CURRENCY'|translate}}">
       <mat-dialog-content class="mat-typography">
-
-
+        <h2>{{'CHOOSE_LANGUAGE'|translate}}</h2>
+        <div class="row" style="margin: 0 !important;">
+          <div *ngFor="let currency of currencies" class="col-3" style="padding-left: 0 !important;">
+            <div class="language_wrapper row" [ngClass]="checkCurrCode(currency) ? 'language_active' : '' ">
+              <div class="language_text col-9" *ngIf="currency">
+                <h5>{{currency.name}}</h5>
+                <p>{{currency.code}}&nbsp;-&nbsp;{{currency.symbol}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </mat-dialog-content>
     </mat-tab>
   </mat-tab-group>

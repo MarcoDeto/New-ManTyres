@@ -1,4 +1,5 @@
 
+using ManTyres.COMMON.DTO;
 using ManTyres.DAL.Infrastructure.MongoDB.Interfaces;
 using ManTyres.DAL.MongoDB.Models;
 
@@ -10,5 +11,6 @@ namespace ManTyres.DAL.MongoDB.Interfaces
       Task<List<Country>> GetAll();
       Task<Country> GetByISO(string ISO);
       Task<bool> InsertList(List<Country> entity);
+      Task<bool> UpdateList(List<NewCountryDTO> entity);
    }
 }

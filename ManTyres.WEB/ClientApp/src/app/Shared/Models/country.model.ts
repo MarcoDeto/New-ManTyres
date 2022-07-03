@@ -5,4 +5,8 @@ export interface Country {
    ISO_Codes: string;
    isO2: string;
    isO3: string;
+   currencyCode: string;
+   population: string;
+   capital: string;
+   continentName: string;
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Currencies } from '../../Models/currencies.enum';
+import { Currencies } from '../../Models/currency.model';
 import { ConnectionInfoService } from '../../Services/connectionInfo.service';
 
 @Component({

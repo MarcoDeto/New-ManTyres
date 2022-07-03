@@ -21,7 +21,7 @@ namespace Tyre.WSL.Controllers
       }
 
       [HttpGet]
-      public async Task<IActionResult> GetAllCountries()
+      public async Task<IActionResult> GetAll()
       {
          try
          {

@@ -1,8 +1,8 @@
-import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Place } from '../Models/place.model';
+import { Response } from '../Models/response.model';
 
 @Injectable({
    providedIn: 'root'
@@ -14,8 +14,12 @@ export class CountryService {
       private http: HttpClient,
    ) { }
 
-   getAllCuntries(): Observable<any> {
-      return this.http.get<Response>(environment.country + "GetAllCountries");
+   getAllCuntries(): Observable<Response> {
+      return this.http.get<Response>(environment.country + "GetAll");
+   }
+
+   GetByISO(ISO: string): Observable<Response> {
+      return this.http.get<Response>(environment.country + "GetByISO?ISO=" + ISO);
    }
 
    importCuntries(file: Blob): Observable<HttpEvent<void>> {

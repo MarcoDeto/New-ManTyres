@@ -1,3 +1,10 @@
+export interface Currency {
+   id: string;
+   name: string;
+   code: string;
+   symbol: string;
+}
+
 export enum Currencies {
    EUR = "EUR",
    USD = "USD",

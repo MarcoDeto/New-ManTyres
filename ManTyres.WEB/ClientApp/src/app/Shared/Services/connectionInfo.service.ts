@@ -27,12 +27,11 @@ export class ConnectionInfoService {
   }
 
   GetCurrencies(): Observable<any> {
-    return this.http.post<any>("http://api.exchangeratesapi.io/v1/latest?access_key=4801364e4c3570e773b931543a4b31ca", null);
+    return this.http.get<Response>(environment.currencies + 'GetAll');
   }
 
   getCountryCode() { return localStorage.getItem("country_code"); }
   setCountryCode(country_code: string) {
     localStorage.setItem('country_code', country_code);
   }
-  
 }
