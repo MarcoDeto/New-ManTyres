@@ -7,6 +7,5 @@ namespace ManTyres.BLL.Services.Interfaces
       Task<Response<List<CountryDTO>>> GetAll();
       Task<Response<CountryDTO>> GetByISO(string ISO);
       Task<Response<bool>> Import(List<CountryDTO> list);
-
    }
 }

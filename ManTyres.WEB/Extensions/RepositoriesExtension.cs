@@ -11,6 +11,7 @@ namespace ManTyres.WEB.Extensions
       {
          services.AddScoped<IUserRepository, UserRepository>();
          services.AddScoped<ILanguageRepository, LanguageRepository>();
+         services.AddScoped<ICurrencyRepository, CurrencyRepository>();
          services.AddScoped<ICountryRepository, CountryRepository>();
          services.AddScoped<ICityRepository, CityRepository>();
          services.AddScoped<IPlaceRepository, PlaceRepository>();

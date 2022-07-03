@@ -9,6 +9,7 @@ namespace TeqLinkPortal.API.Extensions
       {
          services.AddScoped<IUserService, UserService>();
          services.AddScoped<ILanguageService, LanguageService>();
+         services.AddScoped<ICurrencyService, CurrencyService>();
          services.AddScoped<ICountryService, CountryService>();
          services.AddScoped<ICityService, CityService>();
          services.AddScoped<IPlaceService, PlaceService>();

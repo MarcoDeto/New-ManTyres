@@ -7,7 +7,7 @@ namespace ManTyres.BLL.Services
 {
 	public class Response<T>
 	{
-		public Response(T content, long count, HttpStatusCode code, string? message)
+		public Response(T? content, long count, HttpStatusCode code, string? message)
 		{
 			Content = content;
 			Count = count;

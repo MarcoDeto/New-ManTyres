@@ -7,13 +7,13 @@ namespace Tyre.WSL.Controllers
 {
    [ApiController]
    [Route("api/[controller]/[action]")]
-   public class CountryController : ControllerBase
+   public class CurrencyController : ControllerBase
    {
-      private readonly ICountryService _service;
+      private readonly ICurrencyService _service;
       private readonly IExcelService _excelService;
-      private readonly ILogger<CountryController> _logger;
+      private readonly ILogger<CurrencyController> _logger;
 
-      public CountryController(ICountryService service, IExcelService excelService, ILogger<CountryController> logger)
+      public CurrencyController(ICurrencyService service, IExcelService excelService, ILogger<CurrencyController> logger)
       {
          _service = service;
          _excelService = excelService;
@@ -35,23 +35,10 @@ namespace Tyre.WSL.Controllers
          }
       }
 
-      [HttpGet]
-      public async Task<IActionResult> GetByISO(string ISO)
-      {
-         try
-         {
-            var response = await _service.GetByISO(ISO);
-            return StatusCode((int)response.Code, response);
-         }
-         catch (Exception e)
-         {
-            _logger.LogError(e, "Errore");
-            return StatusCode(500, e.Message);
-         }
-      }
+      /* ERRORE: MANCA IL METODO EXCEL! (INUTILE)...
 
       [HttpPost]
-      public async Task<IActionResult> ImportCountries(IFormFile file)
+      public async Task<IActionResult> ImportCurrencies(IFormFile file)
       {
          if (file == null) { return BadRequest(new Response<Exception>(null, 0, HttpStatusCode.BadRequest, "File obbligatorio")); }
          try
@@ -59,7 +46,7 @@ namespace Tyre.WSL.Controllers
             using (var stream = new MemoryStream())
             {
                file.CopyTo(stream);
-               var response = await _excelService.ImportCountries(stream);
+               var response = await _excelService.ImportCurrencies(stream);
                switch (response.Code)
                {
                   case HttpStatusCode.OK: return Ok(response);
@@ -75,6 +62,6 @@ namespace Tyre.WSL.Controllers
             _logger.LogError(e, "Errore");
             return StatusCode(500, e.Message);
          }
-      }
+      }*/
    }
 }

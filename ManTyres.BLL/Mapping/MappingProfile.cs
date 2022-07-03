@@ -45,6 +45,9 @@ namespace ManTyres.BLL.Mapping
 
          CreateMap<Language, LanguageDTO>();
          CreateMap<LanguageDTO, Language>();
+         
+         CreateMap<Currency, CurrencyDTO>();
+         CreateMap<CurrencyDTO, Currency>();
 
          CreateMap<Country, CountryDTO>();
          CreateMap<CountryDTO, Country>();
@@ -54,10 +57,10 @@ namespace ManTyres.BLL.Mapping
 
          CreateMap<PlaceDTO, Place>()
                 .ForMember(x => x.Id, _ => _.MapFrom(y => y.Id));
-                //.ForMember(place => place.Periods, opt => opt.Ignore());
+         //.ForMember(place => place.Periods, opt => opt.Ignore());
          CreateMap<Place, PlaceDTO>()
                 .ForMember(x => x.Id, _ => _.MapFrom(y => y.Id));
-                //.ForMember(place => place.Periods, opt => opt.Ignore());
+         //.ForMember(place => place.Periods, opt => opt.Ignore());
 
          CreateMap<Period, PeriodDTO>();
          CreateMap<PeriodDTO, Period>();

@@ -9,13 +9,13 @@ namespace Tyre.WSL.Controllers
    [Route("api/[controller]/[action]")]
    public class CityController : ControllerBase
    {
-      private readonly ICityService _cityService;
+      private readonly ICityService _service;
       private readonly IExcelService _excelService;
       private readonly ILogger<CityController> _logger;
 
-      public CityController(ICityService cityService, IExcelService excelService, ILogger<CityController> logger)
+      public CityController(ICityService service, IExcelService excelService, ILogger<CityController> logger)
       {
-         _cityService = cityService;
+         _service = service;
          _excelService = excelService;
          _logger = logger;
       }
@@ -25,7 +25,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var response = await _cityService.CountByISO(ISO);
+            var response = await _service.CountByISO(ISO);
             return StatusCode((int)response.Code, response);
          }
          catch (Exception e)
@@ -67,7 +67,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var response = await _cityService.GetAll();
+            var response = await _service.GetAll();
             return StatusCode((int)response.Code, response);
          }
          catch (Exception e)
@@ -82,7 +82,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var response = await _cityService.GetByISO(ISO);
+            var response = await _service.GetByISO(ISO);
             return StatusCode((int)response.Code, response);
          }
          catch (Exception e)

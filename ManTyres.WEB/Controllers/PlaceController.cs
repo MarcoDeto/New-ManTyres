@@ -10,14 +10,14 @@ namespace Tyre.WSL.Controllers
    [Route("api/[controller]/[action]")]
    public class PlaceController : ControllerBase
    {
-      private readonly IPlaceService _placeService;
+      private readonly IPlaceService _service;
       private readonly IExcelService _excelService;
 
       private readonly ILogger<PlaceController> _logger;
 
-      public PlaceController(IPlaceService placeService, IExcelService excelService, ILogger<PlaceController> logger)
+      public PlaceController(IPlaceService service, IExcelService excelService, ILogger<PlaceController> logger)
       {
-         _placeService = placeService;
+         _service = service;
          _excelService = excelService;
          _logger = logger;
       }
@@ -27,7 +27,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var response = await _placeService.AddPlace(place);
+            var response = await _service.AddPlace(place);
             return StatusCode((int)response.Code, response);
          }
          catch (Exception e)
@@ -42,7 +42,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var response = await _placeService.AddPlaces(places);
+            var response = await _service.AddPlaces(places);
             return StatusCode((int)response.Code, response);
          }
          catch (Exception e)
@@ -57,7 +57,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var result = await _placeService.GetWhereIsNull();
+            var result = await _service.GetWhereIsNull();
             return StatusCode((int)result.Code, result);
          }
          catch (Exception e)
@@ -72,7 +72,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var result = await _placeService.GetNear(LAT, LNG);
+            var result = await _service.GetNear(LAT, LNG);
             return StatusCode((int)result.Code, result);
          }
          catch (Exception e)
@@ -87,7 +87,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var result = await _placeService.GetByPlacesId(places_id);
+            var result = await _service.GetByPlacesId(places_id);
             return StatusCode((int)result.Code, result);
          }
          catch (Exception e)
@@ -102,7 +102,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var result = await _placeService.Get(Id);
+            var result = await _service.Get(Id);
             return StatusCode((int)result.Code, result);
          }
          catch (Exception e)
@@ -117,11 +117,11 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var places = await _placeService.Get(0, 0);
+            var places = await _service.Get(0, 0);
             foreach (var place in places.Content)
             {
                place.ISO2 = "IT";
-               await _placeService.Put(place);
+               await _service.Put(place);
             }
             return StatusCode((int)200, new Response<bool>(true, places.Count, HttpStatusCode.OK, null));
          }
@@ -137,7 +137,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var result = await _placeService.Put(place);
+            var result = await _service.Put(place);
             return StatusCode((int)result.Code, result);
          }
          catch (Exception e)
