@@ -106,13 +106,15 @@ export class UserService {
   setUser(data: User) { this._user.next(data); this.userShared = data; }
 
   setSession(data: any) {
-    this.setUser(data.user);
-    let payLoad = JSON.parse(window.atob(data.token.split('.')[1]))
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('UserID', payLoad.UserID);
-    localStorage.setItem('Username', payLoad.unique_name);
-    localStorage.setItem('UserRole', payLoad.role);
-    localStorage.setItem("expiration", JSON.stringify(data.expiration.valueOf()));
+    if (data) {
+      this.setUser(data.user);
+      let payLoad = JSON.parse(window.atob(data.token.split('.')[1]))
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('UserID', payLoad.UserID);
+      localStorage.setItem('Username', payLoad.unique_name);
+      localStorage.setItem('UserRole', payLoad.role);
+      localStorage.setItem("expiration", JSON.stringify(data.expiration.valueOf()));
+    }
   }
 
   setGoogleSession(data: any) {

@@ -88,7 +88,7 @@ export class SharedModule {
     var lang = localStorage.getItem("lang");
     if (lang && lang != "undefined") {
       this.translate.setDefaultLang(lang);
-      translate.use(lang);
+      this.translate.use(lang);
     } else if (browserLang) {
       this.translate.use(browserLang.match(/en|fr|es|it|de/) ? browserLang : "en");
     } else {

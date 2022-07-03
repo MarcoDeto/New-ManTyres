@@ -9,8 +9,8 @@ namespace ManTyres.DAL.MongoDB.Models
       [BsonRepresentation(BsonType.ObjectId)]
       public ObjectId Id { get; set; }
 		public string? Name { get; set; }
-		public string? Country_Code { get; set; }
-		public string? ISO_Codes { get; set; }
+		public string? CountryCode { get; set; }
+		public string? ISOCodes { get; set; }
 		public string? ISO2 { get; set; }
 		public string? ISO3 { get; set; }
 		public string? CurrencyCode { get; set; }

@@ -68,15 +68,20 @@ namespace ManTyres.BLL.Services.Implementations
 		public async Task<Response<bool>> Update()
       {
          _logger.LogDebug("Update (list)");
-			string json = File.ReadAllText("countries.json");
-			List<NewCountryDTO> countries = JsonConvert.DeserializeObject<List<NewCountryDTO>>(json)!;
-			var result = await _repository.UpdateList(countries);
+			//string json = File.ReadAllText("countries.json");
+			//List<NewCountryDTO> countries = JsonConvert.DeserializeObject<List<NewCountryDTO>>(json)!;
+			//var result = await _repository.UpdateList(countries);
+			//var result = await _repository.UpdateList2();
+			string json = File.ReadAllText("Countries.json");
+			List<CountryDTO> countries = JsonConvert.DeserializeObject<List<CountryDTO>>(json)!;
+			//var result = await _repository.UpdateList3(countries);
+
          _logger.LogTrace($"200. TRUE");
          return new Response<bool>()
          {
-            Count = countries.Count,
-            Content = result,
-            Code = result ? HttpStatusCode.OK : HttpStatusCode.BadRequest,
+            Count = countries != null ? 1 : 0,
+            Content = countries != null ? true : false,
+            Code = countries != null  ? HttpStatusCode.OK : HttpStatusCode.BadRequest,
             Message = null
          };
       }

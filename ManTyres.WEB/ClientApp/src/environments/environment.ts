@@ -38,5 +38,5 @@ export const environment = {
   dashboard:       'https://localhost:7250/api/Dashboard',
   inventario:      'https://localhost:7250/api/Inventario',
   excel:           'https://localhost:7250/api/Excel',
-  firstConnection: 'https://localhost:7250/api/FirstConnection',
+  firstConnection: 'https://localhost:7250/api/FirstConnection/',
 };

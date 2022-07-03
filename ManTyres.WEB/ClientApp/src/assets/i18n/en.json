@@ -149,5 +149,6 @@
   "INVITE_COMPANY": "Invite a company",
   "LANGUAGE_REGION": "Language and region",
   "CURRENCY": "Currency",
-  "CHOOSE_LANGUAGE": "Choose a language and region"
+  "CHOOSE_LANGUAGE": "Choose a language and region",
+  "SUGGESTED_LANGUAGES": "Suggested languages and regions"
 }

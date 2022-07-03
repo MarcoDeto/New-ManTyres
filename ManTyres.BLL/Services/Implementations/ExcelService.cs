@@ -213,11 +213,11 @@ namespace ManTyres.BLL.Services.Implementations
 				if (dt.Columns["Country"] != null)
 					country.Name = dt.Rows[i]["Country"].ToString();
 				if (dt.Columns["Country Code"] != null)
-					country.Country_Code = dt.Rows[i]["Country Code"].ToString();
+					country.CountryCode = dt.Rows[i]["Country Code"].ToString();
 				if (dt.Columns["ISO Codes"] != null) {
-					country.ISO_Codes  = dt.Rows[i]["ISO Codes"].ToString();
-					country.ISO2 = country.ISO_Codes!.Split(" / ")[0];
-					country.ISO3 = country.ISO_Codes!.Split(" / ")[1];
+					country.ISOCodes  = dt.Rows[i]["ISO Codes"].ToString();
+					country.ISO2 = country.ISOCodes!.Split(" / ")[0];
+					country.ISO3 = country.ISOCodes!.Split(" / ")[1];
 				}
 					
 				

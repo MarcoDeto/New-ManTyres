@@ -1,6 +1,7 @@
 import { Component, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { UserService } from './Auth/Services/user.service';
+import { ConnectionInfoService } from './Shared/Services/connectionInfo.service';
 import { LoaderService } from './Shared/Services/loader.service';
 
 @Component({
@@ -18,7 +19,8 @@ export class AppComponent {
     private titleService: Title,
     private loaderService: LoaderService,
     private renderer: Renderer2,
-    public userService: UserService
+    public userService: UserService,
+    private connService: ConnectionInfoService,
   ) { }
 
   ngAfterViewInit() {
@@ -44,10 +46,10 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-    const lang = localStorage.getItem("lang");
     if (this.getWidth() > 800) {
       this.opened = false;
     }
+    this.connService.setLangCurrency();
   }
 
   getWidth(): number { return window.innerWidth; }

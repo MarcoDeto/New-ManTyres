@@ -149,5 +149,6 @@
   "INVITE_COMPANY": "Invita un azienda",
   "LANGUAGE_REGION": "Lingua e regione",
   "CURRENCY": "Valuta",
-  "CHOOSE_LANGUAGE": "Scegli una lingua e un'area geografica"
+  "CHOOSE_LANGUAGE": "Scegli una lingua e un'area geografica",
+  "SUGGESTED_LANGUAGES": "Lingue e regioni suggerite"
 }

@@ -41,7 +41,7 @@ namespace ManTyres.DAL.MongoDB.Repositories
             return await Collection.Find(_ => _.ISO2 == ISO).SingleOrDefaultAsync();
          
          return await Collection.Find(_ => _.ISO3!.StartsWith(ISO)).SingleOrDefaultAsync();*/
-         return await Collection.Find(_ => _.ISO_Codes != null && _.ISO_Codes.StartsWith(ISO.ToUpper())).SingleOrDefaultAsync();
+         return await Collection.Find(_ => _.ISOCodes != null && _.ISOCodes.StartsWith(ISO.ToUpper())).SingleOrDefaultAsync();
       }
 
       public async Task<bool> InsertList(List<Country> entity)
@@ -84,7 +84,7 @@ namespace ManTyres.DAL.MongoDB.Repositories
             if (item.CountryCode != null)
             {
                Country country = await GetByISO(item.CountryCode);
-               
+
                if (country == null) { await Add(item); }
                else
                {
@@ -100,11 +100,59 @@ namespace ManTyres.DAL.MongoDB.Repositories
          }
          return true;
       }
+      public async Task<bool> UpdateList2()
+      {
+         _logger.LogDebug(LoggerHelper.GetActualMethodName());
+         var entity = await Collection.Find(x => x.Capital == null).ToListAsync();
+         if (entity == null)
+            throw new ArgumentNullException("entity");
+         foreach (var item in entity)
+         {
+            if (item.ISOCodes != null)
+            {
+               item.ISO2 = item.ISOCodes.Substring(0, 2);
+               item.ISO3 = GetISO3(item);
+            }
+            item.CurrencyCode = "";
+            item.Capital = "";
+            item.ContinentName = "";
+            await Collection.FindOneAndReplaceAsync(_ => _.Name == item.Name, item);
+         }
+         return true;
+      }
+
+      /*public async Task<bool> UpdateList3(List<CountryDTO> entity)
+      {
+         _logger.LogDebug(LoggerHelper.GetActualMethodName());
+         if (entity == null)
+            throw new ArgumentNullException("entity");
+
+         await Collection.DeleteManyAsync(x => x.Name != "");
+
+         foreach (var item in entity)
+         {
+            Country country = new Country();
+            country.Capital = item.Capital;
+            country.ContinentName = item.ContinentName;
+            country.CountryCode = item.Country_Code;
+            country.CurrencyCode = item.CurrencyCode;
+            country.Id = new ObjectId();
+            country.ISO2 = item.ISO2;
+            country.ISO3 = item.ISO3;
+            country.ISOCodes = item.ISO_Codes;
+            country.Name = item.Name;
+            country.Population = item.Population;
+
+            await Collection.InsertOneAsync(country);
+         }
+         return true;
+      }*/
+
       private string? GetISO3(Country country)
       {
-         if (country.ISO_Codes != null)
+         if (country.ISOCodes != null)
          {
-            var splitted = country.ISO_Codes.Split('/');
+            var splitted = country.ISOCodes.Split('/');
             return splitted[1].Substring(1);
          }
          return null;

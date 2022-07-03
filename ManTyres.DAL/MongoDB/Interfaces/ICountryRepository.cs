@@ -12,5 +12,8 @@ namespace ManTyres.DAL.MongoDB.Interfaces
       Task<Country> GetByISO(string ISO);
       Task<bool> InsertList(List<Country> entity);
       Task<bool> UpdateList(List<NewCountryDTO> entity);
+      Task<bool> UpdateList2();
+      
+      //Task<bool> UpdateList3(List<CountryDTO> entity);
    }
 }
