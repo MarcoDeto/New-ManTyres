@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    const lang = localStorage.getItem("lang")!;
+    const lang = localStorage.getItem('lang')!;
     this.activeLang = this.getLanguage(lang);
   }
   getWidth(): number {
@@ -46,9 +46,7 @@ export class HeaderComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.userService.logout();
-        sessionStorage.clear();
-        localStorage.clear();
-        this.router.navigate(['account/login']);
+        this.router.navigate(['']);
       }
     });
   }
@@ -71,7 +69,7 @@ export class HeaderComponent implements OnInit {
     this.activeLang = this.getLanguage(lang);
     this.translate.setDefaultLang(lang);
     this.translate.use(lang);
-    localStorage.setItem("lang", lang);
+    localStorage.setItem('lang', lang);
   }
 
   openLocalSettings() {
@@ -85,37 +83,37 @@ export class HeaderComponent implements OnInit {
 
   getLanguage(lang: string): LanguageNames {
     switch (lang) {
-      case "cn":
+      case 'cn':
         return LanguageNames.cn;
-      case "dk":
+      case 'dk':
         return LanguageNames.dk;
-      case "de":
+      case 'de':
         return LanguageNames.de;
-      case "es":
+      case 'es':
         return LanguageNames.es;
-      case "fr":
+      case 'fr':
         return LanguageNames.fr;
-      case "in":
+      case 'in':
         return LanguageNames.in;
-      case "it":
+      case 'it':
         return LanguageNames.it;
-      case "jp":
+      case 'jp':
         return LanguageNames.jp;
-      case "no":
+      case 'no':
         return LanguageNames.no;
-      case "pl":
+      case 'pl':
         return LanguageNames.pl;
-      case "pt":
+      case 'pt':
         return LanguageNames.pt;
-      case "ro":
+      case 'ro':
         return LanguageNames.ro;
-      case "ru":
+      case 'ru':
         return LanguageNames.ru;
-      case "se":
+      case 'se':
         return LanguageNames.se;
-      case "tr":
+      case 'tr':
         return LanguageNames.tr;
-      case "vn":
+      case 'vn':
         return LanguageNames.vn;
       default:
         return LanguageNames.en;

@@ -69,19 +69,28 @@ namespace ManTyres.DAL.MongoDB.Repositories
          _logger.LogDebug(LoggerHelper.GetActualMethodName());
          if (entity == null)
             throw new ArgumentNullException("entity");
-         entity.CreatedAt = DateTime.UtcNow;
          entity.UpdatedAt = DateTime.UtcNow;
          return await Collection.FindOneAndReplaceAsync(_ => _.Id == entity.Id, entity);
       }
 
-      public async virtual Task<bool> Deactive(string id)
+      public async virtual Task<bool> Deactivate(string id)
       {
          _logger.LogDebug(LoggerHelper.GetActualMethodName());
          var entity = await Collection.Find(_ => _.Id == ObjectId.Parse(id)).SingleOrDefaultAsync();
          if (entity == null)
             return false;
          entity.IsDeleted = true;
-         entity.CreatedAt = DateTime.UtcNow;
+         entity.UpdatedAt = DateTime.UtcNow;
+         return await Collection.FindOneAndReplaceAsync(_ => _.Id == entity.Id, entity) != null ? true : false;
+      }
+
+      public async virtual Task<bool> Reactivate(string id)
+      {
+         _logger.LogDebug(LoggerHelper.GetActualMethodName());
+         var entity = await Collection.Find(_ => _.Id == ObjectId.Parse(id)).SingleOrDefaultAsync();
+         if (entity == null)
+            return false;
+         entity.IsDeleted = false;
          entity.UpdatedAt = DateTime.UtcNow;
          return await Collection.FindOneAndReplaceAsync(_ => _.Id == entity.Id, entity) != null ? true : false;
       }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 
 export enum RedirectTo {
@@ -45,8 +45,8 @@ export class PopUpNotificationService {
         message: message,
         actions: true,
       },
-      horizontalPosition: "center",
-      verticalPosition: "top",
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
     })
       .afterDismissed().subscribe((data: any) => {
         if (data.dismissedByAction && redirectTo >= 0) { this._goTo(idDBRecord, redirectTo); }
@@ -59,8 +59,8 @@ export class PopUpNotificationService {
         message: `${this.translate.instant(`RedirectWS`)}`,
         actions: true,
       },
-      horizontalPosition: "center",
-      verticalPosition: "top",
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
     })
       .afterDismissed().subscribe((data: any) => {
         if (data.dismissedByAction) { this.router.navigate(['content/distributors']); }
@@ -69,6 +69,6 @@ export class PopUpNotificationService {
 
 
   private _goTo(idDBRecord: number, redirectTo: RedirectTo): void {
-    this.router.navigate([`content/${redirectTo === (RedirectTo.Workshop) as number ? "workshops" : "equipments"}`, idDBRecord]);
+    this.router.navigate([`content/${redirectTo === (RedirectTo.Workshop) as number ? 'workshops' : 'equipments'}`, idDBRecord]);
   }
 }

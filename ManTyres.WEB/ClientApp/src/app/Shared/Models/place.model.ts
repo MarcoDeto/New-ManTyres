@@ -1,4 +1,4 @@
-import { MongoDocument } from "./base.model";
+import { MongoDocument } from './base.model';
 
 export interface Period {
    open: Hours;

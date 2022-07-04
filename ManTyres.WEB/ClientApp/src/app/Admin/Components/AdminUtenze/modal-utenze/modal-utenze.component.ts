@@ -20,7 +20,7 @@ export class ModalUtenzeComponent implements OnInit, OnDestroy {
   subscribers: Subscription[] = [];
   user: Utenza | undefined;
   userPassword: UserPassword | undefined;
-  role: string = "user";
+  role: string = 'user';
   mode: Mode = Mode.New;
   hide: boolean = false; editPassword: boolean = false;
   ImgProfile: any;
@@ -68,7 +68,7 @@ export class ModalUtenzeComponent implements OnInit, OnDestroy {
       .then((result) => {
         if (result.value) {
           this.toastr.info('operazione in corso');
-          this.subscribers.push(this.adminUserService.deleteUser(id).subscribe(
+          this.subscribers.push(this.adminUserService.deactivateUser(id).subscribe(
             () => {
               this.closeDialog();
               this.toastr.clear();

@@ -17,13 +17,13 @@
       </button>
     </div>
   </div>
-  <div *ngIf="getWidth() != 375 && userService.isLoggedOut()" style="margin-right: auto !important;">
+  <div *ngIf="getWidth() != 375 && userService.isLoggedIn() == false" style="margin-right: auto !important;">
     <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/price']">
       <span class="span-link">Pricing</span>
     </a>
   </div>
 
-  <ng-container *ngIf="userService.isLoggedOut()">
+  <ng-container *ngIf="userService.isLoggedIn() == false">
     <div *ngIf="getWidth() != 375">
       <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/account/login']">
         <p class="span-link" style="text-transform: uppercase;">{{ "LOGIN" | translate}}</p>
@@ -36,71 +36,75 @@
         </div>
       </a>
     </div>
+    <div *ngIf="getWidth() != 375">
+      <div class="separator"></div>
+    </div>
+    <div *ngIf="getWidth() != 375" style="margin-left: 10px;">
+      <a class="nav-link" [matMenuTriggerFor]="menu">
+        <p>{{activeLang}}</p>
+      </a>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item (click)="changeLang('dk')">
+          <span>{{languageNames.dk}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('de')">
+          <span>{{languageNames.de}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('en')">
+          <span>{{languageNames.en}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('es')">
+          <span>{{languageNames.es}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('fr')">
+          <span>{{languageNames.fr}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('it')">
+          <span>{{languageNames.it}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('hu')">
+          <span>{{languageNames.hu}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('no')">
+          <span>{{languageNames.no}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('pl')">
+          <span>{{languageNames.pl}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('pt')">
+          <span>{{languageNames.pt}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('ro')">
+          <span>{{languageNames.ro}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('se')">
+          <span>{{languageNames.se}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('vn')">
+          <span>{{languageNames.vn}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('tr')">
+          <span>{{languageNames.tr}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('ru')">
+          <span>{{languageNames.ru}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('in')">
+          <span>{{languageNames.in}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('cn')">
+          <span>{{languageNames.cn}}</span>
+        </a>
+        <a mat-menu-item (click)="changeLang('jp')">
+          <span>{{languageNames.jp}}</span>
+        </a>
+      </mat-menu>
+    </div>
   </ng-container>
-  <div *ngIf="getWidth() != 375">
-    <div class="separator"></div>
-  </div>
-  <div *ngIf="getWidth() != 375" style="margin-left: 10px;">
-    <a class="nav-link" [matMenuTriggerFor]="menu">
-      <p>{{activeLang}}</p>
-    </a>
-    <mat-menu #menu="matMenu">
-      <a mat-menu-item (click)="changeLang('dk')">
-        <span>{{languageNames.dk}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('de')">
-        <span>{{languageNames.de}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('en')">
-        <span>{{languageNames.en}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('es')">
-        <span>{{languageNames.es}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('fr')">
-        <span>{{languageNames.fr}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('it')">
-        <span>{{languageNames.it}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('hu')">
-        <span>{{languageNames.hu}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('no')">
-        <span>{{languageNames.no}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('pl')">
-        <span>{{languageNames.pl}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('pt')">
-        <span>{{languageNames.pt}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('ro')">
-        <span>{{languageNames.ro}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('se')">
-        <span>{{languageNames.se}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('vn')">
-        <span>{{languageNames.vn}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('tr')">
-        <span>{{languageNames.tr}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('ru')">
-        <span>{{languageNames.ru}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('in')">
-        <span>{{languageNames.in}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('cn')">
-        <span>{{languageNames.cn}}</span>
-      </a>
-      <a mat-menu-item (click)="changeLang('jp')">
-        <span>{{languageNames.jp}}</span>
-      </a>
-    </mat-menu>
-  </div>
+
+  <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/price']">
+    <span class="span-link buss_mode">Passa alla modalità business</span>
+  </a>
 
   <mat-icon class="language_icon" (click)="openLocalSettings()">language</mat-icon>
 

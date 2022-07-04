@@ -124,13 +124,20 @@ export class ConnectionInfoService {
 
   initLanguage() {
     this.langLocalStorage = this.getLangLocalStorage();
-    if (this.langLocalStorage) {
+    if (this.langLocalStorage && this.langLocalStorage.length > 0) {
+      this.country_code = this.langLocalStorage;
+      if (this.langLocalStorage.length > 2) {
+        this.langLocalStorage = this.langLocalStorage.substring(0,2);
+      }
       this.translate.setDefaultLang(this.langLocalStorage);
       this.translate.use(this.langLocalStorage);
-    } else {
-      localStorage.setItem('lang', this.getBrowserLang());
-      this.translate.setDefaultLang(this.getBrowserLang());
-      this.translate.use(this.getBrowserLang());
+    }
+    else {
+      const browserLang = this.getBrowserLang();
+      this.country_code = browserLang;
+      localStorage.setItem('lang', browserLang);
+      this.translate.setDefaultLang(browserLang);
+      this.translate.use(browserLang);
     }
   }
 

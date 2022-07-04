@@ -1,0 +1,84 @@
+<div class="mat-elevation-z8 table-primary mat-app-background basic-container">
+  <span class="mobile-label add">
+    <button mat-fab color="primary" (click)="addCliente()" matTooltip="Nuovo cliente" matTooltipPosition="left">
+      <mat-icon>add</mat-icon>
+    </button>
+  </span>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Cerca</mat-label>
+    <mat-icon matSuffix>search</mat-icon>
+    <input matInput [(ngModel)]="filter" (keyup)="applyFilter($event)" placeholder="Cliente">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="clienti" matSort>
+    <ng-container matColumnDef="nome">
+      <mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Ordina">Nome&nbsp;<span *ngIf="getWidth() < 415">clienti</span></mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">
+        <button mat-icon-button color="primary">
+          <mat-icon *ngIf="!row.isAzienda">account_box</mat-icon>
+          <mat-icon *ngIf="row.isAzienda">business</mat-icon>
+        </button>
+        {{row.nome}}&nbsp;<span>{{row.cognome}}</span>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="codiceFiscale">
+      <mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Ordina">CF / IVA</mat-header-cell>
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">{{row.codiceFiscale | uppercase}}{{row.partitaIva}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+
+      <mat-header-cell *matHeaderCellDef>
+        <i class="fa-plus-square" [ngClass]="hoverAdd ? 'fas' : 'fad'" (mouseenter)="hoverAdd = !hoverAdd" (mouseleave)="hoverAdd = !hoverAdd"
+           *ngIf="getWidth() > 415" (click)="addCliente()" matTooltip="Nuovo cliente" matTooltipPosition="left"></i>
+      </mat-header-cell>
+
+      <mat-cell *matCellDef="let row" [ngClass]="row.isDeleted ? 'inactive-user table-active' : ''">
+        <div *ngIf="getWidth() > 415; else moreVert">
+          <i class="fas fa-edit ico" *ngIf="!row.isDeleted" (click)="editCliente(row, $event)" matTooltip="Modifica"></i>
+          <!--<i class="fas fa-trash-alt ico" *ngIf="!row.isDeleted" (click)="deactivate(row.clienteId)" matTooltip="Elimina"></i>
+          <i class="fas fa-trash-undo ico" *ngIf="row.isDeleted" (click)="reactivateCliente(row)" matTooltip="Riattiva"></i>-->
+        </div>
+        <ng-template #moreVert>
+          <button mat-icon-button aria-label="More vertical button" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <!-- <button *ngIf="!row.isDeleted" (click)="editCliente(row)" matTooltip="Modifica" mat-menu-item aria-label="Edit button"><mat-icon>edit</mat-icon>Modifica</button> -->
+            <button *ngIf="!row.isDeleted" (click)="deactivate(row.clienteId, $event)" matTooltip="Elimina" mat-menu-item aria-label="Delete button"><mat-icon>delete</mat-icon>Elimina</button>
+            <button *ngIf="row.isDeleted" (click)="reactivate(row)" matTooltip="Riattiva" mat-menu-item aria-label="Reactivate button"><mat-icon>restore</mat-icon>Riattiva</button>
+          </mat-menu>
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row class="mat-row cdk-row example-element-row ng-tns-c203-3 ng-star-inserted" *matRowDef="let row; columns: displayedColumns;" (click)="infoCliente(row)"></mat-row>
+
+  </table>
+  <div *ngIf="caricamento" style="padding: 10px;"><mat-spinner></mat-spinner></div>
+  <div class="error" *ngIf="notFound"><h5 class="error">Error 404</h5></div>
+  <div class="error" *ngIf="dbEmpty"><h5 class="error">Nessun cliente salvato nel database</h5></div>
+
+  <div>
+    <mat-paginator class="table-primary" showFirstLastButtons [length]="length" [pageSize]="take" *ngIf="getWidth() < 415"
+                   [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent = $event"></mat-paginator>
+
+    <mat-toolbar *ngIf="getWidth() > 415">
+      <mat-toolbar-row style="background-color: #fff;">
+        <div class="nav-menu" style="margin: 30px 0;">
+          <div class="nav-menu excel btn btn-success" (click)="export()" style="padding: 0 15px 0 5px;">
+            <i class="fas fa-download ico"></i> Scarica excel <i class="fas fa-file-excel"></i>
+          </div>
+        </div>
+        <span class="example-spacer"></span>
+        <mat-paginator class="table-primary" showFirstLastButtons [length]="length" [pageSize]="take"
+                       [pageSizeOptions]="[5, 10, 25, 100]" (page)="pageEvent = $event"></mat-paginator>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+
+</div>
+<router-outlet></router-outlet>

@@ -15,17 +15,17 @@ export class CountryService {
    ) { }
 
    getAllCuntries(): Observable<Response> {
-      return this.http.get<Response>(environment.country + "GetAll");
+      return this.http.get<Response>(environment.country + 'GetAll');
    }
 
    GetByISO(ISO: string): Observable<Response> {
-      return this.http.get<Response>(environment.country + "GetByISO?ISO=" + ISO);
+      return this.http.get<Response>(environment.country + 'GetByISO?ISO=' + ISO);
    }
 
    importCuntries(file: Blob): Observable<HttpEvent<void>> {
       const formData = new FormData();
       formData.append('file', file);
-      return this.http.post<HttpEvent<void>>(environment.country + "ImportCountries", formData, {
+      return this.http.post<HttpEvent<void>>(environment.country + 'ImportCountries', formData, {
          reportProgress: true
       });
    }

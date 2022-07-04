@@ -7,9 +7,11 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Inventario } from '../../../../Shared/Models/inventario.model';
 import { Mode } from '../../../../Shared/Models/mode.model';
-import { PneumaticiService } from '../../../Services/PneumaticiService';
+import { PneumaticiService } from '../../../Services/pneumatici.service';
 import { Response } from 'src/app/Shared/Models/response.model';
 import Swal from 'sweetalert2';
+import { UserService } from 'src/app/Auth/Services/user.service';
+import { CardPneumaticiComponent } from '../card-pneumatici/card-pneumatici.component';
 
 @Component({
   selector: 'app-fine-deposito',
@@ -17,11 +19,23 @@ import Swal from 'sweetalert2';
   styleUrls: ['./fine-deposito.component.scss']
 })
 export class FineDepositoComponent implements OnInit {
-  title = "Fine deposito";
+  title = 'Fine deposito';
   subscribers: Subscription[] = [];
   mode: Mode = Mode.Edit;
-  inventario: Inventario | undefined = undefined;
-  currentUserid = "";
+  inventario: Inventario = {
+    pneumaticiId: 0,
+    inizioDeposito: null,
+    fineDeposito: null,
+    depositoId: null,
+    battistrada: null,
+    statoGomme: null,
+    userId: null,
+    isDeleted: null,
+    pneumatici: null,
+    deposito: null,
+    user: null
+  }
+  currentUserid: string | null = null;
 
 
   fineDepositoForm = this.formBuilder.group({
@@ -54,7 +68,7 @@ export class FineDepositoComponent implements OnInit {
 
   submitForm() {
     this.inventario.userId = this.currentUserid;
-    this.inventario.fineDeposito = this.fineDepositoForm.get('fineDeposito').value;
+    this.inventario.fineDeposito = this.fineDepositoForm.value.fineDeposito;
     console.log(this.inventario);
     this.subscribers.push(this.pneumaticiService.fineDeposito(this.inventario).subscribe(
       (res: Response) => {
@@ -69,7 +83,7 @@ export class FineDepositoComponent implements OnInit {
           cancelButtonText: 'No'
         }).then((result) => {
           if (result.isConfirmed) {
-            console.log("PDF");
+            console.log('PDF');
             this.pneumaticiService.generatePdf(res.content);
           }
         });

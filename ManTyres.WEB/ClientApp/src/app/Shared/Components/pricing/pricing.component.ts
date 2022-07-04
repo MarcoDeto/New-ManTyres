@@ -202,6 +202,7 @@ export class PricingComponent implements OnInit {
   }
 
   getLiteValue(): number {
+    if (!this.rates) { return 0; }
     switch (this.currencySelect) {
       case Currencies.EUR:
         return this.rates.EUR * this.lite;
@@ -243,6 +244,7 @@ export class PricingComponent implements OnInit {
   }
 
   getPremiumValue(): number {
+    if (!this.rates) { return 0; }
     switch (this.currencySelect) {
       case Currencies.EUR:
         return this.rates.EUR * this.premium;
@@ -286,29 +288,29 @@ export class PricingComponent implements OnInit {
   getSymbol(): string {
     switch (this.currencySelect) {
       case Currencies.EUR:
-        return "€";
+        return '€';
       case Currencies.GBP:
-        return "£";
+        return '£';
       case Currencies.BRL:
-        return "R$";
+        return 'R$';
       case Currencies.INR:
-        return "₹";
+        return '₹';
       case Currencies.RUB:
-        return "₽"
+        return '₽'
       case Currencies.RON:
-        return "lei";
+        return 'lei';
       case Currencies.JPY:
-        return "¥";
+        return '¥';
       case Currencies.MYR:
-        return "RM";
+        return 'RM';
       case Currencies.PEN:
-        return "S/."
+        return 'S/.'
       case Currencies.MAD:
-        return ".د.م";
+        return '.د.م';
       case Currencies.CHF:
-        return "CHF";
+        return 'CHF';
       default:
-        return "$";
+        return '$';
     }
   }
 }

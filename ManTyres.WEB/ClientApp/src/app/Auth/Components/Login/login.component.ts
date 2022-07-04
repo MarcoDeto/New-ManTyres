@@ -20,7 +20,6 @@ import { Response } from 'src/app/Shared/Models/response.model';
 export class LoginComponent implements OnInit, OnDestroy {
   title = 'Login';
   subscribers: Subscription[] = [];
-  loginData: LoginModel = { email: '', password: '' };
   loginForm: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
@@ -35,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private userService: UserService,
+    private service: UserService,
     private toastr: ToastrService,
     private authService: SocialAuthService,
     private translate: TranslateService
@@ -75,22 +74,28 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: user.id,
       email: user.email
     }
-    this.userService.login(login).subscribe({
-      next: (res: Response) => {
-        this.userService.setSession(res.content);
-        this.toastr.success(this.translate.instant('SUCCESS_WELCOME'));
-        this.router.navigate(['']);
-      },
-      error: (err: any) => {
-        if (fromSocial == false) {
-          this.toastr.error(this.translate.instant(err.error.message));
-        } else if (err.error && err.error.code !== 404) {
-          this.toastr.error(this.translate.instant(err.error.message));
-        } else if (err.error && err.error.code === 404) {
-          this.SignUpWithSocial(user);
+    this.subscribers.push(
+      this.service.login(login).subscribe({
+        next: (res: Response) => {
+          this.service.setSession(res.content);
+          this.toastr.success(this.translate.instant('SUCCESS_WELCOME'));
+          this.router.navigate(['']);
+        },
+        error: (err: any) => {
+          if (fromSocial == false) {
+            this.toastr.error(this.translate.instant(err.error.message));
+          } else if (err.error && err.error.code !== 404) {
+            if (err.error.message) {
+              this.toastr.error(this.translate.instant(err.error.message));
+            } else if (err.message) {
+              this.toastr.error(this.translate.instant(err.message));
+            }
+          } else if (err.error && err.error.code === 404) {
+            this.SignUpWithSocial(user);
+          }
         }
-      }
-    });
+      })
+    );
   }
 
   resolved(captchaResponse: string) {
@@ -98,14 +103,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    localStorage.clear();
-    sessionStorage.clear();
+    // localStorage.clear();
+    // sessionStorage.clear();
 
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
-    this.authService.signOut(true);
+    //this.authService.signOut(true);
   }
 
   onSubmit() {
@@ -113,25 +118,26 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.loginForm.invalid) { return; }
 
     this.caricamento = true;
-    this.subscribers.push(this.userService.login(this.loginForm.value).subscribe({
-      next: (res: any) => {
-        this.userService.setSession(res);
-        this.router.navigate(['']);
-        var payLoad = JSON.parse(window.atob(res.token.split('.')[1]));
-        var username = payLoad.unique_name.charAt(0).toUpperCase() + payLoad.unique_name.slice(1);
-        this.userService.yes();
-        this.toastr.info('Bentornato! ' + username);
-      },
-      error: (error: any) => {
-        if (error.status == 400) {
-          this.toastr.error(this.translate.instant(error.error.message));
+    this.subscribers.push(
+      this.service.login(this.loginForm.value).subscribe({
+        next: (res: any) => {
+          this.service.setSession(res);
+          this.router.navigate(['']);
+          var payLoad = JSON.parse(window.atob(res.token.split('.')[1]));
+          var username = payLoad.unique_name.charAt(0).toUpperCase() + payLoad.unique_name.slice(1);
+          this.toastr.info('Bentornato! ' + username);
+        },
+        error: (error: any) => {
+          if (error.status == 400) {
+            this.toastr.error(this.translate.instant(error.error.message));
+          }
+          if (error.status == 500) {
+            this.router.navigate(['/errore']);
+          }
+          this.caricamento = false;
         }
-        if (error.status == 500) {
-          this.router.navigate(['/errore']);
-        }
-        this.caricamento = false;
-      }
-    }));
+      })
+    );
   }
 
   SignUpWithSocial(user: any) {
@@ -152,7 +158,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       phoneNumber: null,
       phoneNumberConfirmed: false,
       photoUrl: user.photoUrl,
-      provider: user.provider,
       securityStamp: null,
       street: null,
       twoFactorEnabled: false,
@@ -162,39 +167,51 @@ export class LoginComponent implements OnInit, OnDestroy {
       zipcode: null,
       socialUserId: null,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      googleId: null,
+      facebookId: null,
+      taxCode: null,
+      isBusiness: false,
+      businessId: null,
+      provider: null
     }
-    this.subscribers.push(this.userService.createAccount(toAdd).subscribe({
-      next: (boolRes: any) => {
-        this.toastr.success(this.translate.instant('SUCCESS_WELCOME') + ' ' + toAdd.firstName);
-        var login: LoginModel = {
-          password: user.id,
-          email: user.email
-        }
-        this.userService.login(login).subscribe({
-          next: (res: any) => {
-            this.userService.setSession(res);
-            this.userService.setUser(toAdd);
-            this.router.navigate(['account/register/profile']);
-          }
-        });
-      },
-      error: (error: any) => {
-        if (error.error.code == 409) {
+    this.subscribers.push(
+      this.service.createAccount(toAdd).subscribe({
+        next: (boolRes: any) => {
+          this.toastr.success(this.translate.instant('SUCCESS_WELCOME') + ' ' + toAdd.firstName);
           var login: LoginModel = {
             password: user.id,
             email: user.email
           }
-          this.userService.login(login).subscribe(
-            res => {
-              this.userService.setSession(res);
-              this.router.navigate(['']);
-            }
+          this.subscribers.push(
+            this.service.login(login).subscribe({
+              next: (res: any) => {
+                this.service.setSession(res);
+                this.service.setUser(toAdd);
+                this.router.navigate(['account/register/profile']);
+              }
+            })
           );
-        } else {
-          this.toastr.error(error);
+        },
+        error: (error: any) => {
+          if (error.error.code == 409) {
+            var login: LoginModel = {
+              password: user.id,
+              email: user.email
+            }
+            this.subscribers.push(
+              this.service.login(login).subscribe(
+                res => {
+                  this.service.setSession(res);
+                  this.router.navigate(['']);
+                }
+              )
+            );
+          } else {
+            this.toastr.error(error);
+          }
         }
-      }
-    }));
+      })
+    );
   }
 }

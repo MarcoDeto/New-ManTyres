@@ -1,7 +1,7 @@
 
 <app-header [open]="opened" (sidenavChanged)="opened = $event"></app-header>
 
-<ng-container *ngIf="userService.isLoggedOut()">
+<ng-container *ngIf="userService.isLoggedIn() == false">
   <div class="center-page" *ngIf="caricamento">
     <img class="spinner rotating" src="../assets/Images/loader.png">
   </div>

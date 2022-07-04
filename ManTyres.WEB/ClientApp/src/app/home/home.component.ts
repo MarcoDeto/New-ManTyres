@@ -75,7 +75,7 @@ export class HomeComponent {
   ngOnInit() {
     this.getIPAddress();
 
-    /*const query = "gomme Milano";
+    /*const query = 'gomme Milano';
     this.getPlaces(query);
 
     if (navigator.geolocation) {
@@ -167,7 +167,7 @@ export class HomeComponent {
               if (res && res.content) {
                 this.places = res.content;
                 if (res.content.length != this.placesNearby.length) {
-                  console.log("DIVERSO" + (this.placesNearby.length - res.content.length));
+                  console.log('DIVERSO' + (this.placesNearby.length - res.content.length));
                   this.getPlaceNotSaved();
                 }
               }
@@ -204,7 +204,7 @@ export class HomeComponent {
 
   searchMyCustomer(cities: City[]) {
     cities.forEach(city => {
-      this.getPlaces("gomme " + city.name + " IT");
+      this.getPlaces('gomme ' + city.name + ' IT');
     });
     this.complete = true;
   }

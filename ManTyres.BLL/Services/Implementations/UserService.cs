@@ -28,10 +28,10 @@ namespace ManTyres.BLL.Services.Implementations
       #region METHODS
       public async Task<Response<bool>> CreateAccount(UserDTO request)
       {
-			if (request == null)
+         if (request == null)
             return new Response<bool>(false, 0, HttpStatusCode.UnprocessableEntity, "ERROR_NULL");
          User toAdd = _mapper.Map<User>(request);
-			if (toAdd != null && string.IsNullOrWhiteSpace(toAdd.Email))
+         if (toAdd != null && string.IsNullOrWhiteSpace(toAdd.Email))
             return new Response<bool>(false, 0, HttpStatusCode.UnprocessableEntity, "ERROR_NULL");
          else if (await _userRepository.IsAlreadyExists(toAdd!.Email!))
             return new Response<bool>(false, 0, HttpStatusCode.Conflict, "ERROR_EmailAlreadyExist");
@@ -56,21 +56,44 @@ namespace ManTyres.BLL.Services.Implementations
       {
          if (await _userRepository.IsAlreadyExists(email) == false)
             return new Response<UserDTO?>(null, 0, HttpStatusCode.NotFound, "ERROR_USERNOTFOUND");
-			
-			var user = await _userRepository.GetByEmail(email);
-			return new Response<UserDTO?>(_mapper.Map<UserDTO>(user), 1, HttpStatusCode.OK, "SUCCESS_GET");
+
+         var user = await _userRepository.GetByEmail(email);
+         return new Response<UserDTO?>(_mapper.Map<UserDTO>(user), 1, HttpStatusCode.OK, "SUCCESS_GET");
       }
 
       public async Task<Response<UserDTO?>> CheckLogin(LoginDTO request)
       {
          if (await _userRepository.IsAlreadyExists(request.Email) == false)
             return new Response<UserDTO?>(null, 0, HttpStatusCode.NotFound, "ERROR_USERNOTFOUND");
-			
+
          if (await _userRepository.CheckPassword(request) == false)
             return new Response<UserDTO?>(null, 0, HttpStatusCode.Unauthorized, "ERROR_PASSWORD");
 
          var user = await _userRepository.GetByEmail(request.Email);
-			return new Response<UserDTO?>(_mapper.Map<UserDTO>(user), 1, HttpStatusCode.OK, "SUCCESS");
+         return new Response<UserDTO?>(_mapper.Map<UserDTO>(user), 1, HttpStatusCode.OK, "SUCCESS");
+      }
+
+      public async Task<Response<bool>> CheckCurrentPassword(UserPasswordDTO user)
+      {
+         var _user = await _userRepository.Get(user.Id);
+         if (_user == null)
+            return new Response<bool>(false, 0, HttpStatusCode.NotFound, $"Nessun utente con Username = {user.Username}");
+         if (_user.PasswordHash == user.Password)
+            return new Response<bool>(true, 1, HttpStatusCode.OK, "Password corretta");
+         return new Response<bool>(false, 1, HttpStatusCode.BadRequest, "Password sbagliata");
+      }
+
+      public async Task<Response<bool>> ChangePassword(UserPasswordDTO user)
+      {
+         var _user = await _userRepository.Get(user.Id);
+         if (_user == null)
+            return new Response<bool>(false, 0, HttpStatusCode.NotFound, $"Nessun utente con Username = {user.Username}");
+         _user.PasswordHash = user.NewPassword;
+         var result = await _userRepository.Update(_user);
+         if (result != null ) {
+            return new Response<bool>(true, 1, HttpStatusCode.OK, "Password è stata modificata");
+         }
+         return new Response<bool>(false, 0, HttpStatusCode.InternalServerError, "InternalServerError");
       }
 
       #endregion
@@ -78,29 +101,33 @@ namespace ManTyres.BLL.Services.Implementations
 
 
       #region JSON-METHODS
-      public async Task<Response<List<UserDTO>>> GetAllUsersJSON()
+      public Response<List<UserDTO>> GetAllUsersJSON()
       {
          string json = File.ReadAllText("users.json");
-         List<UserDTO> result = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? result = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         if (result == null)
+            return new Response<List<UserDTO>>(null, 0, HttpStatusCode.NotFound, $"ERROR_FILE_NOTFOUND");
          result = result.Where(x => x.Role != UserRole.Administrator).ToList();
          if (result.Count == 0)
             return new Response<List<UserDTO>>(null, 0, HttpStatusCode.OK, "Non ci sono utenti");
          return new Response<List<UserDTO>>(result, result.Count, HttpStatusCode.OK, null);
       }
-      public async Task<Response<UserDTO>> GetUserByIdJSON(string id)
+      public Response<UserDTO>? GetUserByIdJSON(string id)
       {
          string json = File.ReadAllText("users.json");
-         List<UserDTO> users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
          /*var user = users.Find(x => x.Id == id);
 			if (user == null)
 				return new Response<UserDTO>(null, 0, HttpStatusCode.NotFound, $"Nessun utente con Id = {id}");
 			return new Response<UserDTO>(user, 1, HttpStatusCode.OK, null);*/
          return null;
       }
-      public async Task<Response<UserDTO>> GetUserbyUsernameJSON(string username)
+      public Response<UserDTO> GetUserbyUsernameJSON(string username)
       {
          string json = File.ReadAllText("users.json");
-         List<UserDTO> users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         if (users == null)
+            return new Response<UserDTO>(null, 0, HttpStatusCode.NotFound, $"ERROR_FILE_NOTFOUND");
          var user = users.Find(x => x.UserName == username);
          if (user == null)
             return new Response<UserDTO>(null, 0, HttpStatusCode.NotFound, $"Nessun utente con Username = {username}");
@@ -110,7 +137,6 @@ namespace ManTyres.BLL.Services.Implementations
             FirstName = user.FirstName,
             LastName = user.LastName,
             Email = user.Email,
-            Provider = user.Provider,
             UserName = user.Email,
             IsDeleted = false,
             EmailConfirmed = false,
@@ -119,17 +145,16 @@ namespace ManTyres.BLL.Services.Implementations
          };
          return new Response<UserDTO>(response, 1, HttpStatusCode.OK, null);
       }
-      public async Task<Response<bool>> CreateUserJSON(UserDTO user)
+      public Response<bool> CreateUserJSON(UserDTO user)
       {
-         if (await IsAlreadyExistsJSON(user) != null)
-            return new Response<bool>(false, 0, HttpStatusCode.UnprocessableEntity, await IsAlreadyExistsJSON(user));
+         if (IsAlreadyExistsJSON(user) != null)
+            return new Response<bool>(false, 0, HttpStatusCode.UnprocessableEntity, IsAlreadyExistsJSON(user));
          var _user = new UserDTO()
          {
             PhotoUrl = user.PhotoUrl,
             FirstName = user.FirstName,
             LastName = user.LastName,
             Email = user.Email,
-            Provider = user.Provider,
             UserName = user.Email,
             IsDeleted = false,
             EmailConfirmed = false,
@@ -137,20 +162,24 @@ namespace ManTyres.BLL.Services.Implementations
             Role = UserRole.Administrator
          };
          string json = File.ReadAllText("users.json");
-         List<UserDTO> users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         if (users == null)
+            return new Response<bool>(false, 0, HttpStatusCode.NotFound, $"ERROR_FILE_NOTFOUND");
          users.Add(_user);
          File.WriteAllText("users.json", JsonConvert.SerializeObject(users));
          return new Response<bool>(true, 1, HttpStatusCode.Created, "Creato con succusso");
       }
-      public async Task<Response<bool>> UpdateUserJSON(UserDTO user)
+      public Response<bool> UpdateUserJSON(UserDTO user)
       {
          string json = File.ReadAllText("users.json");
-         List<UserDTO> users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         if (users == null)
+            return new Response<bool>(false, 0, HttpStatusCode.NotFound, $"ERROR_FILE_NOTFOUND");
          var _user = users.Find(x => x.Id == user.Id);
          if (_user == null)
             return new Response<bool>(false, 0, HttpStatusCode.UnprocessableEntity, $"Nessun utente con Id = {user.Id}");
-         if (await IsAlreadyExistsJSON(user) != null)
-            return new Response<bool>(false, 0, HttpStatusCode.UnprocessableEntity, await IsAlreadyExistsJSON(user));
+         if (IsAlreadyExistsJSON(user) != null)
+            return new Response<bool>(false, 0, HttpStatusCode.UnprocessableEntity, IsAlreadyExistsJSON(user));
          _user.PhotoUrl = user.PhotoUrl;
          _user.FirstName = user.FirstName;
          _user.LastName = user.LastName;
@@ -158,16 +187,18 @@ namespace ManTyres.BLL.Services.Implementations
          _user.Email = user.Email;
          _user.PhoneNumber = user.PhoneNumber;
          _user.IsDeleted = user.IsDeleted;
-         UserDTO toDelete = users.Find(x => x.Id == user.Id);
-         users.Remove(toDelete);
+         UserDTO? toDelete = users.Find(x => x.Id == user.Id);
+         if (toDelete != null) { users.Remove(toDelete); }
          users.Add(user);
          File.WriteAllText("users.json", JsonConvert.SerializeObject(users));
          return new Response<bool>(true, 1, HttpStatusCode.OK, "Modificato con succusso");
       }
-      public async Task<Response<bool>> CheckCurrentPasswordJSON(UserPasswordDTO user)
+      public Response<bool> CheckCurrentPasswordJSON(UserPasswordDTO user)
       {
          string json = File.ReadAllText("users.json");
-         List<UserDTO> users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         if (users == null)
+            return new Response<bool>(false, 0, HttpStatusCode.NotFound, $"ERROR_FILE_NOTFOUND");
          var _user = users.Find(x => x.UserName == user.Username);
          if (_user == null)
             return new Response<bool>(false, 0, HttpStatusCode.NotFound, $"Nessun utente con Username = {user.Username}");
@@ -175,10 +206,12 @@ namespace ManTyres.BLL.Services.Implementations
             return new Response<bool>(true, 1, HttpStatusCode.OK, "Password corretta");
          return new Response<bool>(false, 1, HttpStatusCode.BadRequest, "Password sbagliata");
       }
-      public async Task<Response<bool>> ChangePasswordJSON(UserPasswordDTO user)
+      public Response<bool> ChangePasswordJSON(UserPasswordDTO user)
       {
          string json = File.ReadAllText("users.json");
-         List<UserDTO> users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         if (users == null)
+            return new Response<bool>(false, 0, HttpStatusCode.NotFound, $"ERROR_FILE_NOTFOUND");
          var _user = users.Find(x => x.UserName == user.Username);
          if (_user == null)
             return new Response<bool>(false, 0, HttpStatusCode.NotFound, $"Nessun utente con Username = {user.Username}");
@@ -189,10 +222,10 @@ namespace ManTyres.BLL.Services.Implementations
          File.WriteAllText("users.json", JsonConvert.SerializeObject(users));
          return new Response<bool>(true, 1, HttpStatusCode.OK, "Password è stata modificata");
       }
-      public async Task<Response<bool>> ResetPasswordJSON(UserPasswordDTO user)
+      public Response<bool> ResetPasswordJSON(UserPasswordDTO user)
       {
          string json = File.ReadAllText("users.json");
-         List<UserDTO> users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
          /*var _user = users.Find(x => x.Id == user.Id);
 			if (_user == null)
 				return new Response<bool>(false, 0, HttpStatusCode.UnprocessableEntity, $"Nessun utente con Id = {user.Id}");
@@ -202,10 +235,10 @@ namespace ManTyres.BLL.Services.Implementations
 			File.WriteAllText("users.json", JsonConvert.SerializeObject(users));*/
          return new Response<bool>(true, 1, HttpStatusCode.OK, "Password è stata modificata");
       }
-      public async Task<Response<bool>> DeactiveJSON(string userId)
+      public Response<bool> DeactiveJSON(string userId)
       {
          string json = File.ReadAllText("users.json");
-         List<UserDTO> users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
          /*var _user = users.Find(x => x.Id == userId);
 			if (_user == null)
 				return new Response<bool>(false, 0, HttpStatusCode.UnprocessableEntity, $"Nessun utente con Id = {userId}");
@@ -215,10 +248,10 @@ namespace ManTyres.BLL.Services.Implementations
 			File.WriteAllText("users.json", JsonConvert.SerializeObject(users));*/
          return new Response<bool>(true, 1, HttpStatusCode.OK, "Utente disattivato");
       }
-      public async Task<Response<bool>> ReactiveJSON(string userId)
+      public Response<bool> ReactiveJSON(string userId)
       {
          string json = File.ReadAllText("users.json");
-         List<UserDTO> users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
          /*var _user = users.Find(x => x.Id == userId);
 			if (_user == null)
 				return new Response<bool>(false, 0, HttpStatusCode.UnprocessableEntity, $"Nessun utente con Id = {userId}");
@@ -231,20 +264,22 @@ namespace ManTyres.BLL.Services.Implementations
       #endregion
 
       #region JSON-UTILITIES
-      private async Task<string> IsAlreadyExistsJSON(UserDTO user)
+      private string? IsAlreadyExistsJSON(UserDTO user)
       {
          string json = File.ReadAllText("users.json");
-         List<UserDTO> users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         if (users == null) { return null; }
          if (users.Any(x => x.Id != user.Id && x.UserName == user.UserName))
             return "Username già esistente!";
          else if (users.Any(x => x.Id != user.Id && x.Email == user.Email))
             return $"Email già esistente!";
          return null;
       }
-      public async Task<bool> IsAlreadyDisactivedJSON(string userId)
+      public bool IsAlreadyDisactivedJSON(string userId)
       {
          string json = File.ReadAllText("users.json");
-         List<UserDTO> users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         List<UserDTO>? users = JsonConvert.DeserializeObject<List<UserDTO>>(json);
+         if (users == null) { return false; }
          var result = users.Find(x => x.Id == userId);
          if (result != null)
             return result.IsDeleted;

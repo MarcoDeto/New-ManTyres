@@ -14,5 +14,7 @@ namespace ManTyres.BLL.Services.Interfaces
 		Task<Response<bool>> CreateAccount(UserDTO request);
 		Task<Response<UserDTO?>> FindByEmail(string email);
 		Task<Response<UserDTO?>> CheckLogin(LoginDTO request);
+		Task<Response<bool>> CheckCurrentPassword(UserPasswordDTO user);
+		Task<Response<bool>> ChangePassword(UserPasswordDTO user);
 	}
 }

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserHomeComponent } from './Components/Pneumatici/user-home.component';
-import { AuthGuard } from '../Authentication/auth.guard';
-import { VeicoliComponent } from './Components/UsersVeicoli/veicoli/veicoli.component';
-import { ClientiComponent } from './Components/UsersClienti/clienti/clienti.component';
-import { DashboardComponent } from './Components/Dashboard/dashboard.component';
+import { UserHomeComponent } from './Components/home/user-home.component';
+import { VeicoliComponent } from './Components/veicoli/veicoli/veicoli.component';
+import { ClientiComponent } from './Components/clienti/clienti/clienti.component';
+import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { InventarioComponent } from './Components/inventario/inventario.component';
+import { AuthGuard } from '../Auth/Guards/auth.guard';
 
 const userRoutes: Routes = [
   { path: 'pneumatici', component: UserHomeComponent, canActivate: [AuthGuard], data: { permittedRoles: ['user', 'admin'] } },

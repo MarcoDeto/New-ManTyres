@@ -9,7 +9,7 @@ import { PasswordComponent } from './Components/password/password.component';
 import { SharedModule } from '../Shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
 import { RecaptchaModule, RECAPTCHA_V3_SITE_KEY } from 'ng-recaptcha';
-import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from "angularx-social-login";
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { environment } from 'src/environments/environment';
 
 @NgModule({
@@ -65,7 +65,7 @@ import { environment } from 'src/environments/environment';
         ]
       } as SocialAuthServiceConfig,
     },
-    { provide: RECAPTCHA_V3_SITE_KEY, useValue: "6Lc4fMQeAAAAANcjwZJE3DvxoifE_JUqMyQpGrGu" }
+    { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Lc4fMQeAAAAANcjwZJE3DvxoifE_JUqMyQpGrGu' }
   ]
 })
 export class AccountModule { }

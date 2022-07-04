@@ -1,14 +1,14 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
-import { Subscription } from "rxjs";
-import { Sedi } from "../../../Shared/Models/sedi.model";
-import { SediService } from "../../Services/sedi.service";
-import { AdminDatabaseService } from "../../Services/admin.database.service";
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Sedi } from '../../../Shared/Models/sedi.model';
+import { SediService } from '../../Services/sedi.service';
+import { AdminDatabaseService } from '../../Services/admin.database.service';
 import { Response } from 'src/app/Shared/Models/response.model';
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { saveAs } from 'file-saver';
-import { ProgressStatus } from "../../../Shared/Models/progressStatus.model";
-import { ToastrService } from "ngx-toastr";
-import { UserService } from "src/app/Auth/Services/user.service";
+import { ProgressStatus } from '../../../Shared/Models/progressStatus.model';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/Auth/Services/user.service';
 
 @Component({
   selector: 'app-admin-database',
@@ -67,7 +67,7 @@ export class AdminDatabaseComponent implements OnInit, OnDestroy{
     this.subscribers.push(this.dbService.tracciatoClienti().subscribe(
       res => {
         const blob = new Blob([res]);
-        saveAs(blob, "Tracciato clienti.xlsx");
+        saveAs(blob, 'Tracciato clienti.xlsx');
       }
     ));
   }
@@ -76,7 +76,7 @@ export class AdminDatabaseComponent implements OnInit, OnDestroy{
     this.subscribers.push(this.dbService.tracciatoVeicoli().subscribe(
       res => {
         const blob = new Blob([res]);
-        saveAs(blob, "Tracciato veicoli.xlsx");
+        saveAs(blob, 'Tracciato veicoli.xlsx');
       }
     ));
   }
@@ -85,7 +85,7 @@ export class AdminDatabaseComponent implements OnInit, OnDestroy{
     this.subscribers.push(this.dbService.tracciatoPneumatici().subscribe(
       res => {
         const blob = new Blob([res]);
-        saveAs(blob, "Tracciato completo.xlsx");
+        saveAs(blob, 'Tracciato completo.xlsx');
       }
     ));
   }

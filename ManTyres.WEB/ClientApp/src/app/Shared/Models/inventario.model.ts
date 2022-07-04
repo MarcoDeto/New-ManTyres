@@ -7,15 +7,15 @@ import { User } from './user.model';
 export class Inventario {
   constructor(
     public pneumaticiId: number,
-    public inizioDeposito: string,
-    public fineDeposito: string,
-    public depositoId: number,
-    public battistrada: number,
-    public statoGomme: string,
-    public userId: string,
-    public isDeleted: boolean,
-    public pneumatici: Pneumatici,
-    public deposito: Depositi,
-    public user: User
+    public inizioDeposito: string | null,
+    public fineDeposito: string | null,
+    public depositoId: number | null,
+    public battistrada: number | null,
+    public statoGomme: string | null,
+    public userId: string | null,
+    public isDeleted: boolean | null,
+    public pneumatici: Pneumatici | null,
+    public deposito: Depositi | null,
+    public user: User | null
   ) { }
 }

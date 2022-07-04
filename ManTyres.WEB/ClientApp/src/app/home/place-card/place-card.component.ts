@@ -93,7 +93,7 @@ export class PlaceCardComponent implements OnInit, DoCheck, OnDestroy {
 
   openDetail() {
     this.placesService.placeSelected = this.place;
-    window.open('place/'+this.place?.id, "_blank");
+    window.open('place/'+this.place?.id, '_blank');
     //this.router.navigate(['/place/'+this.place?.id]);
   }
 }

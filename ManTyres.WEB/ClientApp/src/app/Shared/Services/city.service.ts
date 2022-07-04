@@ -17,17 +17,17 @@ export class CityService {
    importCities(file: Blob): Observable<HttpEvent<void>> {
       const formData = new FormData();
       formData.append('file', file);
-      return this.http.post<HttpEvent<void>>(environment.city + "ImportCities", formData, {
+      return this.http.post<HttpEvent<void>>(environment.city + 'ImportCities', formData, {
          reportProgress: true
       });
    }
 
    getAllCities(): Observable<any> {
-      return this.http.get<Response>(environment.city + "GetAllCities");
+      return this.http.get<Response>(environment.city + 'GetAllCities');
    }
 
    getCitiesByISO(ISO: string): Observable<any> {
-      return this.http.get<Response>(environment.city + "GetCitiesByISO?ISO=" + ISO);
+      return this.http.get<Response>(environment.city + 'GetCitiesByISO?ISO=' + ISO);
    }
 
 }

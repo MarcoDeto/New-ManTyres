@@ -1,13 +1,13 @@
-import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
-import { Loader } from "@googlemaps/js-api-loader";
-import { environment } from "src/environments/environment";
-import { Observable } from "rxjs";
-import { HttpClient } from "@angular/common/http";
-import { GeolocationCoordinates } from '../../home/home.component';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Loader } from '@googlemaps/js-api-loader';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { GeolocationCoordinates } from '../../home/home.component'
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class MapService {
 	// map
@@ -36,13 +36,13 @@ export class MapService {
 		country: string
 	): Observable<any> {
 		return this.http.get(
-			"https://maps.googleapis.com/maps/api/geocode/json?address=" +
+			'https://maps.googleapis.com/maps/api/geocode/json?address=' +
 			address +
 			city +
 			postalCode +
 			province +
 			country +
-			"&key=" +
+			'&key=' +
 			environment.GOOGLE_MAPS_API_KEY
 		);
 	}
@@ -50,9 +50,9 @@ export class MapService {
 	placeDetail(place_id: string): Observable<any> {
 		return this.http.get(
 			environment.GOOGLE_PLACE_URL +
-			"details/json?place_id=" +
+			'details/json?place_id=' +
 			place_id +
-			"&key=" +
+			'&key=' +
 			environment.GOOGLE_MAPS_API_KEY
 		);
 	}
@@ -60,9 +60,9 @@ export class MapService {
 	textSearch(query: string): Observable<any> {
 		return this.http.get(
 			environment.GOOGLE_PLACE_URL + 
-			"textsearch/json?query=" +
+			'textsearch/json?query=' +
 			query +
-			"&key=" +
+			'&key=' +
 			environment.GOOGLE_MAPS_API_KEY
 		);
 	}	
@@ -71,9 +71,9 @@ export class MapService {
 		return this.http.get(
 			environment.PROXY_URL + 
 			environment.GOOGLE_PLACE_URL + 
-			"textsearch/json?query=" +
+			'textsearch/json?query=' +
 			query +
-			"&key=" +
+			'&key=' +
 			environment.GOOGLE_MAPS_API_KEY
 		);
 	}
@@ -82,9 +82,9 @@ export class MapService {
 		return this.http.get( 
 			environment.PROXY_URL + 
 			environment.GOOGLE_PLACE_URL +
-			"details/json?place_id=" +
+			'details/json?place_id=' +
 			place_id +
-			"&key=" +
+			'&key=' +
 			environment.GOOGLE_MAPS_API_KEY
 		);
 	}
@@ -93,9 +93,9 @@ export class MapService {
 		return this.http.get( 
 			environment.PROXY_URL + 
 			environment.GOOGLE_PLACE_URL +
-			"nearbysearch/json?keyword=gomme&location=" +
+			'nearbysearch/json?keyword=gomme&location=' +
 			coords.latitude + ', ' + coords.longitude +
-			"&radius=5000&key=" +
+			'&radius=5000&key=' +
 			environment.GOOGLE_MAPS_API_KEY
 		);
 	}

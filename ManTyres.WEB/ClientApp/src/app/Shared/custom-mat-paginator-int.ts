@@ -12,9 +12,9 @@ export class CustomMatPaginatorIntl extends MatPaginatorIntl {
 
   getAndInitTranslations() {
 
-      this.itemsPerPageLabel = "Elementi per pagina";
-      this.nextPageLabel = "Pagina successiva";
-      this.previousPageLabel = "Pagina precedente";
+      this.itemsPerPageLabel = 'Elementi per pagina';
+      this.nextPageLabel = 'Pagina successiva';
+      this.previousPageLabel = 'Pagina precedente';
       this.changes.next();
 
   }

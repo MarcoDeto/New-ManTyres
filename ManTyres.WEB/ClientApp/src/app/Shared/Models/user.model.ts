@@ -1,5 +1,5 @@
-import { MongoDocument } from "./base.model";
-import { UserRole } from "./enums";
+import { MongoDocument } from './base.model';
+import { UserRole } from './enums';
 
 export interface Users {
   id: string | null,
@@ -27,15 +27,20 @@ export interface User extends MongoDocument {
   phoneNumber: string | null, 
   phoneNumberConfirmed: boolean, 
   photoUrl: string | null, 
-  provider: string | null, 
   role: UserRole, 
   securityStamp: string | null, 
   socialUserId: string | null, 
   street: string | null, 
   twoFactorEnabled: boolean, 
   userName: string | null, 
-  website: string | null, 
+  website: string | null,
+  taxCode: string | null,
+  isBusiness: boolean,
+  businessId: string | null,
+  provider: string | null,
   zipcode: string | null,
+  googleId: string | null, 
+  facebookId: string | null,
 }
 
 export class Utenza {

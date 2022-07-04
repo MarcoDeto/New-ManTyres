@@ -1,5 +1,5 @@
-import { ErrorHandler, Injectable, NgZone } from "@angular/core";
-import { ErrorService } from "./error.service";
+import { ErrorHandler, Injectable, NgZone } from '@angular/core';
+import { ErrorService } from './error.service';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
@@ -9,9 +9,9 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     this.zone.run(() =>
       this.errorService.PostError(
-        error.message || "Undefined client error"
+        error.message || 'Undefined client error'
     ));
 
-    console.error("Error from global error handler", error);
+    console.error('Error from global error handler', error);
   }
 }

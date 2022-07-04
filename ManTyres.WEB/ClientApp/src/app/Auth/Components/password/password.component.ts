@@ -37,11 +37,16 @@ export class PasswordComponent implements OnInit, OnDestroy {
   newPasswordForm: FormGroup = this.formBuilder.group({});
   get getNewPasswordControl() { return this.newPasswordForm.controls; }
 
-  userPassword: UserPassword = new UserPassword("", "", "", "");
+  userPassword: UserPassword = {
+    id: null,
+    userName: null,
+    password: null,
+    newPassword: null
+  }
   caricamento = true;
   hide = true;
   passChecked = false;
-  currentPassword = "";
+  currentPassword = '';
   matcher = new ErrorPasswordStateMatcher();
 
   isPasswordEditMode: boolean = false;
@@ -58,8 +63,9 @@ export class PasswordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.userPassword.id = this.userService.getUserID();
     this.userPassword.userName = this.userService.getUsername();
-    console.log("USERNAME = " + this.userPassword.userName);
+    console.log('USERNAME = ' + this.userPassword.userName);
     this.caricamento = false;
     this.passwordForm = this.formBuilder.group({
       password: ['', [Validators.required]],
@@ -75,16 +81,17 @@ export class PasswordComponent implements OnInit, OnDestroy {
     this.caricamento = true;
 
     this.userPassword.password = this.passwordForm.value.password;
+    this.userPassword.newPassword = this.passwordForm.value.password;
 
     this.subscribers.push(this.userService.checkCurrentPassword(this.userPassword).subscribe(
       (res: Response) => {
         this.caricamento = false;
         if (res.content) {
-          this.toastr.success("Password corretta");
+          this.toastr.success('Password corretta');
           this.passChecked = true;
         }
         else {
-          this.toastr.error("Password errata");
+          this.toastr.error('Password errata');
           this.passChecked = false;
 
         }
@@ -95,9 +102,7 @@ export class PasswordComponent implements OnInit, OnDestroy {
     ));
   }
 
-  changeValue(value: boolean) {
-    this.hide = !value;
-  }
+  changeValue() { this.hide = !this.hide; }
 
   changePassword() {
     this.caricamento = true;
@@ -108,7 +113,7 @@ export class PasswordComponent implements OnInit, OnDestroy {
       (res: Response) => {
         this.caricamento = false;
         if (res.content) {
-          this.toastr.success("Password cambiata");
+          this.toastr.success('Password cambiata');
           this.router.navigate(['account/profile']);
         }
         else {
@@ -125,7 +130,7 @@ export class PasswordComponent implements OnInit, OnDestroy {
     const password = group.value.newPassword;
     const confirmPassword = group.value.confermaPassword;
 
-    if (confirmPassword != "")
+    if (confirmPassword != '')
       return password === confirmPassword ? null : { notSame: true }
     
     return null;

@@ -17,38 +17,44 @@ export class AdminUserService {
     private toastr: ToastrService
   ) { }
 
-  getUsers(skip: number, take: number, role: string, filtro?: UserFilter): Observable<Response> {
-    skip *= take;
+  getUsers(skip: number, take: number, filter?: UserFilter): Observable<Response> {
+
     var params = new HttpParams()
       .set('skip', skip.toString())
-      .set('take', take.toString())
-      .set('role', role.toString());
-    if (filtro == null && filtro == undefined)
-      filtro = new UserFilter('', '', '', '');
+      .set('take', take.toString());
 
-    return this.http.post<Response>(environment.utente + '/get', filtro, { params: params })
-      .pipe(
-        catchError((e: any) => {
-          this.toastr.error(e.error.errorMessage, 'Errore.');
-          return throwError(e);
-        })
-      );
+    return this.http.post<Response>(environment.utente + 'GetAll', filter, { params: params });
+    return this.http.post<Response>(
+      environment.utente + 'get', filter, { params: params }
+    ).pipe(catchError((e: any) => {
+      this.toastr.error(e.error.errorMessage, 'Errore.');
+      return throwError(e);
+    }));
+  }
+
+  getAll(skip: number, take: number): Observable<Response> {
+
+    var params = new HttpParams()
+      .set('skip', skip.toString())
+      .set('take', take.toString());
+
+    return this.http.get<Response>(environment.utente + 'GetAll');
   }
 
   getAllUsers(): Observable<Response> {
-    return this.http.get<Response>(environment.utente + '/GetAll');
+    return this.http.get<Response>(environment.utente + 'GetAll');
   }
 
   getUser(id: string): Observable<Response> {
-    return this.http.get<Response>(environment.utente + '/GetById/' + id);
+    return this.http.get<Response>(environment.utente + 'GetById/' + id);
   }
 
   GetRolesUser(userid: string): Observable<Response> {
-    return this.http.get<Response>(environment.utente + "/GetRolesUser?userId=" + userid);
+    return this.http.get<Response>(environment.utente + 'GetRolesUser?userId=' + userid);
   }
 
   postUser(bodyReq: Utenza): Observable<Response> {
-    return this.http.post<Response>(environment.utente + "/Create", bodyReq);
+    return this.http.post<Response>(environment.utente + 'Create', bodyReq);
   }
 
   editPassword(bodyReq: UserPassword): Observable<Response> {
@@ -56,10 +62,14 @@ export class AdminUserService {
   }
 
   putUser(bodyReq: User): Observable<Response> {
-    return this.http.put<Response>(environment.utente + "/Update", bodyReq);
+    return this.http.put<Response>(environment.utente + 'Update', bodyReq);
   }
 
-  deleteUser(id: string): Observable<Response> {
-    return this.http.delete<Response>(environment.utente + '/Delete/' + id);
+  deactivateUser(id: string): Observable<Response> {
+    return this.http.delete<Response>(environment.utente + 'Deactivate/' + id);
+  }
+
+  reactivateUser(id: string): Observable<Response> {
+    return this.http.delete<Response>(environment.utente + 'Reactivate/' + id);
   }
 }

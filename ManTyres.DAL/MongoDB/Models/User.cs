@@ -23,8 +23,13 @@ namespace ManTyres.DAL.MongoDB.Models
       public string? Country { get; set; }
       public string? City { get; set; }
       public string? Website { get; set; }
+      public string? TaxCode { get; set; }
+      public bool IsBusiness { get; set; }
+      public string? BusinessId { get; set; }
       public string? CultureInfo { get; set; }
       public string? Provider { get; set; }
+      public string? GoogleId { get; set; }
+      public string? FacebookId { get; set; }
       public UserRole Role { get; set; }
    }
 }

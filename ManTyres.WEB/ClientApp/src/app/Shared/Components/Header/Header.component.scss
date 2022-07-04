@@ -7,7 +7,7 @@
    flex-wrap: wrap;
    align-items: center;
    justify-content: space-between;
-   padding: 0 1rem;
+   padding: 0 5%;
    min-height: 80px;
    background-color: #0b1426 !important;
 }
@@ -50,13 +50,10 @@ button {
 .nav-link {
    cursor: pointer;
    color: #FFF !important;
-   padding: 10px;
-   padding-top: 5px;
-
-   >mat-icon {
+   padding: 5px;
+   > mat-icon {
       color: #0b1426 !important;
    }
-
    //color: rgba(255, 255, 255, 0.9) !important;
    font-family: -apple-system,
    BlinkMacSystemFont,
@@ -247,4 +244,21 @@ mat-menu-item,
 .language_icon {
    cursor: pointer;
    color: #FFF;
+   margin-left: 10px;
+}
+
+.language_icon:hover {
+   background-color: #f7f7f7;
+   color: #0b1426;
+   border-radius: 50px;
+}
+
+.buss_mode {
+   padding: 5px 10px;
+}
+
+.buss_mode:hover {
+   background-color: #f7f7f7;
+   color: #0b1426;
+   border-radius: 50px;
 }

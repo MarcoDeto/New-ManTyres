@@ -85,11 +85,12 @@ export class LocalSettingsComponent implements OnInit, OnDestroy {
 
   setLanguage(lang: string) {
     if (lang && lang.match(/en|fr|es|it|de/)) {
-      localStorage.setItem('lang', lang);
-      this.translate.setDefaultLang(lang);
-      this.translate.use(lang);
       this.country_code = lang;
       this.service.country_code = lang;
+      localStorage.setItem('lang', lang);
+      lang = lang.substring(0, 2).toLowerCase();
+      this.translate.setDefaultLang(lang);
+      this.translate.use(lang);
     }
   }
 

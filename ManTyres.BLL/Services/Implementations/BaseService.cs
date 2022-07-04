@@ -134,12 +134,31 @@ namespace ManTyres.BLL.Services.Implementations
 			};
 		}
 
-		public async Task<Response<bool>> Deactive(string id)
+		public async Task<Response<bool>> Deactivate(string id)
 		{
 			_logger.LogDebug(LoggerHelper.GetActualMethodName());
 			_logger.LogTrace("Entity id: ", id);
 
-			var result = await _repository.Deactive(id);
+			var result = await _repository.Deactivate(id);
+			if (result == false)
+				_logger.LogTrace("404. Not found");
+
+			_logger.LogTrace($"200. Returned successful", result);
+			return new Response<bool>()
+			{
+				Count = result == false ? 0 : 1,
+				Content = result,
+				Code = result == false ? HttpStatusCode.NotFound : HttpStatusCode.OK,
+				Message = result == false ? "NotFound" : "SuccessfullyDeleted"
+			};
+		}
+
+		public async Task<Response<bool>> Reactivate(string id)
+		{
+			_logger.LogDebug(LoggerHelper.GetActualMethodName());
+			_logger.LogTrace("Entity id: ", id);
+
+			var result = await _repository.Reactivate(id);
 			if (result == false)
 				_logger.LogTrace("404. Not found");
 

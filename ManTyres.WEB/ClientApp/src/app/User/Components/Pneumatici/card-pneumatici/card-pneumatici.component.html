@@ -1,0 +1,61 @@
+<a class="card">
+  <div class="contenitore" [ngClass]="hover ? 'mat-elevation-z8' : ''" *ngIf="inventario && inventario.pneumatici && 
+       inventario.pneumatici.veicolo && inventario.pneumatici.stagione && inventario.pneumatici.stagione.nome"
+       (mouseenter)="hoverListItem(hover)" (mouseleave)="hoverListItem(hover)">
+    <div class="card-header" [ngClass]="inventario.pneumatici.stagione.nome == 'estate' ? 'estate' : 'inverno'">
+      <div class="row">
+        <div class="col-2 col-sm-2 col-md-2 col-lg-2 icons">
+          <h1><i class="fas" [ngClass]="inventario.pneumatici.stagione.nome == 'estate' ? 'fa-sun' : 'fa-snowflake'"></i> </h1>
+        </div>
+        <div class="col-9 col-sm-9 col-md-9 col-lg-9 info">
+          <div class="col-sm-12 card-title">{{inventario.pneumatici.marca}}&nbsp;<i class="icona-stagione"></i></div>
+          <div class="col-sm-12 card-subtitle">{{inventario.pneumatici.modello}}</div>
+        </div>
+        <div class="col-1 col-sm-1 col-md-1 col-lg-1 quantita">
+          <h1>{{inventario.pneumatici.quantita}}</h1>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row margin-top">
+        <div class="col-3 col-sm-3 col-md-2 col-lg-2 icons">
+          <h3><i class="fas fa-map-marker-alt"></i> </h3>
+        </div>
+        <div class="col-7 col-sm-7 col-md-10 col-lg-10 info">
+          <div class="card-label-title">Ubicazione</div>
+          <div class="card-label-value" *ngIf="inventario.fineDeposito == null"><b>{{inventario.deposito?.sede?.comune}}</b>&nbsp;{{inventario.deposito?.ubicazione}}</div>
+          <div class="card-label-value" *ngIf="inventario.fineDeposito != null"><b>CLIENTE</b></div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 col-sm-3 col-md-2 col-lg-2 icons">
+          <h3><i class="fas fa-ruler"></i> </h3>
+        </div>
+        <div class="col-7 col-sm-7 col-md-10 col-lg-10 info">
+          <div class="card-label-title">Misura</div>
+          <div class="card-label-value">{{inventario.pneumatici.misura}}&nbsp;{{inventario.battistrada}}mm</div>
+        </div>
+      </div>
+      <div class="row margin-vert" *ngIf="isVeicolo == null && inventario.pneumatici.veicolo.cliente">
+        <div class="col-3 col-sm-3 col-md-2 col-lg-2 icons">
+          <h3 *ngIf="!inventario.pneumatici.veicolo.cliente.isAzienda"><i class="fas fa-user"></i></h3>
+          <h3 *ngIf="inventario.pneumatici.veicolo.cliente.isAzienda"><i class="fas fa-building"></i></h3>
+        </div>
+        <div class="col-7 col-sm-7 col-md-10 col-lg-10 info">
+          <div class="card-label-title">Proprietario</div>
+          <div class="card-label-value">{{inventario.pneumatici.veicolo.cliente.cognome}}&nbsp;{{inventario.pneumatici.veicolo.cliente.nome}}</div>
+        </div>
+      </div>
+      <div class="row" *ngIf="isVeicolo == null">
+        <div class="col-3 col-sm-3 col-md-2 col-lg-2 icons">
+          <h3> <i class="fas fa-info-circle"></i> </h3>
+        </div>
+        <div class="col-7 col-sm-7 col-md-10 col-lg-10 info">
+          <div class="card-label-title">Stato Gomme</div>
+          <div class="card-label-value">{{inventario.statoGomme}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>

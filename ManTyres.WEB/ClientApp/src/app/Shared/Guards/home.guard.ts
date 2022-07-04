@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanActivateChild } from "@angular/router";
-import { FirstConnectionService } from "../Services/FirstConnection.service";
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanActivateChild } from '@angular/router';
+import { FirstConnectionService } from '../Services/FirstConnection.service';
 import { Response } from '../../Shared/Models/response.model';
-import { UserService } from "../../Auth/Services/user.service";
+import { UserService } from '../../Auth/Services/user.service';
 
 
 @Injectable({

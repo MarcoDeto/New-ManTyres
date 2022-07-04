@@ -5,18 +5,16 @@ import { ToastrService } from 'ngx-toastr';
 import { Response } from 'src/app/Shared/Models/response.model';
 import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { debounceTime, delay, filter, map, takeUntil, tap } from 'rxjs/operators';
-import { SelectClienti } from '../../../../Shared/Models/clienti.model';
 import { Mode } from '../../../../Shared/Models/mode.model';
 import { Pneumatici } from '../../../../Shared/Models/pneumatici.model';
 import { Veicolo } from '../../../../Shared/Models/veicoli.mdel';
-import { UserService } from '../../../../Shared/Services/user.service';
 import { ValidatorsService } from '../../../../Shared/Validators/validators.services';
-import { VeicoliService } from '../../../Services/VeicoliService';
-import { ModalVeicoliComponent } from '../../UsersVeicoli/modal-veicoli/modal-veicoli.component';
-import { UserHomeComponent } from '../user-home.component';
-import { PneumaticiService } from '../../../Services/PneumaticiService';
+import { VeicoliService } from '../../../Services/veicoli.service';
+import { ModalVeicoliComponent } from '../../veicoli/modal-veicoli/modal-veicoli.component';
+import { UserHomeComponent } from '../../home/user-home.component';
+import { PneumaticiService } from '../../../Services/pneumatici.service';
 import Swal from 'sweetalert2';
-import { StagioniService } from '../../../Services/StagioniService';
+import { StagioniService } from '../../../Services/stagioni.service';
 import { Sedi } from '../../../../Shared/Models/sedi.model';
 import { Stagioni } from '../../../../Shared/Models/stagioni.model';
 import { Depositi } from '../../../../Shared/Models/depositi.model';
@@ -25,6 +23,7 @@ import * as moment from 'moment';
 import { SediService } from '../../../../Admin/Services/sedi.service';
 import { Inventario } from '../../../../Shared/Models/inventario.model';
 import { ThemePalette } from '@angular/material/core';
+import { UserService } from 'src/app/Auth/Services/user.service';
 
 @Component({
   selector: 'app-modal-pneumatici',
@@ -32,45 +31,46 @@ import { ThemePalette } from '@angular/material/core';
   styleUrls: ['./modal-pneumatici.component.scss']
 })
 export class ModalPneumaticiComponent implements OnInit, OnDestroy {
-  @ViewChild('bigPdfViewer', { static: true }) public bigPdfViewer;
+  @ViewChild('bigPdfViewer', { static: true }) public bigPdfViewer: any;
   @ViewChild('picker') picker: any;
 
-  public date: moment.Moment;
+  public date = new Date();
   public showSpinners = true;
   public showSeconds = false;
   public touchUi = false;
   public enableMeridian = false;
-  public minDate: moment.Moment;
-  public maxDate: moment.Moment;
+  public minDate = new Date();
+  public maxDate = new Date();
   public stepHour = 1;
   public stepMinute = 1;
   public stepSecond = 1;
   public color: ThemePalette = 'primary';
 
   subscribers: Subscription[] = [];
-  currentUserid = "";
-  currentUserRole: string = "";
+  currentUserid: string | null = null;
+  currentUserRole: string | null = null;
 
-  pneumaticiForm: FormGroup;
+  pneumaticiForm: FormGroup = this.formBuilder.group({});
 
-  creationClientiControl: AbstractControl;
+  creationClientiControl: AbstractControl | undefined;
 
-  pneumatici: Pneumatici;
+  pneumatici: Pneumatici | undefined;
   sede: Sedi = {
-    cap: "",
-    civico: "",
-    comune: "",
+    cap: null,
+    civico: null,
+    comune: null,
     isDeleted: false,
-    nazione: "",
-    provincia: "",
+    nazione: null,
+    provincia: null,
     sedeId: 0,
-    telefono: "",
-    indirizzo: ""
+    telefono: null,
+    indirizzo: null,
+    email: null
   }
   deposito: Depositi = {
     depositoId: 0,
     sedeId: 0,
-    ubicazione: "",
+    ubicazione: null,
     isDeleted: false,
     sede: this.sede
   }
@@ -89,7 +89,7 @@ export class ModalPneumaticiComponent implements OnInit, OnDestroy {
   protected _onDestroy = new Subject<void>();
 
   DATE_TIME_FORMAT = 'DD-MM-yyyy hh:mm:ss';
-  hiddenPopUpPdf: Boolean;
+  hiddenPopUpPdf: Boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -135,8 +135,9 @@ export class ModalPneumaticiComponent implements OnInit, OnDestroy {
       statoGomme: [this.data?.inventario.statoGomme, [Validators.required]]
     });
 
-    if (this.IsNewMode())
+    if (this.IsNewMode()) {
       this.pneumaticiForm.get('inizioDeposito')?.setValue(moment(new Date()));
+    }
     else if (this.IsEditMode()) {
       this.pneumaticiForm.get('inizioDeposito')?.disable();
     }
@@ -162,7 +163,7 @@ export class ModalPneumaticiComponent implements OnInit, OnDestroy {
     else { search = search.toLowerCase(); }
     // filtering
     this.filtered.next(
-      this.veicoli.filter(type => type.targa.toLowerCase().indexOf(search) > -1)
+      this.veicoli.filter(type => type.targa && type.targa.toLowerCase().indexOf(search) > -1)
     );
   }
 
@@ -211,7 +212,7 @@ export class ModalPneumaticiComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ModalVeicoliComponent, {
       width: width,
       maxWidth: '90%',
-      data: { mode: Mode.New, veicolo: new Veicolo(0, null, null, null, null, false, null, null) }
+      data: { mode: Mode.New, veicolo: new Veicolo(0, null, null, null, null, false, null) }
     });
 
     dialogRef.beforeClosed().subscribe(result => { this.ngOnInit(); this.data.inventario.pneumatici.veicoloId = result.veicoloId; });
@@ -219,7 +220,7 @@ export class ModalPneumaticiComponent implements OnInit, OnDestroy {
   }
 
   removeVeicolo() {
-    this.pneumaticiForm.get('targa').setValue(0);
+    this.pneumaticiForm.get('targa')?.setValue(moment(0));
   }
 
   submitForm() {
@@ -227,22 +228,22 @@ export class ModalPneumaticiComponent implements OnInit, OnDestroy {
 
     this.deposito = {
       depositoId: 0,
-      sedeId: this.pneumaticiForm.get('sede').value,
-      ubicazione: this.pneumaticiForm.get('ubicazione').value,
+      sedeId: this.pneumaticiForm.value.sede,
+      ubicazione: this.pneumaticiForm.value.ubicazione,
       isDeleted: false,
       sede: null
     }
 
     this.pneumatici = {
       pneumaticiId: 0,
-      marca: this.replaceSpacesInOne(this.pneumaticiForm.get('marca').value),
-      modello: this.replaceSpacesInOne(this.pneumaticiForm.get('modello').value),
-      misura: this.upperCase(this.pneumaticiForm.get('misura').value),    
-      dot: this.pneumaticiForm.get('dot').value,
-      stagioneId: this.pneumaticiForm.get('stagioneId').value,
-      veicoloId: this.pneumaticiForm.get('targa').value,
-      dataUbicazione: this.pneumaticiForm.get('inizioDeposito').value,
-      quantita: this.pneumaticiForm.get('quantità').value,
+      marca: this.replaceSpacesInOne(this.pneumaticiForm.value.marca),
+      modello: this.replaceSpacesInOne(this.pneumaticiForm.value.modello),
+      misura: this.upperCase(this.pneumaticiForm.value.misura),    
+      dot: this.pneumaticiForm.value.dot,
+      stagioneId: this.pneumaticiForm.value.stagioneId,
+      veicoloId: this.pneumaticiForm.value.targa,
+      dataUbicazione: this.pneumaticiForm.value.inizioDeposito,
+      quantita: this.pneumaticiForm.value.quantità,
       isDeleted: false,
       stagione: null,
       veicolo: null
@@ -253,10 +254,10 @@ export class ModalPneumaticiComponent implements OnInit, OnDestroy {
       depositoId: 0,
       user: null,
       pneumaticiId: 0,
-      inizioDeposito: this.pneumaticiForm.get('inizioDeposito').value,
+      inizioDeposito: this.pneumaticiForm.value.inizioDeposito,
       fineDeposito: null,
-      battistrada: this.pneumaticiForm.get('battistrada').value,
-      statoGomme: this.pneumaticiForm.get('statoGomme').value,
+      battistrada: this.pneumaticiForm.value.battistrada,
+      statoGomme: this.pneumaticiForm.value.statoGomme,
       deposito: this.deposito,
       pneumatici: this.pneumatici,
       userId: this.currentUserid
@@ -301,7 +302,7 @@ export class ModalPneumaticiComponent implements OnInit, OnDestroy {
       if (result.value) {
         this.userService.hidePopUpPdf();
       };
-      if (result.isConfirmed) {
+      if (result.isConfirmed && this.inventario) {
         this.pneumaticiService.generatePdf(this.inventario);
       };
     });
@@ -314,13 +315,13 @@ export class ModalPneumaticiComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscribers.forEach(s => s.unsubscribe());
     this.subscribers.splice(0);
-    this.subscribers = null;
+    this.subscribers = [];
   }
 
   replaceSpacesInOne(text: string) {
     if (!text) return text;
     text = text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
-    return text.trim().replace(/(?:\s+)\s/g, " ");
+    return text.trim().replace(/(?:\s+)\s/g, ' ');
   }
 
   upperCase(text: string) {
@@ -353,7 +354,7 @@ export class ModalPneumaticiComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
+  onResize(event: Event) {
     this.getWidth();
   }
 }

@@ -44,7 +44,7 @@ export class RegisterProfileComponent implements OnInit {
     if (this.signupForm.invalid) {
       return;
     }
-    this.userService.setSession("test");
+    this.userService.setSession('test');
     */
   }
 }

@@ -11,7 +11,8 @@ namespace ManTyres.DAL.Infrastructure.MongoDB.Interfaces
 		Task<T> Add(T entity);
 		Task<bool> Insert(T entity);
 		Task<T> Update(T entity);
-		Task<bool> Deactive(string id);
+		Task<bool> Deactivate(string id);
+		Task<bool> Reactivate(string id);
 		Task<bool> Delete(string id);
 	}
 }

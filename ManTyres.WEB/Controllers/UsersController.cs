@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using ManTyres.BLL.Services;
 using ManTyres.BLL.Services.Interfaces;
 using ManTyres.COMMON.DTO;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +26,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var response = await _userService.Get(skip, take);
+            Response<List<UserDTO>> response = await _userService.Get(skip, take);
             return StatusCode((int)response.Code, response);
          }
          catch (Exception e)
@@ -40,7 +41,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var response = await _userService.Get(id);
+            Response<UserDTO> response = await _userService.Get(id);
             return StatusCode((int)response.Code, response);
          }
          catch (Exception e)
@@ -77,10 +78,9 @@ namespace Tyre.WSL.Controllers
          {
             return StatusCode((int)HttpStatusCode.UnprocessableEntity, "ERROR_INVALIDEMAIL");
          }
-
          try
          {
-            var response = await _userService.CreateAccount(request);
+            Response<bool> response = await _userService.CreateAccount(request);
             return StatusCode((int)response.Code, response);
          }
          catch (Exception e)
@@ -111,7 +111,7 @@ namespace Tyre.WSL.Controllers
       {
          try
          {
-            var response = await _userService.Put(user);
+            Response<UserDTO> response = await _userService.Put(user);
             return StatusCode((int)response.Code, response);
          }
          catch (Exception e)
@@ -123,11 +123,26 @@ namespace Tyre.WSL.Controllers
 
       [HttpDelete("{id}")]
       [Authorize(Roles = "admin")]
-      public async Task<ActionResult> Delete(string id)
+      public async Task<ActionResult> Deactivate(string id)
       {
          try
          {
-            var response = await _userService.Deactive(id);
+            Response<bool> response = await _userService.Deactivate(id);
+            return StatusCode((int)response.Code, response);
+         }
+         catch (Exception e)
+         {
+            _logger.LogError(e, "Errore");
+            return StatusCode(500, e.Message);
+         }
+      }
+      [HttpDelete("{id}")]
+      [Authorize(Roles = "admin")]
+      public async Task<ActionResult> Reactivate(string id)
+      {
+         try
+         {
+            Response<bool> response = await _userService.Reactivate(id);
             return StatusCode((int)response.Code, response);
          }
          catch (Exception e)

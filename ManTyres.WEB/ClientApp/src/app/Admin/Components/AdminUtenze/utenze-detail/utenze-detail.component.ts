@@ -44,14 +44,14 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
   matcher = new ErrorPasswordStateMatcher();
 
   userForm = this.formBuilder.group({
-    imgProfile: "",
-    firstname: ["", [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
-    lastname: ["", [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
-    username: ["", [Validators.required, this.validators.userName()]],
-    email: ["", [Validators.required, Validators.email]],
-    phoneNumber: ["+39 ", [Validators.required, Validators.maxLength(20)]],
-    //password: ["", [Validators.required, Validators.minLength(8), this.validators.password()]],
-    //confermaPassword: ["", [Validators.required]],
+    imgProfile: '',
+    firstname: ['', [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
+    lastname: ['', [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
+    username: ['', [Validators.required, this.validators.userName()]],
+    email: ['', [Validators.required, Validators.email]],
+    phoneNumber: ['+39 ', [Validators.required, Validators.maxLength(20)]],
+    //password: ['', [Validators.required, Validators.minLength(8), this.validators.password()]],
+    //confermaPassword: ['', [Validators.required]],
     role: [UserRole.Worker, Validators.required]
   }, { validators: this.checkPasswords.bind(this) });
   get getUserControl() { return this.userForm.controls; }
@@ -78,24 +78,25 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
       this.subscribers.push(this.service.getUser(this.userId).subscribe(
         res => {
           this.user = res.content;
-          this.userForm = this.formBuilder.group({
-            imgProfile: [this.user?.imgProfile],
-            username: [this.user?.userName, [Validators.required, this.validators.userName()]],
-            firstname: [this.user?.firstName, [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
-            lastname: [this.user?.lastName, [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
-            email: [this.user?.email, [Validators.required, Validators.email]],
-            phoneNumber: [this.user?.phoneNumber ? this.user?.phoneNumber : '+39', [Validators.required, Validators.maxLength(20)]],
-            // password: ["", [Validators.minLength(8), this.validators.password()]],
-            // confermaPassword: [""],
-            role: this.user?.role
-          }, { validators: this.checkPasswords.bind(this) });
-
-          if (this.user?.photoUrl) {
-            this.imagePath = this.user?.photoUrl;
-          }
-          else if (this.user?.imgProfile) {
-            // IMAGE SANITAZER
-            this.imagePath = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.userForm.value.imgProfile);
+          if (this.user) {
+            this.userForm = this.formBuilder.group({
+              imgProfile: [this.user.imgProfile ? this.user.imgProfile: this.user.photoUrl],
+              username: [this.user.userName, [Validators.required, this.validators.userName()]],
+              firstname: [this.user.firstName, [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
+              lastname: [this.user.lastName, [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
+              email: [this.user.email, [Validators.required, Validators.email]],
+              phoneNumber: [this.user.phoneNumber ? this.user.phoneNumber : '+39', [Validators.required, Validators.maxLength(20)]],
+              // password: ['', [Validators.minLength(8), this.validators.password()]],
+              // confermaPassword: [''],
+              role: this.user.role
+            }, { validators: this.checkPasswords.bind(this) });
+            if (this.user.photoUrl) {
+              this.imagePath = this.user.photoUrl;
+            }
+            else if (this.user.imgProfile) {
+              // IMAGE SANITAZER
+              this.imagePath = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.userForm.value.imgProfile);
+            }
           }
         }
       ));
@@ -129,7 +130,7 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
 
   replaceSpacesInOne(text: string): string {
     if (!text) return text;
-    return text.trim().replace(/(?:\s+)\s/g, " ");
+    return text.trim().replace(/(:\s+)\s/g, ' ');
   }
 
   toTitleCase(text: string): string {
@@ -154,13 +155,13 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
         this.userPassword = {
           id: this.user!.id,
           userName: this.user!.userName,
-          password: "",
+          password: '',
           newPassword: this.userForm.value.confermaPassword
         };
         this.subscribers.push(this.service.editPassword(this.userPassword!).subscribe(
           res => {
             console.log(res);
-            this.toastr.success("Reset password avvenuto con successo");
+            this.toastr.success('Reset password avvenuto con successo');
             this.subscribers.push(this.service.putUser(this.userForm.value).subscribe(
               res => {
                 this.toastr.success('Utente modificato con successo!');
@@ -171,8 +172,8 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
         ));
       }
       else {
-        this.userForm.get('firstname')!.setValue(this.toPascalCase(this.userForm.value.firstname));
-        this.userForm.get('lastname')!.setValue(this.toPascalCase(this.userForm.value.lastname));
+        this.userForm.get('firstname')?.setValue(this.toPascalCase(this.userForm.value.firstname));
+        this.userForm.get('lastname')?.setValue(this.toPascalCase(this.userForm.value.lastname));
         this.setUserToUpdate();
         this.subscribers.push(this.service.putUser(this.user!).subscribe(
           res => {
@@ -204,7 +205,7 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
     const password = group.value.password;
     const confirmPassword = group.value.confermaPassword;
 
-    if (confirmPassword != "")
+    if (confirmPassword != '')
       return password === confirmPassword ? null : { notSame: true }
 
     return { notSame: true }
@@ -235,7 +236,7 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
 
   removeImage() {
     Swal.fire({
-      title: 'Rimuovere immagine?',
+      title: 'Rimuovere immagine',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sì',
@@ -243,7 +244,7 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.value) {
         this.image_url = '';
-        this.userForm.get('imgProfile')!.setValue(null);
+        this.userForm.get('imgProfile')?.setValue(null);
         this.imagePath = null;
       }
     });
@@ -252,7 +253,7 @@ export class UtenzeDetailComponent implements OnInit, OnDestroy {
   setImagePath(url: string) {
     let path = url.toString().split(',');
     this.imagePath = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + path[1]);
-    this.userForm.get('imgProfile')!.setValue(path[1]);
+    this.userForm.get('imgProfile')?.setValue(path[1]);
   }
 
   //#endregion

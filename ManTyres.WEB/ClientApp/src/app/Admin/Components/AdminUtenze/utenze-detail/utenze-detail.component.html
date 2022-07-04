@@ -15,27 +15,35 @@
           <div class="col-12 col-sm-6 col-md-3 row">
             <h3 class="titolo col-12 col-md-4">{{ 'FIRST_NAME_PLACEHOLDER' | translate }}*</h3>
             <mat-form-field appearance="outline" class="col-12 col-md-8">
-              <input matInput type="text" name="given-name" maxlength="50" formControlName="firstname" placeholder="{{'FIRST_NAME_PLACEHOLDER' | translate }}" value="{{userForm.value.firstname | titlecase}}" required>
+              <input matInput type="text" name="given-name" maxlength="50" formControlName="firstname"
+                placeholder="{{'FIRST_NAME_PLACEHOLDER' | translate }}" value="{{userForm.value.firstname | titlecase}}"
+                required>
               <mat-error *ngIf="getUserControl.firstname.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
-              <mat-error *ngIf="getUserControl.firstname.errors?.pattern">{{ 'ERROR_NUMBERSCHARACTERS' | translate }}</mat-error>
+              <mat-error *ngIf="getUserControl.firstname.errors?.pattern">{{ 'ERROR_NUMBERSCHARACTERS' | translate }}
+              </mat-error>
             </mat-form-field>
           </div>
 
           <div class="col-12 col-sm-6 col-md-3 row">
             <h3 class="titolo col-12 col-md-4">{{ 'LAST_NAME_PLACEHOLDER' | translate }}*</h3>
             <mat-form-field appearance="outline" class="col-12 col-md-8">
-              <input matInput type="text" name="family-name" maxlength="50" formControlName="lastname" placeholder="{{ 'LAST_NAME_PLACEHOLDER' | translate }}" value="{{userForm.value.lastname | titlecase}}" required>
+              <input matInput type="text" name="family-name" maxlength="50" formControlName="lastname"
+                placeholder="{{ 'LAST_NAME_PLACEHOLDER' | translate }}" value="{{userForm.value.lastname | titlecase}}"
+                required>
               <mat-error *ngIf="getUserControl.lastname.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
-              <mat-error *ngIf="getUserControl.lastname.errors?.pattern">{{ 'ERROR_NUMBERSCHARACTERS' | translate }}</mat-error>
+              <mat-error *ngIf="getUserControl.lastname.errors?.pattern">{{ 'ERROR_NUMBERSCHARACTERS' | translate }}
+              </mat-error>
             </mat-form-field>
           </div>
 
           <div class="col-12 col-sm-6 col-md-3 row">
             <h3 class="titolo col-12 col-md-4 mobile-padding">{{ 'LOGIN_USERNAME' | translate }}*</h3>
             <mat-form-field appearance="outline" class="col-12 col-md-8">
-              <input matInput type="text" name="username" maxlength="256" formControlName="username" placeholder="{{ 'LOGIN_USERNAME' | translate }}" required>
+              <input matInput type="text" name="username" maxlength="256" formControlName="username"
+                placeholder="{{ 'LOGIN_USERNAME' | translate }}" required>
               <mat-error *ngIf="getUserControl.username.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
-              <mat-error *ngIf="getUserControl.username.errors?.pattern">{{ 'ERROR_USERNAME_FORMAT' | translate }}</mat-error>
+              <mat-error *ngIf="getUserControl.username.errors?.pattern">{{ 'ERROR_USERNAME_FORMAT' | translate }}
+              </mat-error>
             </mat-form-field>
           </div>
 
@@ -47,7 +55,8 @@
             </div>
             <span *ngIf="imagePath" class="col-8 col-md-6">
               <img [src]="imagePath" height="100" (click)="imageClicked=true" matTooltip="Visualizza immagine">
-              <mat-icon class="fas fa-times-square" (click)="removeImage()" matTooltip="Rimuovi immagine" matTooltipPosition="right">backspace</mat-icon>
+              <mat-icon class="fas fa-times-square" (click)="removeImage()" matTooltip="Rimuovi immagine"
+                matTooltipPosition="right">backspace</mat-icon>
             </span>
           </div>
         </div>
@@ -62,7 +71,8 @@
           <div class="col-12 col-md-6 row">
             <h3 class="titolo col-12 col-md-2 mobile-padding">{{ "EMAIL_PLACEHOLDER" | translate }}*</h3>
             <mat-form-field appearance="outline" class="col-12 col-md-10">
-              <input matInput type="email" name="email" formControlName="email" placeholder="unitest@example.com" required>
+              <input matInput type="email" name="email" formControlName="email" placeholder="unitest@example.com"
+                required>
               <mat-error *ngIf="getUserControl.email.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
               <mat-error *ngIf="getUserControl.email.errors?.email">{{'ERROR_EMAILFORMAT' | translate}}</mat-error>
             </mat-form-field>
@@ -70,7 +80,8 @@
           <div class="col-12 col-md-6 row">
             <h3 class="titolo col-12 col-md-4">{{ "PHONENUMBER_PLACEHOLDER" | translate }}*</h3>
             <mat-form-field appearance="outline" name="tel" class="col-12 col-md-8">
-              <input matInput type="tel" formControlName="phoneNumber" placeholder="+39 351 000 1111" maxlength="20" required>
+              <input matInput type="tel" formControlName="phoneNumber" placeholder="+39 351 000 1111" maxlength="20"
+                required>
               <mat-error *ngIf="getUserControl.phoneNumber.errors?.required">{{'ISREQUIRED' | translate}}</mat-error>
             </mat-form-field>
           </div>
@@ -101,7 +112,8 @@
         </div>
         <div class="row" style="margin-top: 20px;">
           <h3 class="titolo col-12 col-md-4" *ngIf="getWidth() > 500">PASSWORD*</h3>
-          <button mat-raised-button color="warn" class="reset col-10 col-md-2 " type="button" (click)="resetPassword = !resetPassword" style="margin-bottom: auto;">RESET</button>
+          <button mat-raised-button color="warn" class="reset col-10 col-md-2 " type="button"
+            (click)="resetPassword = !resetPassword" style="margin-bottom: auto;">RESET</button>
         </div>
         <!-- <div class="row" *ngIf="IsNewMode() || resetPassword">
           <div class="col-12 col-md-6 row">
@@ -134,12 +146,10 @@
         <span *ngIf="IsEditMode()">{{ "SAVE" | translate }}</span>
         <span *ngIf="IsNewMode()">{{ "CREATE" | translate }}</span>
       </button>
-      <p style="margin-top: 15px !important;"> {{ "USERS_DETAIL_BOTTOM" | translate }} </p>
+      <p style="margin-top: 20px !important;"> {{ "USERS_DETAIL_BOTTOM" | translate }} </p>
     </footer>
   </form>
 </div>
 
-<app-image-viewer *ngIf="imageClicked"
-                  [src]="imagePath"
-                  (closeViewerEmitter)="imageClicked=false">
+<app-image-viewer *ngIf="imageClicked" [src]="imagePath" (closeViewerEmitter)="imageClicked=false">
 </app-image-viewer>

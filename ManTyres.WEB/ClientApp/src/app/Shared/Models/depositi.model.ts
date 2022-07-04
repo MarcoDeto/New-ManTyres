@@ -1,11 +1,11 @@
-import { Sedi } from "./sedi.model";
+import { Sedi } from './sedi.model';
 
 export class Depositi {
   constructor(
-    public depositoId: number,
-    public sedeId: number,
-    public ubicazione: string,
+    public depositoId: number | null,
+    public sedeId: number | null,
+    public ubicazione: string | null,
     public isDeleted: boolean,
-    public sede: Sedi
+    public sede: Sedi | null
   ) { }
 }

@@ -4,16 +4,16 @@ import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { CardPneumaticiComponent } from '../../../../Shared/Components/card-pneumatici/card-pneumatici.component';
 import { Inventario } from '../../../../Shared/Models/inventario.model';
 import { Mode } from '../../../../Shared/Models/mode.model';
-import { UserService } from '../../../../Shared/Services/user.service';
-import { PneumaticiService } from '../../../Services/PneumaticiService';
+import { PneumaticiService } from '../../../Services/pneumatici.service';
 import { Response } from 'src/app/Shared/Models/response.model';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Sedi } from '../../../../Shared/Models/sedi.model';
 import { SediService } from '../../../../Admin/Services/sedi.service';
 import Swal from 'sweetalert2';
+import { CardPneumaticiComponent } from '../card-pneumatici/card-pneumatici.component';
+import { UserService } from 'src/app/Auth/Services/user.service';
 
 @Component({
   selector: 'app-inizio-deposito',
@@ -22,11 +22,23 @@ import Swal from 'sweetalert2';
 })
 
 export class InizioDepositoComponent implements OnInit {
-  title = "Fine deposito";
+  title = 'Fine deposito';
   subscribers: Subscription[] = [];
   mode: Mode = Mode.Edit;
-  inventario: Inventario | undefined = undefined;
-  currentUserid = "";
+  inventario: Inventario = {
+    pneumaticiId: 0,
+    inizioDeposito: null,
+    fineDeposito: null,
+    depositoId: null,
+    battistrada: null,
+    statoGomme: null,
+    userId: null,
+    isDeleted: null,
+    pneumatici: null,
+    deposito: null,
+    user: null
+  }
+  currentUserid: string | null = null;
   sedi: Sedi[] = [];
 
   inizioDepositoForm = this.formBuilder.group({
@@ -79,10 +91,10 @@ export class InizioDepositoComponent implements OnInit {
 
   submitForm() {
     this.inventario.userId = this.currentUserid;
-    this.inventario.deposito.sedeId = this.inizioDepositoForm.get('sede').value;
-    this.inventario.deposito.ubicazione = this.inizioDepositoForm.get('ubicazione').value;
-    this.inventario.inizioDeposito = this.inizioDepositoForm.get('inizioDeposito').value;
-    console.log("inizio deposito", this.inventario);
+    this.inventario.deposito!.sedeId = this.inizioDepositoForm.value.sede;
+    this.inventario.deposito!.ubicazione = this.inizioDepositoForm.value.ubicazione;
+    this.inventario.inizioDeposito = this.inizioDepositoForm.value.inizioDeposito;
+    console.log('inizio deposito', this.inventario);
 
     this.subscribers.push(this.pneumaticiService.inizioDeposito(this.inventario).subscribe(
       (res: Response) => {
@@ -96,7 +108,7 @@ export class InizioDepositoComponent implements OnInit {
           cancelButtonText: 'No'
         }).then((result) => {
           if (result.isConfirmed) {
-            console.log("PDF");
+            console.log('PDF');
             this.pneumaticiService.generatePdf(res.content);
           }
         });

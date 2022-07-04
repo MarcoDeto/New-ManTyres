@@ -105,25 +105,25 @@ export class SetupComponent implements OnInit, OnDestroy{
       this.desktop = false;
     }
     this.creationUserForm = this.formBuilder.group({
-      imgProfile: [""],
-      firstname: ["", [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
-      lastname: ["", [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
-      username: ["Admin", [Validators.required, this.validators.userName()]],
-      email: ["", [Validators.required, Validators.email]],
-      telefono: ["+39 ", [Validators.required, Validators.maxLength(20)]],
-      password: ["", [Validators.required, Validators.minLength(8), this.validators.password()]],
-      confermaPassword: ["", [Validators.required]],
-      role: ["admin", Validators.required]
+      imgProfile: [''],
+      firstname: ['', [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
+      lastname: ['', [Validators.required, Validators.maxLength(50), this.validators.fullName()]],
+      username: ['Admin', [Validators.required, this.validators.userName()]],
+      email: ['', [Validators.required, Validators.email]],
+      telefono: ['+39 ', [Validators.required, Validators.maxLength(20)]],
+      password: ['', [Validators.required, Validators.minLength(8), this.validators.password()]],
+      confermaPassword: ['', [Validators.required]],
+      role: ['admin', Validators.required]
     }, { validators: this.checkPasswords.bind(this) });
 
     this.creationSedeForm = this.formBuilder.group({
-      nazione: ["", [Validators.required, Validators.maxLength(100)]],
-      provincia: ["", [Validators.required, Validators.maxLength(100)]],
-      cap: ["", [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
-      comune: ["", [Validators.required, Validators.maxLength(100)]],
-      indirizzo: ["", [Validators.required, Validators.maxLength(200)]],
-      civico: ["", [Validators.required, Validators.maxLength(10)]],
-      telefono: ["+39 ", [Validators.required, Validators.maxLength(20)]]
+      nazione: ['', [Validators.required, Validators.maxLength(100)]],
+      provincia: ['', [Validators.required, Validators.maxLength(100)]],
+      cap: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
+      comune: ['', [Validators.required, Validators.maxLength(100)]],
+      indirizzo: ['', [Validators.required, Validators.maxLength(200)]],
+      civico: ['', [Validators.required, Validators.maxLength(10)]],
+      telefono: ['+39 ', [Validators.required, Validators.maxLength(20)]]
     });
   }
 
@@ -135,7 +135,7 @@ export class SetupComponent implements OnInit, OnDestroy{
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confermaPassword')?.value;
 
-    if (confirmPassword != "")
+    if (confirmPassword != '')
       return password === confirmPassword ? null : { notSame: true }
     return null;
   }
@@ -147,7 +147,7 @@ export class SetupComponent implements OnInit, OnDestroy{
   AddAdmin() {
     this.caricamento = true;
     this.user = {
-      id: "",
+      id: '',
       imgProfile: this.creationUserForm.value.imgProfile,
       firstName: this.replaceSpacesInOne(this.creationUserForm.value.firstname),
       lastName: this.replaceSpacesInOne(this.creationUserForm.value.lastname),
@@ -157,7 +157,7 @@ export class SetupComponent implements OnInit, OnDestroy{
       phoneNumber: this.creationUserForm.value.telefono,
       password: this.creationUserForm.value.password,
       confirmPassword: this.creationUserForm.value.confermaPassword,
-      role: "admin",
+      role: 'admin',
       isDeleted: false
     };
 
@@ -166,7 +166,7 @@ export class SetupComponent implements OnInit, OnDestroy{
     /*this.subscribers.push(this.setupService.AddAdmin(this.user).subscribe(
       (res: Response) => {
         this.caricamento = false;
-        this.toastr.success("Creato Amministratore", "Username: Admin");
+        this.toastr.success('Creato Amministratore', 'Username: Admin');
         this.admin = true;
       },
       err => {
@@ -207,7 +207,7 @@ export class SetupComponent implements OnInit, OnDestroy{
   replaceSpacesInOne(text: string) {
     if (!text) return text;
     text = text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
-    return text.replace(/(?:\s+)\s/g, " ");
+    return text.replace(/(?:\s+)\s/g, ' ');
   }
 
   routeHome() {

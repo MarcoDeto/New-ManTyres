@@ -10,13 +10,13 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Inventario } from '../../../Shared/Models/inventario.model';
 import { Role } from '../../../Shared/Models/role.model';
-import { DashboardService } from '../../Services/DashboardService';
+import { DashboardService } from '../../Services/dashboard.service';
 import { Response } from 'src/app/Shared/Models/response.model';
 import * as Chart from 'chart.js';
 import { Report } from '../../../Shared/Models/chart.model';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Color, BaseChartDirective, Label } from 'ng2-charts';
-import * as pluginAnnotations from 'chartjs-plugin-annotation';
+// import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+// import { Color, BaseChartDirective, Label } from 'ng2-charts';
+// import * as pluginAnnotations from 'chartjs-plugin-annotation';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,9 +37,11 @@ export class DashboardComponent {
   Clienti = 0;
   Utenti = 0;
 
-  label = "Depositi";
-  backgroundColor = "rgba(0, 123, 255,0.3)";
-  borderColor = "rgb(0, 123, 255)";
+  label = 'Depositi';
+  backgroundColor = 'rgba(0, 123, 255,0.3)';
+  borderColor = 'rgb(0, 123, 255)';
+  /*
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   lineChart: ChartType = 'line';
   barChart: ChartType = 'bar';
 
@@ -70,6 +72,7 @@ export class DashboardComponent {
   lineChartLegend = true;
   lineChartType = this.lineChart;
   lineChartPlugins = [pluginAnnotations];
+  */
 
   month = 1;
   pneumatici = true;
@@ -78,7 +81,6 @@ export class DashboardComponent {
   globale = false;
   quantita = true;
 
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -97,13 +99,13 @@ export class DashboardComponent {
     this.getClienti();
     this.getUtenti();
 
-    this.GetChart(this.month);
+    //this.GetChart(this.month);
   }
 
   ngOnDestroy(): void {
     this.subscribers.forEach(s => s.unsubscribe());
     this.subscribers.splice(0);
-    this.subscribers = null;
+    this.subscribers = [];
   }
 
   getWidth(): number {
@@ -111,9 +113,7 @@ export class DashboardComponent {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.ngOnInit();
-  }
+  onResize(event: Event) { this.ngOnInit(); }
 
   getPneumatici() {
     this.subscribers.push(this.dashboardService.Pneumatici().subscribe(
@@ -155,6 +155,7 @@ export class DashboardComponent {
     ));
   }
 
+  /*
   CreatePneumatici() {
     this.pneumatici = true;
     this.veicoli = false;
@@ -196,38 +197,38 @@ export class DashboardComponent {
 
     this.month = month;
     if (this.pneumatici) {
-      this.backgroundColor = "rgba(0, 123, 255,0.4)";
-      this.borderColor = "rgb(0, 123, 255)";
+      this.backgroundColor = 'rgba(0, 123, 255,0.4)';
+      this.borderColor = 'rgb(0, 123, 255)';
       if (this.globale) {
-        this.label = "Totale depositi";
+        this.label = 'Totale depositi';
         this.ChartGlobalePneumatici(this.month);
       }
       else if (this.quantita) {
-        this.label = "Depositi";
+        this.label = 'Depositi';
         this.ChartGiornalieroPneumatici(this.month);
       }
     }
     else if (this.veicoli) {
-      this.backgroundColor = "rgba(255, 193, 7,0.4)";
-      this.borderColor = "rgb(255, 193, 7)";
+      this.backgroundColor = 'rgba(255, 193, 7,0.4)';
+      this.borderColor = 'rgb(255, 193, 7)';
       if (this.globale) {
-        this.label = "Totale veicoli";
+        this.label = 'Totale veicoli';
         this.ChartGlobaleVeicoli(this.month);
       }
       else if (this.quantita) {
-        this.label = "Nuovi veicoli";
+        this.label = 'Nuovi veicoli';
         this.ChartGiornalieroVeicoli(this.month);
       }
     }
     else if (this.clienti) {
-      this.backgroundColor = "rgba(40, 167, 69,0.4)";
-      this.borderColor = "rgb(40, 167, 69)";
+      this.backgroundColor = 'rgba(40, 167, 69,0.4)';
+      this.borderColor = 'rgb(40, 167, 69)';
       if (this.globale) {
-        this.label = "Totale clienti";
+        this.label = 'Totale clienti';
         this.ChartGlobaleClienti(this.month);
       }
       else if (this.quantita) {
-        this.label = "Nuovi clienti";
+        this.label = 'Nuovi clienti';
         this.ChartGiornalieroClienti(this.month);
       }
     }
@@ -307,5 +308,5 @@ export class DashboardComponent {
       this.chart.chart.update()
     }, 10);
   }
-
+*/
 }

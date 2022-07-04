@@ -30,7 +30,7 @@ export class UtenzeComponent implements OnInit, AfterViewInit, OnDestroy {// Aft
   dbEmpty = false;
   displayedColumns: string[] = [];
   data = new MatTableDataSource<Users>();
-  role: string = "user";
+  role: string = 'user';
   hoverAdd = false;
 
   users: Utenza[] = [];
@@ -147,7 +147,7 @@ export class UtenzeComponent implements OnInit, AfterViewInit, OnDestroy {// Aft
     })
       .then((result) => {
         if (result.value) {
-          this.subscribers.push(this.adminUserService.deleteUser(id).subscribe(
+          this.subscribers.push(this.adminUserService.deactivateUser(id).subscribe(
             () => {
               this.ngOnInit();
               this.toastr.success('Utente eliminato con successo!');

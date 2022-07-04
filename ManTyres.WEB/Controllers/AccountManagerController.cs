@@ -57,12 +57,17 @@ namespace Tyre.WSL.Controllers
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+				var expiration = tokenDescriptor.Expires;
             var token = tokenHandler.WriteToken(securityToken);
 
             _logger.LogInformation($"{user!.Content!.UserName!} Login at {DateTime.Now}");
 
             return Ok(new Response<object> { 
-					Content = new { token, expiration = tokenDescriptor.Expires, user = user.Content },
+					Content = new { 
+						token = token, 
+						expiration = expiration, 
+						user = user.Content
+					},
 					Code = HttpStatusCode.OK, 
 					Count = 1, 
 					Message = null
@@ -74,22 +79,6 @@ namespace Tyre.WSL.Controllers
             return StatusCode(500, e.Message);
          }
       }
-
-      /*[HttpGet]
-		[Authorize(Roles = "admin, user")]
-		public async Task<ActionResult> Profile(string username)
-		{
-			try
-			{
-				var response = await _userService.GetUserbyUsername(username);
-				return StatusCode((int)response.Code, response);
-			}
-			catch (Exception e)
-			{
-				_logger.LogError(e, "Errore");
-				return StatusCode(500, e.Message);
-			}
-		}
 
 		[HttpPost]
 		public async Task<IActionResult> CheckCurrentPassword([FromBody] UserPasswordDTO model)
@@ -112,6 +101,22 @@ namespace Tyre.WSL.Controllers
 			try
 			{
 				var response = await _userService.ChangePassword(model);
+				return StatusCode((int)response.Code, response);
+			}
+			catch (Exception e)
+			{
+				_logger.LogError(e, "Errore");
+				return StatusCode(500, e.Message);
+			}
+		}
+
+      /*[HttpGet]
+		[Authorize(Roles = "admin, user")]
+		public async Task<ActionResult> Profile(string username)
+		{
+			try
+			{
+				var response = await _userService.GetUserbyUsername(username);
 				return StatusCode((int)response.Code, response);
 			}
 			catch (Exception e)

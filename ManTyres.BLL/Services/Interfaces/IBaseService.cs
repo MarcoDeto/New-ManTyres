@@ -14,7 +14,8 @@ namespace ManTyres.BLL.Services.Interfaces
 		Task<Response<bool>> PostReturnBool(T req);
 		Task<Response<T>> PostReturnObj(T req);
 		Task<Response<T>> Put(T req);
-		Task<Response<bool>> Deactive(string id);
+		Task<Response<bool>> Deactivate(string id);
+		Task<Response<bool>> Reactivate(string id);
 		Task<Response<bool>> Delete(string id);
 	}
 }

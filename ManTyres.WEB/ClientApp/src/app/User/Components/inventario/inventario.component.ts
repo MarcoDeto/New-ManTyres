@@ -4,28 +4,27 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Inventario } from '../../../Shared/Models/inventario.model';
-import { InventarioService } from '../../Services/InventarioService';
+import { InventarioService } from '../../Services/inventario.service';
 import { Response } from 'src/app/Shared/Models/response.model';
 import { PageEvent } from '@angular/material/paginator';
-import localeIt from '@angular/common/locales/it';
 import { Sedi } from '../../../Shared/Models/sedi.model';
 import { Stagioni } from '../../../Shared/Models/stagioni.model';
 import { SediService } from '../../../Admin/Services/sedi.service';
-import { StagioniService } from '../../Services/StagioniService';
+import { StagioniService } from '../../Services/stagioni.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { PneumaticiService } from '../../Services/PneumaticiService';
+import { PneumaticiService } from '../../Services/pneumatici.service';
 import { Veicolo } from '../../../Shared/Models/veicoli.mdel';
-import { VeicoliService } from '../../Services/VeicoliService';
-import { ExcelService } from '../../Services/Excel.service';
+import { VeicoliService } from '../../Services/veicoli.service';
 import { saveAs } from 'file-saver';
 import { Cliente } from '../../../Shared/Models/clienti.model';
 import { MatDialog } from '@angular/material/dialog';
-import { ModalClientiComponent } from '../UsersClienti/modal-clienti/modal-clienti.component';
+import { ModalClientiComponent } from '../clienti/modal-clienti/modal-clienti.component';
 import { Mode } from '../../../Shared/Models/mode.model';
-import { ModalPneumaticiComponent } from '../Pneumatici/modal-pneumatici/modal-pneumatici.component';
-import { FineDepositoComponent } from '../Pneumatici/fine-deposito/fine-deposito.component';
-import { InizioDepositoComponent } from '../Pneumatici/inizio-deposito/inizio-deposito.component';
+import { ModalPneumaticiComponent } from '../pneumatici/modal-pneumatici/modal-pneumatici.component';
+import { FineDepositoComponent } from '../pneumatici/fine-deposito/fine-deposito.component';
+import { InizioDepositoComponent } from '../pneumatici/inizio-deposito/inizio-deposito.component';
+import { ExcelService } from '../../Services/excel.service';
 
 @Component({
   selector: 'app-inventario',
@@ -45,7 +44,7 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
   subscribers: Subscription[] = [];
 
   lista: Inventario[] = [];
-  columnsToDisplay = ['N','pneumaticiId', 'depositoId', 'inizioDeposito', 'userId', 'actions'];
+  columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'inizioDeposito', 'userId', 'actions'];
   expandedElement: Inventario | undefined;
   veicolo: Veicolo | undefined;
   sedi: Sedi[] = [];
@@ -63,8 +62,8 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
   take = 10;
   sede = 0;
   stagione = 0;
-  inizioOrderByDesc = true;
-  fineOrderByDesc: boolean = null;
+  inizioOrderByDesc: boolean | null = true;
+  fineOrderByDesc: boolean | null = null;
 
   inventario = false;
   archivio = false;
@@ -79,7 +78,7 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
   });
 
   searchForm = this.formBuilder.group({
-    targa: ["", [Validators.required]]
+    targa: ['', [Validators.required]]
   });
 
   caricamento = false;
@@ -105,7 +104,7 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
     this.skip = this.pageEvent.pageSize * this.pageEvent.pageIndex;
     this.take = this.pageEvent.pageSize;
     this.getInventario();
-    if (this.getWidth() > 992) 
+    if (this.getWidth() > 992)
       this.filtri = true;
 
   }
@@ -114,7 +113,7 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
     if (this.skip != this.pageEvent.pageSize * this.pageEvent.pageIndex || this.take != this.pageEvent.pageSize) {
       this.skip = this.pageEvent.pageSize * this.pageEvent.pageIndex;
       this.take = this.pageEvent.pageSize;
-      if (this.searchForm.get('targa').value != null || this.searchForm.get('targa').value != "") {
+      if (this.searchForm.value.targa) {
         this.search()
       }
       else { this.submitForm(); }
@@ -122,7 +121,7 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   getAllDetail(veicoloId: number): void {
-    console.log("Get All Detail");
+    console.log('Get All Detail');
     this.subscribers.push(this.veicoliService.getVeicolo(veicoloId).subscribe(
       res => this.veicolo = res.content
     ));
@@ -153,16 +152,16 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   search() {
-    this.sede = this.inventarioForm.get('sede').value;
-    this.stagione = this.inventarioForm.get('stagione').value;
-    this.inizioOrderByDesc = this.inventarioForm.get('inizioOrderByDesc').value;
-    this.fineOrderByDesc = this.inventarioForm.get('fineOrderByDesc').value;
+    this.sede = this.inventarioForm.value.sede;
+    this.stagione = this.inventarioForm.value.stagione;
+    this.inizioOrderByDesc = this.inventarioForm.value.inizioOrderByDesc;
+    this.fineOrderByDesc = this.inventarioForm.value.fineOrderByDesc;
     if (this.inventario)
-      this.getInventarioByTarga(this.skip, this.take, this.sede, this.stagione, this.inizioOrderByDesc, this.searchForm.get('targa').value);
+      this.getInventarioByTarga(this.skip, this.take, this.sede, this.stagione, this.inizioOrderByDesc!, this.searchForm.value.targa);
     if (this.archivio)
-      this.getArchivioByTarga(this.skip, this.take, this.sede, this.stagione, this.inizioOrderByDesc, this.fineOrderByDesc, this.searchForm.get('targa').value);
+      this.getArchivioByTarga(this.skip, this.take, this.sede, this.stagione, this.inizioOrderByDesc, this.fineOrderByDesc, this.searchForm.value.targa);
     if (this.cestino)
-      this.getCestinoByTarga(this.skip, this.take, this.sede, this.stagione, this.inizioOrderByDesc, this.fineOrderByDesc, this.searchForm.get('targa').value);
+      this.getCestinoByTarga(this.skip, this.take, this.sede, this.stagione, this.inizioOrderByDesc, this.fineOrderByDesc, this.searchForm.value.targa);
   }
 
   getInventario() {
@@ -172,23 +171,24 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
     this.archivio = false;
     this.cestino = false;
     this.fineOrderByDesc = null;
-    this.inventarioForm.get('fineOrderByDesc').setValue(null);
-    this.inizioOrderByDesc = this.inventarioForm.get('inizioOrderByDesc').value;
-    this.sede = this.inventarioForm.get('sede').value;
-    this.stagione = this.inventarioForm.get('stagione').value;
+    this.inventarioForm.get('fineOrderByDesc')?.setValue(null);
+    this.inizioOrderByDesc = this.inventarioForm.value.inizioOrderByDesc;
+    this.sede = this.inventarioForm.value.sede;
+    this.stagione = this.inventarioForm.value.stagione;
     this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'inizioDeposito', 'userId', 'actions'];
     if (this.getWidth() < 415) { this.columnsToDisplay = ['N', 'pneumaticiId', 'actions']; }
     else if (this.getWidth() < 767) { this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'actions']; }
-    this.subscribers.push(this.inventarioService.getInventario(this.skip, this.take, this.sede, this.stagione, this.inizioOrderByDesc).subscribe(
-      (res: Response) => {
-        this.lista = res.content;
-        this.length = res.count;
-        if (res.count == 0) { this.dbEmpty = true; }
-      },
-      err => {
-        this.notFound = true;
-      }
-    ));
+    this.subscribers.push(
+      this.inventarioService.getInventario(this.skip, this.take, this.sede, this.stagione, this.inventarioForm.value.inizioOrderByDesc).subscribe({
+        next: (res: Response) => {
+          this.lista = res.content;
+          this.length = res.count;
+          if (res.count == 0) { this.dbEmpty = true; }
+        },
+        error: err => {
+          this.notFound = true;
+        }
+      }));
   }
 
   getInventarioByTarga(skip: number, take: number, sede: number, stagione: number, orderByDesc: boolean, targa: string) {
@@ -200,19 +200,20 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
     this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'inizioDeposito', 'userId', 'actions'];
     if (this.getWidth() < 415) { this.columnsToDisplay = ['N', 'pneumaticiId', 'actions']; }
     else if (this.getWidth() < 767) { this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'actions']; }
-    this.subscribers.push(this.inventarioService.getInventarioByTarga(skip, take, sede, stagione, orderByDesc, targa).subscribe(
-      (res: Response) => {
-        this.lista = res.content;
-        this.length = res.count;
-        if (res.count == 0) { this.dbEmpty = true; }
-      },
-      err => {
-        this.notFound = true;
-      }
-    ));
+    this.subscribers.push(
+      this.inventarioService.getInventarioByTarga(skip, take, sede, stagione, orderByDesc, targa).subscribe({
+        next: (res: Response) => {
+          this.lista = res.content;
+          this.length = res.count;
+          if (res.count == 0) { this.dbEmpty = true; }
+        },
+        error: err => {
+          this.notFound = true;
+        }
+      }));
   }
 
-  getArchivio(skip: number, take: number, sede: number, stagione: number, inizioOrderByDesc: boolean, fineOrderByDesc: boolean) {
+  getArchivio(skip: number, take: number, sede: number, stagione: number, inizioOrderByDesc: boolean | null, fineOrderByDesc: boolean | null) {
     this.notFound = false;
     this.dbEmpty = false;
     this.inventario = false;
@@ -221,19 +222,20 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
     this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'inizioDeposito', 'fineDeposito', 'userId', 'actions'];
     if (this.getWidth() < 415) { this.columnsToDisplay = ['N', 'pneumaticiId', 'actions']; }
     else if (this.getWidth() < 767) { this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'actions']; }
-    this.subscribers.push(this.inventarioService.getArchivio(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc).subscribe(
-      (res: Response) => {
-        this.lista = res.content;
-        this.length = res.count;
-        if (res.count == 0) { this.dbEmpty = true; }
-      },
-      err => {
-        this.notFound = true;
-      }
-    ));
+    this.subscribers.push(
+      this.inventarioService.getArchivio(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc).subscribe({
+        next: (res: Response) => {
+          this.lista = res.content;
+          this.length = res.count;
+          if (res.count == 0) { this.dbEmpty = true; }
+        },
+        error: err => {
+          this.notFound = true;
+        }
+      }));
   }
 
-  getArchivioByTarga(skip: number, take: number, sede: number, stagione: number, inizioOrderByDesc: boolean, fineOrderByDesc: boolean, targa: string) {
+  getArchivioByTarga(skip: number, take: number, sede: number, stagione: number, inizioOrderByDesc: boolean | null, fineOrderByDesc: boolean | null, targa: string) {
     this.notFound = false;
     this.dbEmpty = false;
     this.inventario = false;
@@ -242,16 +244,17 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
     this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'inizioDeposito', 'fineDeposito', 'userId', 'actions'];
     if (this.getWidth() < 415) { this.columnsToDisplay = ['N', 'pneumaticiId', 'actions']; }
     else if (this.getWidth() < 767) { this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'actions']; }
-    this.subscribers.push(this.inventarioService.GetArchivioByTarga(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc, targa).subscribe(
-      (res: Response) => {
-        this.lista = res.content;
-        this.length = res.count;
-        if (res.count == 0) { this.dbEmpty = true; }
-      },
-      err => {
-        this.notFound = true;
-      }
-    ));
+    this.subscribers.push(
+      this.inventarioService.GetArchivioByTarga(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc, targa).subscribe({
+        next: (res: Response) => {
+          this.lista = res.content;
+          this.length = res.count;
+          if (res.count == 0) { this.dbEmpty = true; }
+        },
+        error: err => {
+          this.notFound = true;
+        }
+      }));
   }
 
   DelFromArchivio(entity: Inventario) {
@@ -273,7 +276,7 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
     });
   }
 
-  getCestino(skip: number, take: number, sede: number, stagione: number, inizioOrderByDesc: boolean, fineOrderByDesc: boolean) {
+  getCestino(skip: number, take: number, sede: number, stagione: number, inizioOrderByDesc: boolean | null, fineOrderByDesc: boolean | null ) {
     this.notFound = false;
     this.dbEmpty = false;
     this.inventario = false;
@@ -282,19 +285,21 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
     this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'inizioDeposito', 'fineDeposito', 'userId', 'actions'];
     if (this.getWidth() < 415) { this.columnsToDisplay = ['N', 'pneumaticiId', 'actions']; }
     else if (this.getWidth() < 767) { this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'actions']; }
-    this.subscribers.push(this.inventarioService.getCestino(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc).subscribe(
-      (res: Response) => {
-        this.lista = res.content;
-        this.length = res.count;
-        if (res.count == 0) { this.dbEmpty = true; }
-      },
-      err => {
-        this.notFound = true;
-      }
-    ));
+    this.subscribers.push(
+      this.inventarioService.getCestino(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc).subscribe({
+        next: (res: Response) => {
+          this.lista = res.content;
+          this.length = res.count;
+          if (res.count == 0) { this.dbEmpty = true; }
+        },
+        error: err => {
+          this.notFound = true;
+        }
+      })
+    );
   }
 
-  getCestinoByTarga(skip: number, take: number, sede: number, stagione: number, inizioOrderByDesc: boolean, fineOrderByDesc: boolean, targa: string) {
+  getCestinoByTarga(skip: number, take: number, sede: number, stagione: number, inizioOrderByDesc: boolean | null, fineOrderByDesc: boolean | null, targa: string) {
     this.notFound = false;
     this.dbEmpty = false;
     this.inventario = false;
@@ -303,16 +308,18 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
     this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'inizioDeposito', 'fineDeposito', 'userId', 'actions'];
     if (this.getWidth() < 415) { this.columnsToDisplay = ['N', 'pneumaticiId', 'actions']; }
     else if (this.getWidth() < 767) { this.columnsToDisplay = ['N', 'pneumaticiId', 'depositoId', 'actions']; }
-    this.subscribers.push(this.inventarioService.getCestinoByTarga(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc, targa).subscribe(
-      (res: Response) => {
-        this.lista = res.content;
-        this.length = res.count;
-        if (res.count == 0) { this.dbEmpty = true; }
-      },
-      err => {
-        this.notFound = true;
-      }
-    ));
+    this.subscribers.push(
+      this.inventarioService.getCestinoByTarga(skip, take, sede, stagione, inizioOrderByDesc, fineOrderByDesc, targa).subscribe({
+        next: (res: Response) => {
+          this.lista = res.content;
+          this.length = res.count;
+          if (res.count == 0) { this.dbEmpty = true; }
+        },
+        error: err => {
+          this.notFound = true;
+        }
+      })
+    );
   }
 
   DelFromCestino(entity: Inventario) {
@@ -393,28 +400,28 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
 
   clickOnInizioOrder() {
     this.fineOrderByDesc = null;
-    this.inventarioForm.get('fineOrderByDesc').setValue(null);
+    this.inventarioForm.get('fineOrderByDesc')?.setValue(null);
     this.submitForm();
   }
 
   clickOnFineOrder() {
     this.inizioOrderByDesc = null;
-    this.inventarioForm.get('inizioOrderByDesc').setValue(null);
+    this.inventarioForm.get('inizioOrderByDesc')?.setValue(null);
     this.submitForm();
   }
 
   submitForm() {
-    this.sede = this.inventarioForm.get('sede').value;
-    this.stagione = this.inventarioForm.get('stagione').value;
-    this.inizioOrderByDesc = this.inventarioForm.get('inizioOrderByDesc').value;
-    this.fineOrderByDesc = this.inventarioForm.get('fineOrderByDesc').value;
+    this.sede = this.inventarioForm.value.sede;
+    this.stagione = this.inventarioForm.value.stagione;
+    this.inizioOrderByDesc = this.inventarioForm.value.inizioOrderByDesc;
+    this.fineOrderByDesc = this.inventarioForm.value.fineOrderByDesc;
 
     if (this.inventario)
       this.getInventario();
     if (this.archivio)
-      this.getArchivio(this.skip, this.take, this.inventarioForm.get('sede').value, this.inventarioForm.get('stagione').value, this.inventarioForm.get('inizioOrderByDesc').value, this.inventarioForm.get('fineOrderByDesc').value);
+      this.getArchivio(this.skip, this.take, this.inventarioForm.value.sede, this.inventarioForm.value.stagione, this.inventarioForm.value.inizioOrderByDesc, this.inventarioForm.value.fineOrderByDesc);
     else if (this.cestino)
-      this.getCestino(this.skip, this.take, this.inventarioForm.get('sede').value, this.inventarioForm.get('stagione').value, this.inventarioForm.get('inizioOrderByDesc').value, this.inventarioForm.get('fineOrderByDesc').value);
+      this.getCestino(this.skip, this.take, this.inventarioForm.value.sede, this.inventarioForm.value.stagione, this.inventarioForm.value.inizioOrderByDesc, this.inventarioForm.value.fineOrderByDesc);
   }
 
   Pdf(data: Inventario) {
@@ -432,9 +439,9 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   editPneumatici(data: Inventario) {
-    let response = "";
-    if (data.fineDeposito == null) { response = "Fine Deposito"; }
-    else { response = "Inizio Deposito"; }
+    let response = '';
+    if (data.fineDeposito == null) { response = 'Fine Deposito'; }
+    else { response = 'Inizio Deposito'; }
     Swal.fire({
       icon: 'question',
       title: 'Cosa vuoi fare?',
@@ -472,21 +479,21 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   export(): void {
-    this.sede = this.inventarioForm.get('sede').value;
-    this.stagione = this.inventarioForm.get('stagione').value;
-    this.inizioOrderByDesc = this.inventarioForm.get('inizioOrderByDesc').value;
-    this.fineOrderByDesc = this.inventarioForm.get('fineOrderByDesc').value;
+    this.sede = this.inventarioForm.value.sede;
+    this.stagione = this.inventarioForm.value.stagione;
+    this.inizioOrderByDesc = this.inventarioForm.value.inizioOrderByDesc;
+    this.fineOrderByDesc = this.inventarioForm.value.fineOrderByDesc;
 
-    var sedeMess = " sede = "
+    let sedeMess: string | null = ' sede = '
     if (this.sede != 0) {
       this.sedi.forEach(x => {
-        if (x.sedeId == this.sede) {
+        if (x.sedeId == this.sede && sedeMess) {
           sedeMess += x.comune;
         }
       });
     }
     else { sedeMess = null; }
-    var stagioneMess = " stagione = "
+    let stagioneMess: string | null = ' stagione = '
     if (this.stagione != 0) {
       this.stagioni.forEach(x => {
         if (x.stagioneId == this.stagione) {
@@ -496,16 +503,16 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
     }
     else { stagioneMess = null; }
 
-    var message = 'Esportare i dati '
-    var filtriMess = '';
-    if (stagioneMess != null) { filtriMess += "filtrati per" + stagioneMess; }
-    if (sedeMess != null && stagioneMess == null) { filtriMess += "filtrati per" + sedeMess; }
+    let message = 'Esportare i dati '
+    let filtriMess = '';
+    if (stagioneMess != null) { filtriMess += 'filtrati per' + stagioneMess; }
+    if (sedeMess != null && stagioneMess == null) { filtriMess += 'filtrati per' + sedeMess; }
     if (sedeMess != null && stagioneMess != null) { filtriMess += ',' + sedeMess; }
 
     if (filtriMess != '') { message += filtriMess + ' e '; }
-    var orderMess = this.inizioOrderByDesc == true ? "ordinati per inizio deposito più recente" : "ordinati per inizio deposito più vecchio";
-    if (this.fineOrderByDesc == true) { orderMess = "ordinati per fine deposito più recente"; }
-    else if (this.fineOrderByDesc == false) { orderMess = "ordinati per fine deposito più vecchio"; }
+    let orderMess = this.inizioOrderByDesc == true ? 'ordinati per inizio deposito più recente' : 'ordinati per inizio deposito più vecchio';
+    if (this.fineOrderByDesc == true) { orderMess = 'ordinati per fine deposito più recente'; }
+    else if (this.fineOrderByDesc == false) { orderMess = 'ordinati per fine deposito più vecchio'; }
     message += orderMess;
     message += '?';
     Swal.fire({
@@ -516,53 +523,59 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
       cancelButtonText: 'Annulla'
     }).then((result) => {
       if (result.isConfirmed) {
-        if (this.inventario) { this.exportInventario(this.sede, this.stagione, this.inizioOrderByDesc) }
+        if (this.inventario) { this.exportInventario(this.sede, this.stagione, this.inizioOrderByDesc!) }
         else if (this.archivio) { this.exportArchivio(this.sede, this.stagione, this.inizioOrderByDesc, this.fineOrderByDesc) }
-        else if (this.cestino) { this.exportPneumatici(this.sede, this.stagione, this.inizioOrderByDesc) }
+        else if (this.cestino) { this.exportPneumatici(this.sede, this.stagione, this.inizioOrderByDesc!) }
       }
     });
   }
 
   exportPneumatici(sede: number, stagione: number, orderByDesc: boolean): void {
     this.caricamento = true;
-    this.subscribers.push(this.excelService.exportPneumatici(sede, stagione, orderByDesc).subscribe(
-      res => {
-        this.caricamento = false;
-        const blob = new Blob([res]);
-        saveAs(blob, "Tyres.xlsx");
-      },
-      err => {
-        this.caricamento = false;
-      }
-    ));
+    this.subscribers.push(
+      this.excelService.exportPneumatici(sede, stagione, orderByDesc).subscribe({
+        next: (res: any) => {
+          const blob = new Blob([res]);
+          saveAs(blob, 'Tyres.xlsx');
+          this.caricamento = false;
+        },
+        error: err => {
+          this.caricamento = false;
+        }
+      })
+    );
   }
 
   exportInventario(sede: number, stagione: number, orderByDesc: boolean): void {
     this.caricamento = true;
-    this.subscribers.push(this.excelService.exportInventario(sede, stagione, orderByDesc).subscribe(
-      res => {
-        this.caricamento = false;
-        const blob = new Blob([res]);
-        saveAs(blob, "Inventario.xlsx");
-      },
-      err => {
-        this.caricamento = false;
-      }
-    ));
+    this.subscribers.push(
+      this.excelService.exportInventario(sede, stagione, orderByDesc).subscribe({
+        next: (res: any) => {
+          const blob = new Blob([res]);
+          saveAs(blob, 'Tyres.xlsx');
+          this.caricamento = false;
+        },
+        error: err => {
+          this.caricamento = false;
+        }
+      })
+    );
   }
 
   exportArchivio(sede: number, stagione: number, inizioOrderByDesc: boolean | null, fineOrderByDesc: boolean | null): void {
     this.caricamento = true;
-    this.subscribers.push(this.excelService.exportArchivio(sede, stagione, inizioOrderByDesc, fineOrderByDesc).subscribe(
-      res => {
-        this.caricamento = false;
-        const blob = new Blob([res]);
-        saveAs(blob, "Archivio.xlsx");
-      },
-      err => {
-        this.caricamento = false;
-      }
-    ));
+    this.subscribers.push(
+      this.excelService.exportArchivio(sede, stagione, inizioOrderByDesc, fineOrderByDesc).subscribe({
+        next: (res: any) => {
+          const blob = new Blob([res]);
+          saveAs(blob, 'Tyres.xlsx');
+          this.caricamento = false;
+        },
+        error: err => {
+          this.caricamento = false;
+        }
+      })
+    );
   }
 
   getWidth(): number {
@@ -577,6 +590,6 @@ export class InventarioComponent implements OnInit, DoCheck, OnDestroy {
   ngOnDestroy(): void {
     this.subscribers.forEach(s => s.unsubscribe());
     this.subscribers.splice(0);
-    this.subscribers = null;
+    this.subscribers = [];
   }
 }
